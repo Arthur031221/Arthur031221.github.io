@@ -1,1066 +1,1067 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arthur (Chi-Wei Lee) | Personal Website</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chi-Wei Lee — NeuroAI</title>
+<meta name="description" content="Chi-Wei Lee (Arthur) — NeuroAI researcher. Predictive coding, associative memory, and Bayesian inference in brains and machines.">
+<meta name="author" content="Chi-Wei Lee">
+<link rel="canonical" href="https://arthur031221.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chi-Wei Lee — NeuroAI">
+<meta property="og:description" content="Predictive coding, associative memory, and Bayesian inference in brains and machines.">
+<meta property="og:url" content="https://arthur031221.github.io/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='%234FE0A0' stroke-width='2.5'/><circle cx='16' cy='16' r='3.5' fill='%234FE0A0'/></svg>">
 
-  <!-- Tailwind (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- Theme and language restored before first paint: no flash of the wrong register. -->
+<script>
+(() => {
+  const s = (k, d) => { try { return localStorage.getItem(k) || d; } catch { return d; } };
+  const prefersLight = matchMedia('(prefers-color-scheme: light)').matches;
+  const r = document.documentElement;
+  r.dataset.theme = s('theme', prefersLight ? 'light' : 'dark');
+  r.dataset.lang  = s('lang', (navigator.language || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en');
+  r.lang = r.dataset.lang === 'zh' ? 'zh-Hant' : 'en';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) r.dataset.motion = 'reduced';
+})();
+</script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2...family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 
-  <style>
-    /* Theme (default: light / day) */
-    :root {
-      --bg: #f6f7fb;
-      --text-strong: #0f172a;
-      --text: #0f172a;
-      --muted-200: #1f2937;
-      --muted-300: #334155;
-      --muted-400: #64748b;
-      --primary-bg: #0f172a;
-      --primary-text: #ffffff;
-      --primary-hover: #111c33;
-      --glass-bg: rgba(255,255,255,.78);
-      --glass-shadow: 0 20px 50px rgba(15,23,42,.08);
-      --ring-inset: 0 0 0 1px rgba(15,23,42,.10) inset;
-      --border: rgba(15,23,42,.12);
-      --bg-photo-filter: saturate(0.9) brightness(1.05) contrast(1);
-      --bg-photo-opacity: 0.22;
-    }
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   TOKENS — two authentic scientific registers, not an inversion.
+   dark  = instrument display : phosphor on near-black, graticule, glow
+   light = publication figure : ivory paper, ink hairlines, no fills
+   Chroma is reserved: C >= .12 encodes a quantity; below that is chrome.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cjk:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
 
-    html[data-theme="dark"] {
-      --bg: #0b1020;
-      --text-strong: #ffffff;
-      --text: rgb(244 244 245);
-      --muted-200: rgb(228 228 231);
-      --muted-300: rgb(212 212 216);
-      --muted-400: rgb(161 161 170);
-      --primary-bg: #ffffff;
-      --primary-text: #0b1020;
-      --primary-hover: rgb(244 244 245);
-      --glass-bg: rgba(255,255,255,.06);
-      --glass-shadow: none;
-      --ring-inset: 0 0 0 1px rgba(255,255,255,.08) inset;
-      --border: rgba(255,255,255,.12);
-      --bg-photo-filter: saturate(0.7) brightness(0.55) contrast(1.05);
-      --bg-photo-opacity: 0.95;
-    }
+  --step--1:clamp(.76rem,.74rem + .1vw,.83rem);
+  --step-0:clamp(.95rem,.92rem + .16vw,1.05rem);
+  --step-1:clamp(1.12rem,1.04rem + .38vw,1.38rem);
+  --step-2:clamp(1.45rem,1.26rem + .9vw,2.05rem);
+  --step-3:clamp(1.9rem,1.5rem + 2vw,3.2rem);
+  --step-4:clamp(2.6rem,1.5rem + 5vw,6.2rem);
 
-    html { background: var(--bg); color-scheme: light; }
-    html[data-theme="dark"] { color-scheme: dark; }
-    html, body { min-height: 100%; }
-    body { color: var(--text); font-family: Inter, "Noto Sans TC", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: transparent; }
+  --gut:clamp(1.15rem,4vw,3.25rem);
+  --maxw:1180px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+:root[data-theme="dark"]{
+  --bg:#0B0E14; --surface:#131722; --surface-2:#1A2030;
+  --rule:#1E2430; --rule-hi:#2C3444;
+  --dim:#6B7684; --ink-2:#9AA5B1; --ink:#C9D1D9; --ink-hi:#EDF2F7;
+  --accent:#4FE0A0; --emphasis:#E8B23A; --alarm:#E5484D;
+  --grid-a:.42; --glow:1;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#FDFCF9; --surface:#F4F2EC; --surface-2:#E9E5DC;
+  --rule:#D8D4CB; --rule-hi:#B4AEA1;
+  --dim:#6E6A62; --ink-2:#45423C; --ink:#16181D; --ink-hi:#000;
+  --accent:#0072B2; --emphasis:#D55E00; --alarm:#B3261E;
+  --grid-a:.6; --glow:0;
+  color-scheme:light;
+}
 
-    /* Global component skins */
-    .glass { background: var(--glass-bg); backdrop-filter: blur(10px); box-shadow: var(--glass-shadow); }
-    .ring-soft { box-shadow: var(--ring-inset); }
-    .btn-primary { background: var(--primary-bg); color: var(--primary-text); font-weight: 600; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .grad {
-      position: relative;
-      background: transparent;
-      overflow-x: hidden;
-      isolation: isolate;
-    }
-    /* Background photo layer (fit viewport width, keep aspect ratio) */
-    .site-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background-image: url("S__16670722.jpg");
-      background-repeat: repeat-y;
-      background-position: top center;
-      background-size: 100% auto; /* fit width; height scales proportionally */
-      filter: var(--bg-photo-filter);
-      opacity: var(--bg-photo-opacity);
-      pointer-events: none;
-    }
-    .page-content { position: relative; z-index: 1; }
-    .anchor { scroll-margin-top: 96px; }
-    summary::-webkit-details-marker { display: none; }
-    details > summary { list-style: none; }
-    details[open] summary .chev { transform: rotate(180deg); }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+:root[data-motion="reduced"]{scroll-behavior:auto}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:var(--step-0);line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+  transition:background-color .5s var(--ease),color .5s var(--ease);
+}
+:root[data-lang="zh"] body{font-family:var(--cjk);line-height:1.85}
+h1,h2,h3{font-weight:600;line-height:1.12;letter-spacing:-.02em;margin:0;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+a{color:inherit}
+img{max-width:100%;display:block}
+::selection{background:var(--accent);color:var(--bg)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-    /* Tailwind overrides (make dark/light switch actually flip the site) */
-    .text-zinc-100 { color: var(--text) !important; }
-    .text-zinc-200 { color: var(--muted-200) !important; }
-    .text-zinc-300 { color: var(--muted-300) !important; }
-    .text-zinc-400 { color: var(--muted-400) !important; }
-    .text-white { color: var(--text-strong) !important; }
+.wrap{width:min(100% - var(--gut)*2,var(--maxw));margin-inline:auto}
+.mono{font-family:var(--mono);font-feature-settings:'zero' 1}
+.label{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 
-    html[data-theme="light"] .text-blue-200 { color: #2563eb !important; }
-    html[data-theme="light"] .text-purple-200 { color: #7c3aed !important; }
+.sec{padding-block:clamp(4rem,10vh,8rem);position:relative}
+.sec-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:2.4rem}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--rule)}
+.sec-n{font-family:var(--mono);font-size:var(--step--1);color:var(--accent);letter-spacing:.1em}
+.sec-t{font-size:var(--step-2)}
 
-    html[data-theme="light"] .border-white\/10 { border-color: var(--border) !important; }
-    html[data-theme="light"] .bg-black\/20 { background-color: rgba(255,255,255,.72) !important; }
-    html[data-theme="light"] .bg-white\/5 { background-color: rgba(255,255,255,.72) !important; }
-    html[data-theme="light"] .bg-white\/10 { background-color: rgba(255,255,255,.86) !important; }
-    html[data-theme="light"] .ring-white\/10 { --tw-ring-color: rgba(15,23,42,.12) !important; }
-    html[data-theme="light"] .ring-white\/15 { --tw-ring-color: rgba(15,23,42,.16) !important; }
-    html[data-theme="light"] .hover\:bg-white\/10:hover { background-color: rgba(15,23,42,.06) !important; }
-    html[data-theme="light"] .hover\:text-white:hover { color: var(--text-strong) !important; }
+/* ── header ───────────────────────────────────────────────────────── */
+.top{
+  position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;gap:1rem;
+  padding:.65rem var(--gut);
+  background:color-mix(in oklab,var(--bg) 80%,transparent);
+  backdrop-filter:blur(14px) saturate(1.3);
+  border-bottom:1px solid transparent;
+  transition:border-color .4s var(--ease),background-color .4s var(--ease);
+}
+.top[data-stuck="1"]{border-bottom-color:var(--rule)}
+.brand{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.14em;color:var(--ink-hi);text-decoration:none}
+.brand b{color:var(--accent);font-weight:500}
+.nav{display:flex;gap:.15rem;margin-inline-start:auto}
+.nav a{
+  font-family:var(--mono);font-size:var(--step--1);letter-spacing:.05em;color:var(--dim);
+  text-decoration:none;padding:.32rem .55rem;border-radius:3px;
+  transition:color .25s var(--ease),background-color .25s var(--ease);
+}
+.nav a:hover,.nav a.on{color:var(--ink-hi);background:var(--surface)}
+@media(max-width:940px){.nav{display:none}}
+.switches{display:flex;gap:.4rem;margin-inline-start:auto}
+@media(min-width:941px){.switches{margin-inline-start:.6rem}}
+.sw{
+  font-family:var(--mono);font-size:var(--step--1);background:transparent;color:var(--dim);
+  border:1px solid var(--rule);border-radius:3px;padding:.28rem .5rem;cursor:pointer;letter-spacing:.05em;
+  transition:color .25s var(--ease),border-color .25s var(--ease),background-color .25s var(--ease);
+}
+.sw:hover{color:var(--ink-hi);border-color:var(--rule-hi);background:var(--surface)}
+.sw b{color:var(--accent);font-weight:500}
 
-    /* Theme toggle */
-    .theme-toggle .icon-sun { display: inline; }
-    .theme-toggle .icon-moon { display: none; }
-    html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
-    html[data-theme="dark"] .theme-toggle .icon-moon { display: inline; }
+/* ── i18n: only the active language is in the a11y tree ───────────── */
+[data-en],[data-zh]{display:none}
+:root[data-lang="en"] [data-en],:root[data-lang="zh"] [data-zh]{display:revert}
 
-    /* Timeline helpers */
-    .tl-card { border: 1px solid var(--border); }
-    .tl-has-media { border: 1px solid rgba(245, 158, 11, .35); }
-  </style>
+/* ── reveal ───────────────────────────────────────────────────────── */
+.rise{opacity:0;transform:translateY(16px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rise.in{opacity:1;transform:none}
+:root[data-motion="reduced"] .rise{opacity:1;transform:none;transition:none}
+
+footer{border-top:1px solid var(--rule);padding-block:2.5rem;color:var(--dim)}
+/* ══════════════════════════════════════════════════════════════════════
+   HERO — a live preconditioned-Langevin sampler exploring a multimodal
+   energy landscape. Not decoration: it is the algorithm from the paper.
+   ══════════════════════════════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100svh;display:grid;align-items:center;
+  padding-block:6rem 4rem;overflow:clip;
+  border-bottom:1px solid var(--rule);
+}
+@media(max-width:700px){
+  .hero{min-height:92svh;padding-block:5rem 3rem}
+  .hero-eyebrow{font-size:.7rem;letter-spacing:.1em}
+}
+#field{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+  opacity:0;transition:opacity 1.4s var(--ease);
+}
+#field.on{opacity:1}
+
+/* Keeps the type legible where walkers cross it, without hiding the field. */
+.hero-in{position:relative;z-index:2}
+.hero-in::before{
+  content:'';position:absolute;inset:-3rem -4rem -2rem -3rem;z-index:-1;
+  background:radial-gradient(120% 80% at 22% 50%,
+    color-mix(in oklab,var(--bg) 88%,transparent) 0%,
+    color-mix(in oklab,var(--bg) 62%,transparent) 45%,
+    transparent 78%);
+  pointer-events:none;
+}
+.hero-eyebrow{margin-bottom:1.4rem;opacity:0;animation:fade .9s var(--ease) .15s forwards}
+
+/* The h1 is real text from byte one. While the Hopfield lattice is being
+   retrieved, the canvas draws the name in its place; the type resolves
+   underneath as its own pixel-ghost falls away. */
+.hero-name{
+  font-size:var(--step-4);font-weight:700;letter-spacing:-.045em;line-height:.92;
+  color:var(--ink-hi);margin-bottom:1.1rem;width:fit-content;
+  transition:color .45s var(--ease),opacity .45s var(--ease);
+}
+:root[data-lang="zh"] .hero-name{letter-spacing:.02em}
+.hero-name.cloaked{color:transparent}
+.hero-name.resolved{color:var(--ink-hi)}
+
+.hero-tag{
+  font-size:var(--step-1);color:var(--ink-2);max-width:34ch;margin-bottom:2rem;
+  opacity:0;animation:fade .9s var(--ease) .5s forwards;
+}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;font-size:var(--step--1);
+  letter-spacing:.06em;color:var(--dim);
+  opacity:0;animation:fade .9s var(--ease) .75s forwards;
+}
+.hero-meta a{
+  text-decoration:none;color:var(--ink-2);
+  border-bottom:1px solid var(--rule-hi);padding-bottom:2px;
+  transition:color .25s var(--ease),border-color .25s var(--ease);
+}
+.hero-meta a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* Live sampler telemetry, bottom-right. Reads like instrument output. */
+.hero-readout{
+  position:absolute;right:var(--gut);bottom:1.6rem;z-index:2;
+  font-size:.68rem;letter-spacing:.08em;color:var(--dim);text-align:right;
+  line-height:1.75;opacity:0;animation:fade 1s var(--ease) 1.2s forwards;
+  pointer-events:none;
+}
+.hero-readout b{color:var(--accent);font-weight:500}
+@media(max-width:700px){.hero-readout{display:none}}
+
+@keyframes fade{to{opacity:1}}
+:root[data-motion="reduced"] .hero-eyebrow,
+:root[data-motion="reduced"] .hero-tag,
+:root[data-motion="reduced"] .hero-meta,
+:root[data-motion="reduced"] .hero-readout{animation:none;opacity:1}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ABOUT / THREADS
+   ══════════════════════════════════════════════════════════════════════ */
+.lead{
+  font-size:var(--step-1);color:var(--ink-hi);max-width:44ch;margin-bottom:2.8rem;
+  text-wrap:balance;
+}
+.about-grid{
+  display:grid;gap:2.6rem clamp(2rem,5vw,4.5rem);
+  grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+  padding-bottom:3.5rem;border-bottom:1px solid var(--rule);
+}
+@media(max-width:820px){.about-grid{grid-template-columns:1fr}}
+.about-body p{margin-bottom:1.1rem;color:var(--ink-2);max-width:62ch}
+.about-body p:last-child{margin-bottom:0}
+
+.facts{margin:0;display:grid;gap:1.1rem;align-content:start}
+.fact dt{margin-bottom:.2rem}
+.fact dd{margin:0;color:var(--ink);font-size:var(--step-0)}
+
+.threads{display:grid;gap:0;margin-top:3.5rem}
+.thread{
+  display:grid;grid-template-columns:3.5rem minmax(0,1fr);gap:1.4rem;
+  padding-block:2.1rem;border-bottom:1px solid var(--rule);
+  transition:background-color .4s var(--ease);
+}
+.thread:first-child{border-top:1px solid var(--rule)}
+.thread:hover{background:color-mix(in oklab,var(--surface) 55%,transparent)}
+.thread-n{
+  font-size:var(--step--1);color:var(--accent);letter-spacing:.1em;
+  padding-top:.35rem;
+}
+.thread h3{font-size:var(--step-1);margin:.35rem 0 .55rem;color:var(--ink-hi)}
+.thread-text{color:var(--ink-2);max-width:66ch}
+@media(max-width:640px){.thread{grid-template-columns:2.2rem minmax(0,1fr);gap:.9rem}}
+
+/* ══════════════════════════════════════════════════════════════════════
+   PUBLICATIONS — each entry framed like a reference block
+   ══════════════════════════════════════════════════════════════════════ */
+.papers{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.paper{
+  display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:1.4rem;
+  padding-block:2rem;border-top:1px solid var(--rule);
+  position:relative;
+}
+.paper:last-child{border-bottom:1px solid var(--rule)}
+.paper-year{font-size:var(--step--1);color:var(--dim);padding-top:.3rem;letter-spacing:.08em}
+.paper-title{font-size:var(--step-1);color:var(--ink-hi);margin-bottom:.5rem;max-width:58ch}
+.paper-authors{font-size:var(--step--1);color:var(--ink-2);margin-bottom:.6rem;letter-spacing:.02em}
+.paper-venue{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;font-size:var(--step-0);color:var(--dim)}
+.paper-venue em{font-style:italic;color:var(--ink-2)}
+.paper-note{margin-top:.75rem;color:var(--ink-2);font-size:var(--step-0);max-width:66ch}
+.doi{font-size:var(--step--1);text-decoration:none;color:var(--accent);letter-spacing:.05em}
+.doi:hover{text-decoration:underline}
+@media(max-width:640px){.paper{grid-template-columns:1fr;gap:.4rem}}
+
+.badge{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:2px;border:1px solid var(--rule-hi);color:var(--dim);
+  white-space:nowrap;
+}
+.badge[data-status="review"]{color:var(--emphasis);border-color:color-mix(in oklab,var(--emphasis) 45%,transparent)}
+.badge[data-status="accepted"]{color:var(--accent);border-color:color-mix(in oklab,var(--accent) 45%,transparent)}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LONG READS — collapsed by default, they are long on purpose
+   ══════════════════════════════════════════════════════════════════════ */
+.lr{
+  border:1px solid var(--rule);border-radius:4px;padding:clamp(1.4rem,3vw,2.4rem);
+  margin-bottom:1.6rem;background:color-mix(in oklab,var(--surface) 45%,transparent);
+}
+.lr:last-of-type{margin-bottom:0}
+.lr-head{margin-bottom:1.4rem}
+.lr-head h3{font-size:var(--step-1);color:var(--ink-hi);margin-bottom:.35rem}
+.lr-body{
+  position:relative;overflow:hidden;max-height:11rem;
+  mask-image:linear-gradient(to bottom,#000 55%,transparent);
+  transition:max-height .8s var(--ease);
+}
+.lr-body[data-open="1"]{max-height:400rem;mask-image:none}
+.lr-body p{margin-bottom:1rem;color:var(--ink-2);max-width:70ch}
+.lr-body p:first-child{color:var(--ink-hi);font-size:var(--step-1);letter-spacing:-.01em}
+.lr-more{margin-top:1.2rem}
+.lr-more[data-open="1"] [data-en]::after{content:' ↑'}
+.lr-more[data-open="1"] [data-zh]::after{content:' ↑'}
+
+/* ══════════════════════════════════════════════════════════════════════
+   HONOURS
+   ══════════════════════════════════════════════════════════════════════ */
+.awards{display:grid;gap:0}
+.award{
+  display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:1.4rem;
+  padding-block:1.9rem;border-top:1px solid var(--rule);
+}
+.award:last-child{border-bottom:1px solid var(--rule)}
+.award-year{font-size:var(--step--1);color:var(--dim);padding-top:.35rem;letter-spacing:.08em}
+.award h3{font-size:var(--step-1);color:var(--ink-hi);margin-bottom:.3rem}
+.award-note{margin-top:.55rem;color:var(--ink-2);max-width:64ch}
+.award-hero{position:relative}
+.award-hero .award-year{color:var(--accent)}
+.award-hero h3{color:var(--accent)}
+@media(max-width:640px){.award{grid-template-columns:1fr;gap:.35rem}}
+
+/* ══════════════════════════════════════════════════════════════════════
+   CONTACT
+   ══════════════════════════════════════════════════════════════════════ */
+.contact-line{font-size:var(--step-1);color:var(--ink-hi);max-width:46ch;margin-bottom:2rem}
+.contact-links{display:grid;gap:.7rem;font-size:var(--step-0)}
+.contact-links a{
+  text-decoration:none;color:var(--ink-2);width:fit-content;
+  border-bottom:1px solid var(--rule-hi);padding-bottom:3px;
+  transition:color .25s var(--ease),border-color .25s var(--ease);
+}
+.contact-links a:hover{color:var(--accent);border-color:var(--accent)}
+
+</style>
 </head>
 
-<body class="grad text-zinc-100">
-  <div class="site-bg" aria-hidden="true"></div>
-  <div class="page-content">
-  <!-- Top bar -->
-  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/20 backdrop-blur">
-    <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-      <a href="#" class="font-semibold tracking-tight">Arthur | Chi-Wei Lee</a>
-      <nav class="hidden md:flex gap-6 text-sm text-zinc-300">
-        <a class="hover:text-white" href="#about">About</a>
-        <a class="hover:text-white" href="#research">Research</a>
-        <a class="hover:text-white" href="#timeline">Timeline</a>
-        <a class="hover:text-white" href="#projects">Projects</a>
-        <a class="hover:text-white" href="#publications">Publications</a>
-        <a class="hover:text-white" href="#awards">Awards</a>
-        <a class="hover:text-white" href="#contact">Contact</a>
-      </nav>
-      <div class="flex items-center gap-2">
-        <button id="themeToggle" type="button" class="theme-toggle inline-flex items-center gap-2 text-sm rounded-lg px-3 py-2 glass ring-soft hover:bg-white/10" aria-label="Toggle theme" aria-pressed="false">
-          <svg class="icon-sun w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0-12a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 10 2Zm0 14a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 10 16Zm8-6a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 18 10ZM3.75 10a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm11.01-5.01a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM6 14.3a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7A.75.75 0 0 1 6 14.3Zm10.06 1.7a.75.75 0 0 1-1.06 0l-.7-.7a.75.75 0 1 1 1.06-1.06l.7.7c.3.3.3.77 0 1.06ZM6.76 5.7A.75.75 0 0 1 5.7 5l-.7-.7A.75.75 0 1 1 6.06 3.24l.7.7c.3.3.3.77 0 1.06Z" />
-          </svg>
-          <svg class="icon-moon w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a7 7 0 1 0 10.586 10.586Z" />
-          </svg>
-          <span id="themeLabel" class="hidden sm:inline">Day</span>
-        </button>
-        <a href="#contact" class="md:hidden text-sm rounded-lg px-3 py-2 glass ring-soft hover:bg-white/10">Contact</a>
-      </div>
+<body>
+
+<header class="top" id="top">
+  <a class="brand" href="#hero">C·W·<b>LEE</b></a>
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+  <div class="switches">
+    <button class="sw" id="lang-btn" type="button" aria-label="Switch language / 切換語言">
+      <span data-en>EN<b>/</b>中</span><span data-zh>中<b>/</b>EN</span>
+    </button>
+    <button class="sw" id="theme-btn" type="button" aria-label="Switch theme / 切換主題">
+      <span data-en>THEME</span><span data-zh>主題</span>
+    </button>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  <div class="wrap mono" style="font-size:var(--step--1)">
+    Chi-Wei Lee · 2026 ·
+    <span data-en>built as a single HTML file</span><span data-zh>以單一 HTML 檔建成</span>
+  </div>
+</footer>
+
+<script id="content" type="application/json">{"meta":{"name":{"en":"Chi-Wei Lee","zh":"李騏維"},"handle":"Arthur","role":{"en":"NeuroAI researcher","zh":"腦神經 × 機器學習研究者"},"tagline":{"en":"Predictive coding, associative memory, and Bayesian inference — in brains and in machines.","zh":"預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"},"email":"levi74108520963@gmail.com","github":"https://github.com/Arthur031221","site":"https://arthur031221.github.io/","cv":"Chi-Wei_Lee_CV.pdf","location":{"en":"Hsinchu, Taiwan · currently at UCLA","zh":"台灣新竹 · 現於 UCLA"}},"about":{"lead":{"en":"I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.","zh":"我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"},"body":{"en":["I am a graduating B.S. student at National Tsing Hua University, double majoring in Physics and Electrical Engineering & Computer Science (AI Track).","My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review at NeurIPS 2026: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.","My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.","Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."],"zh":["我是國立清華大學應屆畢業生,雙主修物理系與電機資訊學院學士班(AI 組)。","理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 NeurIPS 2026 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。","實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。","在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"]},"facts":[{"k":{"en":"University","zh":"學校"},"v":{"en":"National Tsing Hua University","zh":"國立清華大學"}},{"k":{"en":"Major","zh":"主修"},"v":{"en":"Physics × EECS (AI Track), double major","zh":"物理系 × 電資學士班(AI 組),雙主修"}},{"k":{"en":"Now","zh":"現況"},"v":{"en":"HMI Lab, NTHU · visiting UCLA","zh":"清華 HMI Lab · 訪問 UCLA"}},{"k":{"en":"Looking for","zh":"尋找"},"v":{"en":"PhD positions in NeuroAI, 2027 entry","zh":"NeuroAI 博士班,2027 入學"}}]},"threads":[{"id":"pc","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Predictive coding needs a memory","zh":"預測編碼需要記憶"},"body":{"en":"Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.","zh":"預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"}},{"id":"langevin","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Inference should sample, not just peak","zh":"推論應該取樣,而不只是找峰"},"body":{"en":"Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.","zh":"時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"}},{"id":"fmri","tag":{"en":"Neural data","zh":"神經資料"},"title":{"en":"Reading space out of the brain","zh":"從大腦裡讀出空間"},"body":{"en":"At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.","zh":"在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"}},{"id":"diffusion","tag":{"en":"Generative","zh":"生成模型"},"title":{"en":"Control without losing the picture","zh":"在不失去畫面的前提下控制"},"body":{"en":"MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.","zh":"MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"}}],"publications":[{"status":"review","title":"Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.","zh":"以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"}},{"status":"review","title":"Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.","zh":"把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"}},{"status":"accepted","title":"MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation","authors":"C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen","venue":"TAAI 2025","badge":{"en":"Accepted · poster","zh":"已接受 · 海報"},"year":"2025","note":{"en":"Extended abstract. Full paper in preparation.","zh":"延伸摘要。完整論文撰寫中。"}},{"status":"published","title":"Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods","authors":"X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee","venue":"Journal of Modern Physics 15(12)","badge":{"en":"Published","zh":"已發表"},"year":"2024","doi":"https://doi.org/10.4236/jmp.2024.1512087","note":{"en":"","zh":""}},{"status":"service","title":"Building Machine Learning Challenges for Anomaly Detection in Science","authors":"Endorser","venue":"Nature Communications · arXiv:2503.02112","badge":{"en":"Review service","zh":"審稿服務"},"year":"2025","doi":"https://arxiv.org/abs/2503.02112","note":{"en":"Provided detailed feedback on benchmark positioning, baselines, metrics and clarity.","zh":"針對 benchmark 定位、baseline、評估指標與表述清晰度提供詳細意見。"}}],"awards":[{"year":"2026","title":{"en":"Mei Yi-Chi Memorial Medal","zh":"梅貽琦紀念獎章"},"org":{"en":"National Tsing Hua University","zh":"國立清華大學"},"hero":true,"note":{"en":"NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.","zh":"清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"}},{"year":"2025","title":{"en":"2nd worldwide — NSF HDR ML Challenge","zh":"全球第二 — NSF HDR ML Challenge"},"org":{"en":"U.S. National Science Foundation · Overall Track","zh":"美國國家科學基金會 · 總積分"},"hero":true,"note":{"en":"2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.","zh":"全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"}},{"year":"2026","title":{"en":"3rd worldwide — NSF HDR ML Challenge","zh":"全球第三 — NSF HDR ML Challenge"},"org":{"en":"Climate Prediction Track","zh":"氣候預測賽道"},"note":{"en":"Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.","zh":"以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"}},{"year":"2025","title":{"en":"1st place — Mei-Chu Hackathon","zh":"第一名 — 梅竹黑客松"},"org":{"en":"Maker Track","zh":"Maker 組"},"note":{"en":"A wearable-and-app system modelling walking trajectories for dementia safety monitoring.","zh":"穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"}},{"year":"2023","title":{"en":"Gold Medal — iGEM","zh":"金牌 — iGEM"},"org":{"en":"NTHU-Taiwan · Dry Lab Lead","zh":"NTHU-Taiwan · Dry Lab 組長"},"note":{"en":"Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.","zh":"以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"}}],"longreads":{"nsf":{"title":{"en":"20 days, 20 iterations","zh":"20 天,20 次迭代"},"place":"Philadelphia · New York","date":"2025.02.28 – 03.09","zh":["美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。","NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元","每次開會，絕對會聽到","「欸咦等一下讓我想一下」","「我覺得你說得很有道理，但是...」","「這次不可能錯了吧⋯⋯」","「真的沒有任何理由了，如果再是 0 那我也真的...」","「欸咦等一下...」","老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了","這趟紐約與費城之旅，真的很神奇。","體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......","這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......","謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。","時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。","#20iterations"],"en":["The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.","The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.","To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.","In every meeting, you would definitely hear:","\"Wait-hold on  let me think \"","\"You're totally right, but...\"","\"This time it can't be wrong... right...\"","\"There's literally no reason-if it's still 0, I'm going to...\"","\"Wait... hold on...\"","Honestly, in that one month, I heard these lines not 100 times, but at least dozens","The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)","Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...","Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.","Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.","Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.","#20iterations"]},"igem":{"title":{"en":"57 big meows, 45 small ones","zh":"57 次大咪,45 次小咪"},"place":"Paris, France","date":"2023.10.31 – 11.11","zh":["57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..","記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！","在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...","人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。","#8th"],"en":["57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.","I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.","That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.","In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.","Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.","#8th"]}}}</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   Runtime — no framework, no build step at load time.
+   1. render the bilingual content model
+   2. stage the two toggles as moments, not switches
+   3. run canvas figures that degrade to nothing if anything fails
+   ══════════════════════════════════════════════════════════════════════ */
+const DATA = JSON.parse(document.getElementById('content').textContent);
+const root = document.documentElement;
+const reduced = () => root.dataset.motion === 'reduced';
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g,
+  c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+/** Emit both language variants; CSS reveals exactly one. */
+const bi = (o, tag = 'span', cls = '') => {
+  const c = cls ? ` class="${cls}"` : '';
+  return `<${tag}${c} data-en>${esc(o?.en ?? '')}</${tag}><${tag}${c} data-zh>${esc(o?.zh ?? '')}</${tag}>`;
+};
+
+/* ── toggles ──────────────────────────────────────────────────────── */
+function swap(fn) {
+  if (document.startViewTransition && !reduced()) document.startViewTransition(fn);
+  else fn();
+}
+document.getElementById('theme-btn').addEventListener('click', () => swap(() => {
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  root.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch {}
+  window.dispatchEvent(new Event('themechange'));
+}));
+document.getElementById('lang-btn').addEventListener('click', () => swap(() => {
+  const next = root.dataset.lang === 'en' ? 'zh' : 'en';
+  root.dataset.lang = next;
+  root.lang = next === 'zh' ? 'zh-Hant' : 'en';
+  try { localStorage.setItem('lang', next); } catch {}
+  window.dispatchEvent(new Event('langchange'));
+}));
+
+/* ── header ───────────────────────────────────────────────────────── */
+const topbar = document.getElementById('top');
+addEventListener('scroll', () => { topbar.dataset.stuck = scrollY > 12 ? '1' : '0'; }, { passive: true });
+
+/* ── reveal ───────────────────────────────────────────────────────── */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { rootMargin: '0px 0px -10% 0px' });
+const observeAll = () => document.querySelectorAll('.rise:not(.in)').forEach(el => io.observe(el));
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTIONS
+   Every block is framed like a figure in a paper: a numbered header, a
+   hairline rule, monospace labels carrying units. Colour appears only
+   where it encodes something.
+   ══════════════════════════════════════════════════════════════════════ */
+
+const NAV = [
+  { id: 'work',    en: 'Research',     zh: '研究' },
+  { id: 'papers',  en: 'Publications', zh: '論文' },
+  { id: 'record',  en: 'Record',       zh: '歷程' },
+  { id: 'honours', en: 'Honours',      zh: '榮譽' },
+  { id: 'contact', en: 'Contact',      zh: '聯絡' },
+];
+
+document.getElementById('nav').innerHTML = NAV.map(n =>
+  `<a href="#${n.id}" data-nav="${n.id}"><span data-en>${n.en}</span><span data-zh>${n.zh}</span></a>`
+).join('');
+
+const secHead = (n, t) => `
+  <div class="sec-head">
+    <span class="sec-n">${n}</span>
+    <h2 class="sec-t">${bi(t)}</h2>
+  </div>`;
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+const heroHTML = () => `
+<section id="hero" class="hero">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="hero-in wrap">
+    <p class="label hero-eyebrow">${bi(DATA.meta.role)}</p>
+    <h1 class="hero-name" id="hero-name" aria-label="${esc(DATA.meta.name.en)}">
+      <span data-en>${esc(DATA.meta.name.en)}</span><span data-zh>${esc(DATA.meta.name.zh)}</span>
+    </h1>
+    <p class="hero-tag">${bi(DATA.meta.tagline)}</p>
+    <div class="hero-meta mono">
+      <span>${bi(DATA.meta.location)}</span>
+      <a href="${esc(DATA.meta.github)}" rel="me noopener">GitHub</a>
+      <a href="mailto:${esc(DATA.meta.email)}">Email</a>
+      <a href="${esc(DATA.meta.cv)}">CV<span aria-hidden="true"> ↓</span></a>
     </div>
-  </header>
+  </div>
+  <div class="hero-readout mono" id="readout" aria-hidden="true"></div>
+</section>`;
 
-  <!-- Hero -->
-  <section class="mx-auto max-w-6xl px-4 pt-12 pb-8">
-    <div class="grid md:grid-cols-[1.2fr_.8fr] gap-8 items-center">
-      <div class="space-y-5">
-        <p class="inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full glass ring-soft text-zinc-200">
-          NTHU | Physics x EECS (AI Track) | CV / ML / Generative AI
-        </p>
-
-        <h1 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-          Hi, I'm <span class="text-white">Arthur</span> (Chi-Wei Lee).<br/>
-          I build <span class="text-blue-200">computer vision</span> & <span class="text-purple-200">generative models</span>.
-        </h1>
-
-        <p class="text-zinc-200 leading-relaxed max-w-2xl">
-          Senior at National Tsing Hua University (NTHU), majoring in Physics and the Interdisciplinary Program of EECS (AI Track).
-          Currently a part-time research assistant at Academia Sinica CITI, working on diffusion-model-driven dynamic aesthetic QR codes that balance visual appeal and scannability.
-          With international competition experience and cross-domain hardware-software integration, I focus on CV / Generative AI, brain-inspired neural computation (predictive coding and Hopfield networks), and quantum machine learning for early neurodegenerative risk modeling.
-          Outside research, I do trail runnings and ultramarathons-my longest is Taiwan's Formosa Trail (75 km / 4100 m ascent). The background photo is from that run.
-        </p>
-
-        <div class="flex flex-wrap gap-3 pt-2">
-          <a class="rounded-xl px-4 py-2 glass ring-soft hover:bg-white/10" href="#projects">See Projects</a>
-          <a class="rounded-xl px-4 py-2 glass ring-soft hover:bg-white/10" href="#timeline">Timeline</a>
-          <a class="btn-primary rounded-xl px-4 py-2" href="#contact">Get in Touch</a>
-          <a class="rounded-xl px-4 py-2 glass ring-soft hover:bg-white/10" href="#publications">Publications</a>
-        </div>
-
-        <div class="flex flex-wrap gap-3 text-sm text-zinc-300 pt-2">
-          <span class="rounded-lg px-3 py-1 glass ring-soft">Diffusion</span>
-          <span class="rounded-lg px-3 py-1 glass ring-soft">Anomaly Detection</span>
-          <span class="rounded-lg px-3 py-1 glass ring-soft">Medical Imaging</span>
-          <span class="rounded-lg px-3 py-1 glass ring-soft">Hardware-Software Integration</span>
-        </div>
-      </div>
-
-      <div class="glass ring-soft rounded-3xl p-5">
-        <div class="flex items-center gap-4">
-          <img
-            src="AA38EA04-7BA9-4A2D-BC84-63209EC85232.jpg"
-            alt="Arthur photo"
-            class="w-20 h-20 rounded-2xl object-cover ring-1 ring-white/15"
-            onerror="this.style.display='none'; document.getElementById('photoFallback').style.display='flex';"
-          />
-          <div id="photoFallback" class="hidden w-20 h-20 rounded-2xl items-center justify-center bg-white/10 ring-1 ring-white/15">
-            <span class="text-sm text-zinc-300">Photo</span>
-          </div>
-
-          <div class="min-w-0">
-            <div class="font-semibold text-lg">Arthur (Chi-Wei Lee)</div>
-            <div class="text-sm text-zinc-300">NTHU | Physics x EECS (AI Track)</div>
-            <div class="text-sm text-zinc-300">Academia Sinica CITI | Part-time RA</div>
-          </div>
-        </div>
-
-        <div class="mt-5 grid grid-cols-2 gap-3 text-sm">
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="text-zinc-300">Email</div>
-            <a class="break-all hover:text-white" href="mailto:levi74108520963@gmail.com">levi74108520963@gmail.com</a>
-          </div>
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="text-zinc-300">Phone</div>
-            <a class="hover:text-white" href="tel:+886968708385">(+886) 968-708-385</a>
-          </div>
-
-          <a class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10 hover:bg-white/10" href="https://github.com/Arthur031221" target="_blank" rel="noreferrer">
-            <div class="text-zinc-300">GitHub</div>
-            <div class="font-medium">github.com/Arthur031221</div>
-          </a>
-        </div>
-
-        <div class="mt-5 text-xs text-zinc-400 leading-relaxed">
-          Highlights: NSF HDR ML Challenge Overall 2nd (600+ teams), iGEM Gold Medal, Mei-Chu Hackathon 1st.
-        </div>
-      </div>
+/* ── ABOUT + RESEARCH THREADS ───────────────────────────────────────── */
+const workHTML = () => `
+<section id="work" class="sec wrap">
+  ${secHead('01', { en: 'What I work on', zh: '我在做什麼' })}
+  <p class="lead rise">${bi(DATA.about.lead)}</p>
+  <div class="about-grid">
+    <div class="about-body rise">
+      ${['en', 'zh'].map(l =>
+        DATA.about.body[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')
+      ).join('')}
     </div>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="grid lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 glass ring-soft rounded-3xl p-7">
-        <h2 class="text-xl font-semibold">About</h2>
-        <p class="mt-3 text-zinc-200 leading-relaxed">
-          I'm Arthur (Chi-Wei Lee), double majoring in Physics and the Interdisciplinary Program of EECS (AI Track) at National Tsing Hua University.
-          My research interests focus on <span class="text-white">Computer Vision</span>, <span class="text-white">Machine Learning</span>, and <span class="text-white">Generative AI</span>, with additional emphasis on <span class="text-white">brain-inspired neural computation</span> (predictive coding and Hopfield networks) and <span class="text-white">quantum machine learning</span> for early neurodegenerative risk modeling-especially probabilistic modeling, uncertainty-aware control, and robustness under distribution shift.
-          I'm currently a part-time Research Assistant at Academia Sinica CITI, leading a diffusion-based dynamic QR code generation project (aesthetic optimization + scan reliability).
-        </p>
-        <p class="mt-3 text-zinc-200 leading-relaxed">
-          I'm good at turning "research ideas -> runnable systems -> demo-ready results" quickly. I led a 6-person team to win <span class="text-white font-medium">2nd place overall</span> in the NSF HDR ML Challenge (600+ teams) and presented at an AAAI-25 Workshop in Philadelphia.
-          I also served as Dry Lab leader for iGEM 2023 (Gold Medal), and I enjoy building end-to-end systems that combine modeling, evaluation, and (when needed) hardware.
-        </p>
-
-        <div class="mt-6 grid sm:grid-cols-3 gap-3">
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="text-xs text-zinc-400">Focus</div>
-            <div class="font-medium">CV | GenAI | Robust ML</div>
-          </div>
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="text-xs text-zinc-400">Strength</div>
-            <div class="font-medium">Fast prototyping & teamwork</div>
-          </div>
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="text-xs text-zinc-400">Goal</div>
-            <div class="font-medium">Publish & collaborate globally</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass ring-soft rounded-3xl p-7">
-        <h3 class="text-lg font-semibold">Quick Facts</h3>
-        <ul class="mt-4 space-y-3 text-sm text-zinc-200">
-          <li class="flex gap-2"><span class="text-zinc-400">School:</span> National Tsing Hua University</li>
-          <li class="flex gap-2"><span class="text-zinc-400">Major:</span> Physics & EECS (AI Track)</li>
-          <li class="flex gap-2"><span class="text-zinc-400">Current:</span> Academia Sinica CITI | Part-time RA</li>
-          <li class="flex gap-2"><span class="text-zinc-400">Interest:</span> Diffusion, uncertainty & robustness, medical imaging, neural systems, quantum ML</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Research -->
-  <section id="research" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="glass ring-soft rounded-3xl p-7">
-      <div class="flex items-end justify-between gap-4 flex-wrap">
-        <h2 class="text-xl font-semibold">Research & Experience</h2>
-        <div class="text-sm text-zinc-300">Selected highlights</div>
-      </div>
-
-      <div class="mt-6 grid md:grid-cols-2 gap-4">
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">Academia Sinica | CITI</div>
-            <div class="text-xs text-zinc-400">Jul 2025 - Present</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Diffusion-based dynamic QR code generation (aesthetic optimization + scan robustness).
-          </div>
-          <div class="mt-3 text-xs text-zinc-400">
-            Role: team lead / researcher | Focus: controllable generation & robustness.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">NTHU - Teaching Assistant, Introduction to Machine Learning</div>
-            <div class="text-xs text-zinc-400">Sep 2025 - Dec 2025</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Supported course instruction and student learning for an undergraduate machine learning course.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">NSF HDR ML Challenge</div>
-            <div class="text-xs text-zinc-400">Dec 2024 - Feb 2025</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Led a 6-member team; anomaly detection for gravitational wave & hybrid butterfly images.
-            Achieved <span class="text-white font-medium">Overall 2nd worldwide</span> among 600+ teams; presented at AAAI Workshop (Philadelphia).
-          </div>
-          <div class="mt-3 text-xs text-zinc-400">
-            Models: Autoencoder, CNN/LSTM/Transformer variants, diffusion-based ideas.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">Mei-Chu Hackathon (Maker Track)</div>
-            <div class="text-xs text-zinc-400">2025</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Built a smart healthcare system integrating wearable watch + mobile app to analyze dementia patients' walking trajectories for safety monitoring.
-            Result: <span class="text-white font-medium">1st Place</span>.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">iGEM 2023 (NTHU-Taiwan)</div>
-            <div class="text-xs text-zinc-400">Dec 2022 - Nov 2023</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Dry Lab leader; automated identification system for colorectal cancer screening reagents with ML,
-            and hardware-software integration on Arduino for automated temperature control, cooling, and precise reagent dispensing.
-            Result: <span class="text-white font-medium">Gold Medal</span>; presented in Paris.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">NSF HDR ML Challenge 2026 (Climate Prediction Track)</div>
-            <div class="text-xs text-zinc-400">2026</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Attention-based deep learning with specialized preprocessing for drought prediction; focusing on out-of-distribution generalization.
-            Result: <span class="text-white font-medium">3rd Place (Taiwan Region)</span>; continuing global participation.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">Medical Imaging Research (Chest X-ray)</div>
-            <div class="text-xs text-zinc-400">Jan 2024 - Present</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Studying robustness and generalization across demographics and long-tailed settings; explored attention transfer and subgroup generalization for multi-disease classification.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">Brain-Inspired Learning via Predictive Coding & Hopfield Networks</div>
-            <div class="text-xs text-zinc-400">Since Sep 2025</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Exploring predictive coding and Hopfield-network-style mechanisms as biologically plausible alternatives to backpropagation for brain-related learning tasks.
-          </div>
-          <div class="mt-3 text-xs text-zinc-400">
-            Focus: neural computation, biologically inspired learning dynamics, and interpretable representations.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="flex items-center justify-between gap-3">
-            <div class="font-semibold">Hybrid Quantum Kernel + Transfer Learning for Early Neurodegenerative Risk</div>
-            <div class="text-xs text-zinc-400">Since Oct 2025</div>
-          </div>
-          <div class="mt-2 text-zinc-200">
-            Developing a hybrid quantum-classical model integrating EEG signals and clinical features for early neurodegenerative risk stratification.
-          </div>
-          <div class="mt-3 text-xs text-zinc-400">
-            Focus: quantum kernels, transfer learning, and reliability-aware clinical prediction.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Timeline -->
-  <section id="timeline" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="glass ring-soft rounded-3xl p-7">
-      <div class="flex items-end justify-between gap-4 flex-wrap">
-        <h2 class="text-xl font-semibold">Timeline</h2>
-        <div class="text-sm text-zinc-300">Newest -> oldest | click to expand</div>
-      </div>
-
-      <div class="mt-8 space-y-10">
-        <!-- 2026 -->
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-wider bg-blue-500/15 text-blue-200 ring-1 ring-white/10">
-            2026
-          </div>
-
-          <div class="mt-4 space-y-4">
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">January</div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-blue-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">NSF HDR ML Challenge 2026 - Climate Prediction Track</div>
-                      <div class="mt-1 text-sm text-zinc-300">3rd place (Taiwan region) | continuing global participation</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4 text-sm text-zinc-200 leading-relaxed">
-                  <div class="font-medium text-white">Highlights</div>
-                  <ul class="mt-2 space-y-1">
-                    <li>Built attention-based deep learning models with specialized preprocessing for drought prediction from beetle images.</li>
-                    <li>Focused on improving out-of-distribution generalization under real-world distribution shift.</li>
-                  </ul>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 whitespace-pre-line">
-這次題目讓我再次體會「資料分佈」的重要性：不只是把模型做大就會更好，而是要先理解資料生成機制、偏差來源，然後把特徵與評估設計做對。
-                    </div>
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 whitespace-pre-line">
-This track reminded me how much distribution matters: it's not that bigger models automatically win, but that we must understand how the data is generated, where the biases come from, and then design the right features and evaluation strategy.
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2025 -->
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-wider bg-purple-500/15 text-purple-200 ring-1 ring-white/10">
-            2025
-          </div>
-
-          <div class="mt-4 space-y-4">
-            <!-- NTHU TA -->
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">September</div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-purple-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">NTHU - Teaching Assistant, Introduction to Machine Learning</div>
-                      <div class="mt-1 text-sm text-zinc-300">Sep 2025 - Dec 2025 | One semester</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4 text-sm text-zinc-200 leading-relaxed">
-                  <ul class="space-y-1">
-                    <li>Assisted with course logistics, problem sessions, and Q&A.</li>
-                    <li>Supported students with conceptual understanding and implementation issues.</li>
-                  </ul>
-                </div>
-              </details>
-            </div>
-
-            <!-- TAAI -->
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">December</div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-purple-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">TAAI 2025 - Poster (Accepted): MatrixQR</div>
-                      <div class="mt-1 text-sm text-zinc-300">Extended abstract | Full paper in preparation</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4 text-sm text-zinc-200 leading-relaxed">
-                  <div class="font-medium text-white">Summary</div>
-                  <div class="mt-2">
-                    MatrixQR proposes a matrix-guided refinement strategy to decouple reliability control from creative edits in QR code generation.
-                  </div>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 whitespace-pre-line">
-把研究寫成可被別人理解的論文（哪怕是 extended abstract）本身就是一次「重新檢驗」：哪些地方只是直覺？哪些地方有足夠的證據？這次經驗也讓我更重視 ablation 與可重現性。
-                    </div>
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 whitespace-pre-line">
-Turning research into a paper-even an extended abstract-is a form of "re-auditing" the work: what is merely intuition, and what is supported by evidence... This experience also made me value ablations and reproducibility more than ever.
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-
-            <!-- CITI -->
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">July</div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-purple-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">Academia Sinica | CITI - Part-time Research Assistant (Team Lead)</div>
-                      <div class="mt-1 text-sm text-zinc-300">Jul 2025 - Present | Diffusion-based dynamic aesthetic QR codes</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4">
-                  <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-6">
-                    <div class="text-sm text-zinc-200 leading-relaxed">
-                      <div class="font-medium text-white">What I did</div>
-                      <ul class="mt-2 space-y-1 text-zinc-200">
-                        <li>Led a small team building a diffusion-based pipeline for <span class="text-white">dynamic aesthetic QR code generation</span>.</li>
-                        <li>Worked on controllable trade-offs between <span class="text-white">visual quality</span> and <span class="text-white">scan reliability</span> under heterogeneous uncertainty.</li>
-                        <li>Explored uncertainty-aware guidance ideas inspired by recent work on denoiser covariance estimation.</li>
-                      </ul>
-                    </div>
-                    <div class="text-sm text-zinc-300">
-                      <div class="font-medium text-white">Notes</div>
-                      <div class="mt-2 text-zinc-200 leading-relaxed">
-                        Ongoing research direction; preparing a full paper for submission (targeting venues such as ECCV 2026).
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-這段經歷讓我第一次真正以「研究與交付」的節奏在跑專案：從問題定義、實驗設計、到把想法落成可重現的 pipeline。也因為 QR code 同時要求美觀與可掃描，我開始更深刻地理解「可靠性」在生成模型裡是可以被系統性地建模與控制的。
-                    </div>
-
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-This experience was my first time running a project with a true "research + delivery" cadence-from problem definition and experiment design to turning ideas into a reproducible pipeline. Because QR codes must be both aesthetically pleasing and reliably scannable, I started to internalize that "reliability" in generative models is something we can model and control systematically.
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-
-            <!-- Mei-Chu (month omitted intentionally) -->
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase"></div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-purple-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">Mei-Chu Hackathon 2025 (Maker Track) - 1st Place</div>
-                      <div class="mt-1 text-sm text-zinc-300">Wearable + mobile app | Healthcare trajectory modeling</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4 text-sm text-zinc-200 leading-relaxed">
-                  <div class="font-medium text-white">What we built</div>
-                  <ul class="mt-2 space-y-1">
-                    <li>Integrated a wearable watch and a mobile app to capture and analyze walking trajectories.</li>
-                    <li>Modeled dementia patients' movement patterns for safety monitoring and alerts.</li>
-                  </ul>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 whitespace-pre-line">
-黑客松最大的收穫是「用有限時間做出可被評審一眼看懂的 demo」。把系統端到端接起來、把故事說清楚，常常比再多加一個模型更關鍵。
-                    </div>
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 whitespace-pre-line">
-My biggest takeaway from hackathons is learning how to ship a demo that judges can understand instantly. Connecting the system end-to-end and telling a clear story is often more important than adding yet another model.
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-
-            <!-- NSF 2025 (has photos + long story) -->
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">February</div>
-              <details class="tl-card tl-has-media rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-purple-500/40">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">2025 U.S. NSF HDR ML Challenge - Overall 2nd Place Worldwide</div>
-                      <div class="mt-1 text-sm text-zinc-300">Dec 2024 - Feb 2025 | Invited talk at AAAI-25 Workshop (Philadelphia)</div>
-                      <div class="mt-2 flex flex-wrap gap-2">
-                        <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs bg-amber-500/15 ring-1 ring-white/10">Gallery</span>
-                        <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs bg-amber-500/15 ring-1 ring-white/10">Long read</span>
-                      </div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4">
-                  <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-6">
-                    <div class="text-sm text-zinc-200 leading-relaxed">
-                      <div class="font-medium text-white">Highlights</div>
-                      <ul class="mt-2 space-y-1">
-                        <li>Led a 6-member team ("20iterations") across multiple anomaly-detection tasks (gravitational waves, hybrid butterflies, sea level).</li>
-                        <li>Developed and iterated on autoencoder and generative approaches; designed ablations and adapted to domain shifts under online evaluation.</li>
-                        <li>Ranked <span class="text-white">2nd overall</span> among 600+ teams worldwide; invited to present at an AAAI-25 Workshop in Philadelphia.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div class="mt-1 grid grid-cols-2 gap-3">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="NSF0.jpg" alt="AAAI-25 welcome sign photo" loading="lazy">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="NSF2.jpg" alt="Workshop presentation photo" loading="lazy">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10 col-span-2" src="NSF1.jpg" alt="Group photo at AAAI workshop" loading="lazy">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-2025 NSF HDR ML Challenge 國際異常檢測黑客松挑戰賽 》
-
- Philadelphia, USA
- 02.28 - 03.09
-
--
-美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。
-
-NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元
-
-每次開會，絕對會聽到
-「欸咦等一下讓我想一下」
-「我覺得你說得很有道理，但是...」
-「這次不可能錯了吧⋯⋯」
-「真的沒有任何理由了，如果再是 0 那我也真的...」
-「欸咦等一下...」
-老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了 
-
-這趟紐約與費城之旅，真的很神奇。
-體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......
-
-這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......
-
-謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。
-
-時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。
--
-
-#20iterations
-                    </div>
-
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-2025 NSF HDR ML Challenge (International Anomaly Detection Hackathon) 》
-
- Philadelphia, USA
- 02.28 - 03.09
-
--
-The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.
-
-The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that "impossible" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.
-
-To chase the overall championship, we went all-in. Our team name-"20iterations"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a "small meow" every 3 days, a "big meow" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.
-
-In every meeting, you would definitely hear:
-"Wait-hold on  let me think "
-"You're totally right, but..."
-"This time it can't be wrong... right..."
-"There's literally no reason-if it's still 0, I'm going to..."
-"Wait... hold on..."
-Honestly, in that one month, I heard these lines not 100 times, but at least dozens 
-
-The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming "homeless wanderers" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)
-
-Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang "I Want It That Way" countless times...
-
-Above all, I want to thank my five teammates. Without them, there would be no "20iterations," and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.
-
-Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From "20 days left" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.
-
-Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.
--
-
-#20iterations
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2024 -->
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-wider bg-zinc-500/15 text-zinc-300 ring-1 ring-white/10">
-            2024
-          </div>
-
-          <div class="mt-4 space-y-4">
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">November</div>
-              <details class="tl-card rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-zinc-500/30">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">Journal of Modern Physics (2024) - Michelson Interferometer Vibration Classification</div>
-                      <div class="mt-1 text-sm text-zinc-300">Machine learning for physical experimental signal analysis</div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4 text-sm text-zinc-200 leading-relaxed">
-                  <div class="font-medium text-white">What I contributed</div>
-                  <ul class="mt-2 space-y-1">
-                    <li>Co-authored a peer-reviewed journal paper; revised and polished academic English across the manuscript.</li>
-                    <li>Helped write and refine physics-related theoretical sections for clarity and consistency.</li>
-                  </ul>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 whitespace-pre-line">
-把一篇文章打磨到可以投進期刊，最花時間的往往不是「跑出結果」那一刻，而是把前後邏輯、符號與敘事全部對齊。這次經驗也讓我更重視寫作與表達本身就是研究的一部分。
-                    </div>
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 whitespace-pre-line">
-Polishing a paper to a journal-ready level often takes more time than the moment you first "get results." The real work is aligning the logic, notation, and narrative end-to-end. This experience taught me that writing and communication are core parts of research-not an afterthought.
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2023 -->
-        <div>
-          <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold tracking-wider bg-zinc-500/15 text-zinc-300 ring-1 ring-white/10">
-            2023
-          </div>
-
-          <div class="mt-4 space-y-4">
-            <div class="grid md:grid-cols-[160px_1fr] gap-4 items-start">
-              <div class="hidden md:block pt-3 text-xs font-semibold tracking-wider text-zinc-400 uppercase">November</div>
-              <details class="tl-card tl-has-media rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 border-l-4 border-zinc-500/30">
-                <summary class="cursor-pointer select-none">
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <div class="font-semibold text-white">iGEM 2023 (NTHU-Taiwan) - Gold Medal</div>
-                      <div class="mt-1 text-sm text-zinc-300">Dec 2022 - Nov 2023 | Paris, France | Dry Lab leader + hardware integration</div>
-                      <div class="mt-2 flex flex-wrap gap-2">
-                        <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs bg-amber-500/15 ring-1 ring-white/10">Gallery</span>
-                        <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs bg-amber-500/15 ring-1 ring-white/10">Long read</span>
-                      </div>
-                    </div>
-                    <svg class="chev w-5 h-5 shrink-0 text-zinc-300 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </summary>
-
-                <div class="mt-4 border-t border-white/10 pt-4">
-                  <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-6">
-                    <div class="text-sm text-zinc-200 leading-relaxed">
-                      <div class="font-medium text-white">Highlights</div>
-                      <ul class="mt-2 space-y-1">
-                        <li>Dry Lab leader; built an automated identification system for colorectal cancer screening reagents using machine learning.</li>
-                        <li>Led digital circuit design and Arduino-based hardware-software integration for automated temperature control, cooling, and precise reagent dispensing.</li>
-                        <li>Presented and demonstrated the system in Paris; received <span class="text-white">Gold Medal</span>.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div class="mt-1 grid grid-cols-2 gap-3">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="igem1.jpg" alt="iGEM interaction photo" loading="lazy">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="igem3.jpg" alt="iGEM discussion photo" loading="lazy">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="igem0.jpg" alt="iGEM group photo" loading="lazy">
-                        <img class="h-32 w-full rounded-2xl object-cover ring-1 ring-white/10" src="igem2.jpg" alt="iGEM team photo" loading="lazy">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mt-6">
-                    <div class="text-sm font-medium text-white">心得</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-2023 iGEM 國際遺傳工程機器設計競賽 》
-
- Paris, France
- 10.31 - 11.11
-
--
-57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..
-
-記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！
-
-在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...
-
-人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。
--
-
-#8th
-                    </div>
-
-                    <div class="mt-4 text-sm font-medium text-white">Translation</div>
-                    <div class="mt-2 text-sm text-zinc-200 leading-relaxed whitespace-pre-line">
-2023 iGEM (International Genetically Engineered Machine Competition) 》
-
- Paris, France
- 10.31 - 11.11
-
--
-57 "big meows," 45 "small meows," countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.
-
-I still remember when we first met. Back then, I was lost about the future. I didn't have a clear "special skill" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.
-
-That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.
-
-In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.
-
-Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.
--
-
-#8th
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="flex items-end justify-between flex-wrap gap-4">
-      <h2 class="text-xl font-semibold">Projects</h2>
-    </div>
-
-    <div class="mt-6 grid md:grid-cols-3 gap-4">
-      <a class="group rounded-3xl p-6 glass ring-soft hover:bg-white/10 transition" href="https://github.com/Arthur031221/MatrixQR" target="_blank" rel="noreferrer">
-        <div class="text-sm text-zinc-300">Generative AI</div>
-        <div class="mt-1 font-semibold">Dynamic Aesthetic QR (Diffusion)</div>
-        <p class="mt-2 text-sm text-zinc-200 leading-relaxed">
-          Controllable generation balancing aesthetics and scanning robustness.
-        </p>
-        <div class="mt-4 text-xs text-zinc-400 group-hover:text-zinc-200">Open GitHub -></div>
-      </a>
-
-      <a class="group rounded-3xl p-6 glass ring-soft hover:bg-white/10 transition"
-         href="https://github.com/Arthur031221/X-Ray" target="_blank" rel="noreferrer">
-        <div class="text-sm text-zinc-300">Medical Imaging</div>
-        <div class="mt-1 font-semibold">Chest X-ray Classification Study</div>
-        <p class="mt-2 text-sm text-zinc-200 leading-relaxed">
-          Comparing Xception & DenseNet121 on different demographics; robustness & generalization.
-        </p>
-        <div class="mt-4 text-xs text-zinc-400 group-hover:text-zinc-200">Open GitHub -></div>
-      </a>
-
-      <a class="group rounded-3xl p-6 glass ring-soft hover:bg-white/10 transition"
-         href="https://github.com/Arthur031221/NSF-HDR" target="_blank" rel="noreferrer">
-        <div class="text-sm text-zinc-300">Anomaly Detection</div>
-        <div class="mt-1 font-semibold">2025 NSF HDR ML Challenge</div>
-        <p class="mt-2 text-sm text-zinc-200 leading-relaxed">
-          Multi-track anomaly detection solutions and experiments (gravitational waves, hybrid butterflies, sea level).
-        </p>
-        <div class="mt-4 text-xs text-zinc-400 group-hover:text-zinc-200">Open GitHub -></div>
-      </a>
-    </div>
-  </section>
-
-  <!-- Publications -->
-  <section id="publications" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="glass ring-soft rounded-3xl p-7">
-      <h2 class="text-xl font-semibold">Publications, Posters & Research</h2>
-
-      <div class="mt-6 space-y-4">
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="font-semibold">Journal Paper (2024)</div>
-          <div class="mt-1 text-zinc-200 text-sm leading-relaxed">
-            Tsai, X.-H., Yeh, A. A.-C., Lu, C.-H., Chou, S.-Y., Wang, S.-W., Lee, C-W., & Lee, P.-H. (2024).
-            <span class="italic">Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods</span>.
-            Journal of Modern Physics, 15(12). DOI: 10.4236/jmp.2024.1512087
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="font-semibold">Conference Poster (TAAI 2025, Accepted)</div>
-          <div class="mt-1 text-zinc-200 text-sm leading-relaxed">
-            <span class="font-medium">MatrixQR:</span> Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation.
-            Chi-Wei Lee, Yen-Hung Hsueh, JR An Guo, Jia-Wei Liao, Pin-Yen Chiu, Jun-Cheng Chen.
-          </div>
-          <div class="mt-2 text-xs text-zinc-400">
-            Accepted as an <span class="text-white">extended abstract (poster)</span> at TAAI 2025.
-          </div>
-          <a class="mt-3 inline-flex text-sm font-medium underline underline-offset-4 hover:text-white" href="https://drive.google.com/file/d/11br0lbed2Zroj0iiBSdI-f0cmmmsupTS/view?usp=sharing" target="_blank" rel="noreferrer">
-            Read the extended abstract (PDF)
-          </a>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="font-semibold">Ongoing Research: Brain-Inspired Learning (Neural PC)</div>
-          <div class="mt-1 text-zinc-200 text-sm leading-relaxed">
-            <span class="font-medium">Brain-Inspired Learning via Predictive Coding and Hopfield Networks:</span>
-            Exploring predictive coding and Hopfield networks as biologically plausible alternatives to standard backpropagation.
-          </div>
-          <div class="mt-2 text-xs text-zinc-400">
-            Timeline: <span class="text-white">since Sep 2025</span>.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="font-semibold">Ongoing Research: Hybrid Quantum ML for Neurodegenerative Risk</div>
-          <div class="mt-1 text-zinc-200 text-sm leading-relaxed">
-            <span class="font-medium">Hybrid Quantum Kernel and Transfer Learning for Early Neurodegenerative Risk Stratification:</span>
-            Building a hybrid quantum-classical framework that integrates EEG and clinical features for early-stage risk prediction.
-          </div>
-          <div class="mt-2 text-xs text-zinc-400">
-            Timeline: <span class="text-white">since Oct 2025</span>.
-          </div>
-        </div>
-
-        <div class="rounded-2xl p-5 bg-white/5 ring-1 ring-white/10">
-          <div class="font-semibold">Scholarly Reviewing / Endorsement (2024-2025)</div>
-          <div class="mt-1 text-zinc-200 text-sm leading-relaxed">
-            Endorser, <span class="italic">Building Machine Learning Challenges for Anomaly Detection in Science</span> (Nature Communications, forthcoming 2025; arXiv:2503.02112).
-            Provided detailed feedback on benchmark positioning, baselines, metrics, and clarity.
-          </div>
-          <div class="mt-3 text-xs text-zinc-400">
-            Related: Full paper for MatrixQR is currently in preparation (targeting venues such as ECCV 2026).
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Awards -->
-  <section id="awards" class="anchor mx-auto max-w-6xl px-4 py-10">
-    <div class="grid lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 glass ring-soft rounded-3xl p-7">
-        <h2 class="text-xl font-semibold">Awards & Achievements</h2>
-
-        <div class="mt-6 space-y-3 text-sm text-zinc-200">
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="font-semibold">NSF HDR ML Challenge - Overall 2nd Place Worldwide</div>
-            <div class="text-zinc-300">600+ teams | invited talk at AAAI Workshop (Philadelphia)</div>
-          </div>
-
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="font-semibold">iGEM 2023 - Gold Medal</div>
-            <div class="text-zinc-300">Dry Lab leader | ML + Arduino automated diagnostic device</div>
-          </div>
-
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="font-semibold">Mei-Chu Hackathon 2025 (Maker Track) - 1st Place</div>
-            <div class="text-zinc-300">Wearable + app trajectory modeling for safety monitoring</div>
-          </div>
-
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="font-semibold">NSF HDR ML Challenge 2026 (Climate Prediction Track) - 3rd Place (Taiwan Region)</div>
-            <div class="text-zinc-300">Attention-based models | drought prediction | OOD generalization focus</div>
-          </div>
-
-          <div class="rounded-2xl p-4 bg-white/5 ring-1 ring-white/10">
-            <div class="font-semibold">Academic performance highlights</div>
-            <div class="text-zinc-300">
-              GPA 4.1 (Rank 1/72); GPA 3.94 (Rank 6/75); other awards (TISF Physics & Astronomy).
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass ring-soft rounded-3xl p-7">
-        <h3 class="text-lg font-semibold">CV PDFs</h3>
-        <div class="mt-4 space-y-3 text-sm">
-          <a class="block rounded-2xl px-4 py-3 bg-white/5 ring-1 ring-white/10 hover:bg-white/10" href="https://drive.google.com/file/d/1iU6CxRcMzVWXQy1dh-9NyHzRzbU563Xd/view?usp=sharing" target="_blank" rel="noreferrer">
-            CV.pdf
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="anchor mx-auto max-w-6xl px-4 py-12">
-    <div class="glass ring-soft rounded-3xl p-8">
-      <h2 class="text-xl font-semibold">Contact</h2>
-      <p class="mt-3 text-zinc-200 leading-relaxed">
-        If you'd like to collaborate or chat about research, internships, or projects, feel free to email me.
-      </p>
-
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a class="btn-primary rounded-xl px-4 py-2" href="mailto:levi74108520963@gmail.com">
-          Email me
-        </a>
-        <a class="rounded-xl px-4 py-2 glass ring-soft hover:bg-white/10" href="tel:+886968708385">
-          Call
-        </a>
-        <a class="rounded-xl px-4 py-2 glass ring-soft hover:bg-white/10" href="https://github.com/Arthur031221" target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-      </div>
-
-      <div class="mt-8 text-xs text-zinc-400">
-        (c) <span id="y"></span> Arthur (Chi-Wei Lee). Built with a single HTML file.
-      </div>
-    </div>
-  </section>
+    <dl class="facts rise">
+      ${DATA.about.facts.map(f => `
+        <div class="fact">
+          <dt class="label">${bi(f.k)}</dt>
+          <dd>${bi(f.v)}</dd>
+        </div>`).join('')}
+    </dl>
   </div>
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
+  <div class="threads">
+    ${DATA.threads.map((t, i) => `
+      <article class="thread rise" data-thread="${t.id}">
+        <div class="thread-n mono">${String(i + 1).padStart(2, '0')}</div>
+        <div class="thread-body">
+          <p class="label">${bi(t.tag)}</p>
+          <h3>${bi(t.title)}</h3>
+          <p class="thread-text">${bi(t.body)}</p>
+        </div>
+      </article>`).join('')}
+  </div>
+</section>`;
 
-    (function () {
-      const root = document.documentElement;
-      const storageKey = "theme";
-      const btn = document.getElementById("themeToggle");
-      const label = document.getElementById("themeLabel");
+/* ── PUBLICATIONS ───────────────────────────────────────────────────── */
+const papersHTML = () => `
+<section id="papers" class="sec wrap">
+  ${secHead('02', { en: 'Publications & manuscripts', zh: '論文與手稿' })}
+  <ol class="papers">
+    ${DATA.publications.map(p => `
+      <li class="paper rise" data-status="${p.status}">
+        <div class="paper-year mono">${esc(p.year)}</div>
+        <div class="paper-main">
+          <h3 class="paper-title">${esc(p.title)}</h3>
+          <p class="paper-authors mono">${esc(p.authors)}</p>
+          <p class="paper-venue">
+            <span class="badge" data-status="${p.status}">${bi(p.badge)}</span>
+            <em>${esc(p.venue)}</em>
+            ${p.doi ? `<a class="doi mono" href="${esc(p.doi)}" rel="noopener">link ↗</a>` : ''}
+          </p>
+          ${(p.note?.en || p.note?.zh) ? `<p class="paper-note">${bi(p.note)}</p>` : ''}
+        </div>
+      </li>`).join('')}
+  </ol>
+</section>`;
 
-      const saved = localStorage.getItem(storageKey);
-      const initial = saved === "dark" || saved === "light" ... saved : (root.dataset.theme || "light");
-      root.dataset.theme = initial;
+/* ── RECORD (long-form reflections) ─────────────────────────────────── */
+const longreadHTML = (key, lr) => `
+  <article class="lr rise" id="lr-${key}">
+    <header class="lr-head">
+      <h3>${bi(lr.title)}</h3>
+      <p class="label">${esc(lr.place)} · ${esc(lr.date)}</p>
+    </header>
+    <div class="lr-body" data-open="0">
+      ${['en', 'zh'].map(l =>
+        lr[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')
+      ).join('')}
+    </div>
+    <button class="lr-more sw" type="button" data-for="lr-${key}">
+      <span data-en>Read the whole thing</span><span data-zh>讀完整篇</span>
+    </button>
+  </article>`;
 
-      function syncUI() {
-        const isDark = root.dataset.theme === "dark";
-        if (btn) btn.setAttribute("aria-pressed", String(isDark));
-        if (label) label.textContent = isDark ... "Night" : "Day";
+const recordHTML = () => `
+<section id="record" class="sec wrap">
+  ${secHead('03', { en: 'The record', zh: '歷程' })}
+  <p class="lead rise">${bi({
+    en: 'Two of these I wrote down properly at the time, because they changed what I wanted to do.',
+    zh: '其中兩段我當時認真寫了下來,因為它們改變了我想做的事。',
+  })}</p>
+  ${Object.entries(DATA.longreads).map(([k, lr]) => longreadHTML(k, lr)).join('')}
+</section>`;
+
+/* ── HONOURS ────────────────────────────────────────────────────────── */
+const honoursHTML = () => `
+<section id="honours" class="sec wrap">
+  ${secHead('04', { en: 'Honours', zh: '榮譽' })}
+  <div class="awards">
+    ${DATA.awards.map(a => `
+      <article class="award rise${a.hero ? ' award-hero' : ''}">
+        <div class="award-year mono">${esc(a.year)}</div>
+        <div>
+          <h3>${bi(a.title)}</h3>
+          <p class="label">${bi(a.org)}</p>
+          <p class="award-note">${bi(a.note)}</p>
+        </div>
+      </article>`).join('')}
+  </div>
+</section>`;
+
+/* ── CONTACT ────────────────────────────────────────────────────────── */
+const contactHTML = () => `
+<section id="contact" class="sec wrap">
+  ${secHead('05', { en: 'Contact', zh: '聯絡' })}
+  <div class="contact rise">
+    <p class="contact-line">${bi({
+      en: 'I am looking for PhD positions in NeuroAI for 2027 entry, and I am glad to talk about any of the above.',
+      zh: '我正在尋找 2027 年入學的 NeuroAI 博士班機會,也很樂意聊聊上面任何一項研究。',
+    })}</p>
+    <div class="contact-links mono">
+      <a href="mailto:${esc(DATA.meta.email)}">${esc(DATA.meta.email)}</a>
+      <a href="${esc(DATA.meta.github)}" rel="me noopener">github.com/Arthur031221</a>
+      <a href="${esc(DATA.meta.cv)}"><span data-en>Curriculum Vitae (PDF)</span><span data-zh>履歷 (PDF)</span></a>
+    </div>
+  </div>
+</section>`;
+
+document.getElementById('main').innerHTML =
+  heroHTML() + workHTML() + papersHTML() + recordHTML() + honoursHTML() + contactHTML();
+
+/* ── long-read expand ───────────────────────────────────────────────── */
+document.querySelectorAll('.lr-more').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = document.querySelector(`#${btn.dataset.for} .lr-body`);
+    const open = body.dataset.open === '1';
+    body.dataset.open = open ? '0' : '1';
+    btn.dataset.open = open ? '0' : '1';
+  });
+});
+
+/* ── nav scroll spy ─────────────────────────────────────────────────── */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  document.querySelectorAll('[data-nav]').forEach(a =>
+    a.classList.toggle('on', a.dataset.nav === e.target.id));
+}), { rootMargin: '-45% 0px -50% 0px' });
+NAV.forEach(n => { const el = document.getElementById(n.id); if (el) spy.observe(el); });
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   THE HERO IS THE PAPER — both of them, in order, run on the visitor's
+   only reason for being here: the author's name.
+
+   1. RETRIEVAL.  The name is stored as one of P patterns in a Hopfield
+      network. The lattice starts at 45% bit-flip noise and is recovered by
+      asynchronous sweeps. This is manuscript #1: the Tweedie–Hopfield
+      correspondence identifies associative memory as the Bayesian denoiser
+      that predictive coding implicitly requires.
+
+   2. RELEASE.  The retrieved +1 cells become particles and descend into a
+      multimodal energy landscape under
+
+          dz = -M ∇U(z) dt + G dW ,  G Gᵀ = 2M   (fluctuation–dissipation)
+
+      which is manuscript #2: satisfying that pairing is exactly what makes
+      the target the unique stationary density, so the walkers cover every
+      mode instead of collapsing onto the MAP peak.
+
+   The two controls are the two mechanisms: the language toggle is a
+   retrieval cue (re-corrupt, re-converge on the other stored pattern), the
+   theme toggle is a temperature quench.
+
+   Canvas2D only. No WebGL context to lose, no capability probe, no second
+   renderer to maintain.
+   ══════════════════════════════════════════════════════════════════════ */
+(() => {
+  const cv = document.getElementById('field');
+  const nameEl = document.getElementById('hero-name');
+  if (!cv || !nameEl) return;
+  const ctx = cv.getContext('2d', { alpha: true });
+  if (!ctx) return;
+
+  const css = v => getComputedStyle(root).getPropertyValue(v).trim();
+  const reducedMotion = () => root.dataset.motion === 'reduced';
+
+  /* ── deterministic PRNG so the "seed" in the readout means something ─ */
+  let seed = 0x1BADB002;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+  const rand = () => rnd() * 2 - 1;
+
+  /* ══════════════════════════════════════════════════════════════════
+     LANDSCAPE — the mixture the particles fall into
+     ══════════════════════════════════════════════════════════════════ */
+  const MODES = [
+    { x: -.62, y: -.18, sx: .30, sy: .19, w: 1.00, r: -0.35 },
+    { x: -.10, y:  .30, sx: .22, sy: .28, w: 0.85, r:  0.60 },
+    { x:  .44, y: -.32, sx: .27, sy: .17, w: 0.95, r:  0.15 },
+    { x:  .78, y:  .34, sx: .18, sy: .22, w: 0.65, r: -0.55 },
+    { x:  .06, y: -.62, sx: .24, sy: .15, w: 0.70, r:  0.25 },
+    { x: -.88, y:  .42, sx: .20, sy: .17, w: 0.60, r:  0.45 },
+  ];
+
+  function pAndGrad(x, y) {
+    let p = 0, gx = 0, gy = 0;
+    for (const m of MODES) {
+      const c = Math.cos(m.r), s = Math.sin(m.r);
+      const dx = x - m.x, dy = y - m.y;
+      const u = (dx * c + dy * s) / m.sx;
+      const v = (-dx * s + dy * c) / m.sy;
+      const e = m.w * Math.exp(-0.5 * (u * u + v * v));
+      p += e;
+      const du = -u / m.sx, dv = -v / m.sy;
+      gx += e * (du * c - dv * s);
+      gy += e * (du * s + dv * c);
+    }
+    return { p, gx, gy };
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     STATE
+     ══════════════════════════════════════════════════════════════════ */
+  let W = 0, H = 0, dpr = 1, scale = 1, cx = 0, cy = 0;
+  let phase = 'idle';           // idle | retrieval | hold | field
+  let running = false, raf = 0;
+  let temperature = 1, quench = 0;
+
+  // Hopfield
+  let N = 0, P = 3, cell = 10, cols = 0, rows = 0, ox = 0, oy = 0;
+  let X = [], Z = [], A = 0, NORM = 1, s = null, m = null, order = null, cursor = 0, sweeps = 0;
+  let targetPattern = 0;
+
+  // Langevin
+  let walkers = [];
+
+  const toPx = (x, y) => [cx + x * scale * 1.35, cy - y * scale];
+
+  /* ══════════════════════════════════════════════════════════════════
+     LATTICE — rasterise the two names into ±1 patterns on the h1's box
+     ══════════════════════════════════════════════════════════════════ */
+  function rasterise(text, font, weight) {
+    const off = document.createElement('canvas');
+    off.width = cols; off.height = rows;
+    const c = off.getContext('2d', { willReadFrequently: true });
+    if (!c) return new Int8Array(N).fill(-1);
+    c.fillStyle = '#000'; c.fillRect(0, 0, cols, rows);
+    c.fillStyle = '#fff';
+    c.textBaseline = 'middle';
+    // fit the string to the lattice width
+    let size = rows * 0.92;
+    c.font = `${weight} ${size}px ${font}`;
+    const target = cols * 0.98;
+    const wpx = c.measureText(text).width;
+    if (wpx > 0) { size *= Math.min(1, target / wpx); c.font = `${weight} ${size}px ${font}`; }
+    c.fillText(text, 0, rows * 0.53);
+    const px = c.getImageData(0, 0, cols, rows).data;
+    const out = new Int8Array(N);
+    for (let i = 0; i < N; i++) out[i] = px[i * 4] > 128 ? 1 : -1;
+    return out;
+  }
+
+  function buildLattice() {
+    const r = nameEl.getBoundingClientRect();
+    const hr = cv.getBoundingClientRect();
+    const w = Math.max(40, r.width), h = Math.max(20, r.height);
+    cell = Math.max(3, Math.round(Math.sqrt(w * h / 5200)));
+    cols = Math.max(8, Math.floor(w / cell));
+    rows = Math.max(4, Math.floor(h / cell));
+    N = cols * rows;
+    ox = r.left - hr.left; oy = r.top - hr.top;
+
+    const sans = getComputedStyle(nameEl).fontFamily || 'sans-serif';
+    X = [
+      rasterise('Chi-Wei Lee', sans, 700),
+      rasterise('李騏維', sans, 700),
+      rasterise('◼◻◼◻ ◻◼◻◼', 'monospace', 500),   // decoy attractor
+    ];
+    P = X.length;
+    // Centre the patterns. Text rasters are ~85% -1, so under the plain Hebb rule
+    // that shared background swamps the signal and the net lands in the widest
+    // basin (the decoy) regardless of the cue. Subtracting the mean activity is
+    // the standard covariance rule for biased patterns.
+    let acc = 0;
+    for (const xm of X) for (let i = 0; i < N; i++) acc += xm[i];
+    A = acc / (N * P);
+    Z = X.map(xm => { const z = new Float32Array(N); for (let i = 0; i < N; i++) z[i] = xm[i] - A; return z; });
+    NORM = 0;
+    for (let i = 0; i < N; i++) NORM += Z[0][i] * Z[0][i];
+    NORM = Math.max(1e-6, NORM / N);
+    order = new Uint32Array(N);
+    for (let i = 0; i < N; i++) order[i] = i;
+  }
+
+  function shuffle() {
+    for (let i = N - 1; i > 0; i--) {
+      const j = (rnd() * (i + 1)) | 0;
+      const t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+  }
+
+  function overlaps() {
+    m = new Float32Array(P);
+    for (let mu = 0; mu < P; mu++) {
+      let acc = 0;
+      const zm = Z[mu];
+      for (let i = 0; i < N; i++) acc += zm[i] * s[i];
+      m[mu] = acc / (N * NORM);
+    }
+  }
+
+  /** Corrupt the target pattern and start the sweeps. */
+  function beginRetrieval(which) {
+    if (!N) buildLattice();
+    targetPattern = which;
+    s = Int8Array.from(X[which]);
+    const flip = 0.42;
+    for (let i = 0; i < N; i++) if (rnd() < flip) s[i] = -s[i];
+    overlaps();
+    shuffle();
+    cursor = 0; sweeps = 0;
+    phase = 'retrieval';
+    drawLatticeFull();
+  }
+
+  /* One sweep, spread over frames. Never materialise W:
+     h_i = Σ_μ ξ^μ_i m_μ − (P/N) s_i */
+  function sweepSlice(lo, hi) {
+    const invN = 1 / N, self = P / N;
+    let flips = 0;
+    for (let k = lo; k < hi; k++) {
+      const i = order[k];
+      let h = 0;
+      for (let mu = 0; mu < P; mu++) h += Z[mu][i] * m[mu];
+      h -= self * s[i];
+      const ns = h >= 0 ? 1 : -1;
+      if (ns !== s[i]) {
+        const d = (ns - s[i]) * invN / NORM;
+        for (let mu = 0; mu < P; mu++) m[mu] += Z[mu][i] * d;
+        s[i] = ns; flips++;
+        drawCell(i, ns);
       }
+    }
+    return flips;
+  }
 
-      syncUI();
+  /* ══════════════════════════════════════════════════════════════════
+     DRAWING
+     ══════════════════════════════════════════════════════════════════ */
+  function cellRect(i) {
+    const c = i % cols, r = (i / cols) | 0;
+    return [ox + c * cell, oy + r * cell];
+  }
+  function drawCell(i, v) {
+    const [x, y] = cellRect(i);
+    if (v > 0) {
+      ctx.fillStyle = css('--ink-hi') || '#EDF2F7';
+      ctx.fillRect(x, y, cell - 0.6, cell - 0.6);
+    } else {
+      ctx.clearRect(x - 0.5, y - 0.5, cell + 1, cell + 1);
+    }
+  }
+  function drawLatticeFull() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(contourCanvas, 0, 0);
+    ctx.fillStyle = css('--ink-hi') || '#EDF2F7';
+    for (let i = 0; i < N; i++) {
+      if (s[i] > 0) { const [x, y] = cellRect(i); ctx.fillRect(x, y, cell - 0.6, cell - 0.6); }
+    }
+  }
 
-      if (btn) {
-        btn.addEventListener("click", () => {
-          root.dataset.theme = root.dataset.theme === "dark" ... "light" : "dark";
-          localStorage.setItem(storageKey, root.dataset.theme);
-          syncUI();
-        });
+  /* ── contour layer ─────────────────────────────────────────────── */
+  const contourCanvas = document.createElement('canvas');
+  function drawContours() {
+    contourCanvas.width = W; contourCanvas.height = H;
+    const c = contourCanvas.getContext('2d');
+    if (!c || !W || !H) return;
+    c.clearRect(0, 0, W, H);
+    const ink = css('--rule-hi') || '#2C3444';
+    const step = 6;
+    const gc = Math.ceil(W / step), gr = Math.ceil(H / step);
+    const grid = new Float32Array((gc + 1) * (gr + 1));
+    let max = 0;
+    for (let j = 0; j <= gr; j++) for (let i = 0; i <= gc; i++) {
+      const x = ((i * step) - cx) / (scale * 1.35);
+      const y = (cy - (j * step)) / scale;
+      const v = pAndGrad(x, y).p;
+      grid[j * (gc + 1) + i] = v;
+      if (v > max) max = v;
+    }
+    const levels = [.03, .07, .13, .22, .34, .5, .68, .86];
+    c.lineWidth = 1;
+    for (let li = 0; li < levels.length; li++) {
+      const lv = levels[li] * max;
+      c.strokeStyle = ink;
+      c.globalAlpha = (0.12 + 0.34 * (li / levels.length)) * parseFloat(css('--grid-a') || '.4') * 2.0;
+      c.beginPath();
+      for (let j = 0; j < gr; j++) for (let i = 0; i < gc; i++) {
+        const a = grid[j * (gc + 1) + i], b = grid[j * (gc + 1) + i + 1];
+        const d = grid[(j + 1) * (gc + 1) + i + 1], e = grid[(j + 1) * (gc + 1) + i];
+        const x0 = i * step, y0 = j * step, x1 = x0 + step, y1 = y0 + step;
+        const ip = (p, q, va, vb) => p + (q - p) * ((lv - va) / (vb - va || 1e-9));
+        const id = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (d > lv ? 2 : 0) | (e > lv ? 1 : 0);
+        const T = () => [ip(x0, x1, a, b), y0], R = () => [x1, ip(y0, y1, b, d)];
+        const B = () => [ip(x0, x1, e, d), y1], L = () => [x0, ip(y0, y1, a, e)];
+        const seg = (p, q) => { c.moveTo(p[0], p[1]); c.lineTo(q[0], q[1]); };
+        switch (id) {
+          case 1: case 14: seg(L(), B()); break;
+          case 2: case 13: seg(B(), R()); break;
+          case 3: case 12: seg(L(), R()); break;
+          case 4: case 11: seg(T(), R()); break;
+          case 6: case 9:  seg(T(), B()); break;
+          case 7: case 8:  seg(L(), T()); break;
+          case 5:  seg(L(), T()); seg(B(), R()); break;
+          case 10: seg(L(), B()); seg(T(), R()); break;
+        }
       }
-    })();
-  </script>
+      c.stroke();
+    }
+    c.globalAlpha = 1;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     RELEASE — retrieved cells become walkers at their exact positions
+     ══════════════════════════════════════════════════════════════════ */
+  function release() {
+    walkers = [];
+    const cap = innerWidth < 720 ? 380 : 1100;
+    const on = [];
+    for (let i = 0; i < N; i++) if (s[i] > 0) on.push(i);
+    const stride = Math.max(1, Math.ceil(on.length / cap));
+    for (let k = 0; k < on.length; k += stride) {
+      const [px, py] = cellRect(on[k]);
+      const x = (px + cell / 2 - cx) / (scale * 1.35);
+      const y = (cy - (py + cell / 2)) / scale;
+      walkers.push({ x, y, px: x, py: y, age: (rnd() * 300) | 0 });
+    }
+    phase = 'field';
+    nameEl.classList.add('resolved');
+    ctx.clearRect(0, 0, W, H);
+  }
+
+  /* ── Langevin step ─────────────────────────────────────────────── */
+  const DT = 0.0021, GMAX = 60;
+  let spare = null;
+  function gauss() {
+    if (spare !== null) { const v = spare; spare = null; return v; }
+    let u, v, q;
+    do { u = rand(); v = rand(); q = u * u + v * v; } while (q >= 1 || q === 0);
+    const f = Math.sqrt(-2 * Math.log(q) / q);
+    spare = v * f; return u * f;
+  }
+  function stepField() {
+    const T = Math.min(1.8, temperature + quench);
+    const noise = Math.sqrt(2 * DT) * T;
+    for (const w of walkers) {
+      w.px = w.x; w.py = w.y;
+      const { p, gx, gy } = pAndGrad(w.x, w.y);
+      const inv = 1 / Math.max(p, 1e-6);
+      // clamp: one NaN would blank the hero in front of the reader
+      let dx = gx * inv, dy = gy * inv;
+      const g = Math.hypot(dx, dy);
+      if (g > GMAX) { dx = dx / g * GMAX; dy = dy / g * GMAX; }
+      w.x += DT * dx * 11 + noise * gauss();
+      w.y += DT * dy * 11 + noise * gauss();
+      w.age++;
+      if (!isFinite(w.x) || !isFinite(w.y) ||
+          Math.abs(w.x) > 1.6 || Math.abs(w.y) > 1.3 || w.age > 1600) {
+        w.x = rand() * 1.1; w.y = rand() * 1.1; w.px = w.x; w.py = w.y; w.age = 0;
+      }
+    }
+    quench *= 0.955;
+  }
+  function drawField() {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,0.045)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(contourCanvas, 0, 0);
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = css('--accent') || '#4FE0A0';
+    ctx.lineWidth = 0.9;
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    for (const w of walkers) {
+      const [ax, ay] = toPx(w.px, w.py);
+      const [bx, by] = toPx(w.x, w.y);
+      const dx = bx - ax, dy = by - ay;
+      if (dx * dx + dy * dy > 900) continue;
+      ctx.moveTo(ax, ay); ctx.lineTo(bx, by);
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     TELEMETRY — reports only what the live simulation measures
+     ══════════════════════════════════════════════════════════════════ */
+  const readout = document.getElementById('readout');
+  let lastTele = 0;
+  function telemetry(now) {
+    if (!readout || now - lastTele < 200) return;
+    lastTele = now;
+    const en = root.dataset.lang === 'en';
+    if (phase === 'retrieval' || phase === 'hold') {
+      const best = Math.max(...m);
+      const E = (-0.5 * m.reduce((a, v) => a + v * v, 0)).toFixed(4);
+      readout.innerHTML =
+        `${en ? 'hopfield retrieval' : 'hopfield 檢索'} · N=<b>${N.toLocaleString()}</b> · P=<b>${P}</b><br>` +
+        `${en ? 'sweeps' : '掃描'} <b>${sweeps}</b> · ${en ? 'overlap' : '重疊'} m=<b>${best.toFixed(3)}</b> · E/N=<b>${E}</b><br>` +
+        `<span style="opacity:.7">${en ? 'asynchronous · W_ii = 0' : '非同步更新 · W_ii = 0'}</span>`;
+      return;
+    }
+    let hit = 0;
+    for (const md of MODES) if (walkers.some(w => Math.hypot(w.x - md.x, w.y - md.y) < 0.34)) hit++;
+    readout.innerHTML =
+      `${en ? 'preconditioned langevin' : '預條件 langevin'} · n=<b>${walkers.length}</b><br>` +
+      `${en ? 'temperature' : '溫度'} T=<b>${(temperature + quench).toFixed(2)}</b> · ` +
+      `${en ? 'basins' : '吸引域'} <b>${hit}/${MODES.length}</b><br>` +
+      `<span style="opacity:.7">${en ? 'GGᵀ = 2M — the pairing that makes p stationary'
+                                    : 'GGᵀ = 2M —— 使 p 成為穩態分佈的配對'}</span>`;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     LOOP
+     ══════════════════════════════════════════════════════════════════ */
+  let holdUntil = 0;
+  function frame(now) {
+    if (!running) return;
+    if (phase === 'retrieval') {
+      const per = Math.ceil(N / 10);                      // one sweep over 10 frames
+      const hi = Math.min(N, cursor + per);
+      sweepSlice(cursor, hi);
+      cursor = hi;
+      if (cursor >= N) {
+        cursor = 0; sweeps++; shuffle();
+        if ((sweeps >= 5 && Math.max(...m) > 0.95) || sweeps >= 16) { phase = 'hold'; holdUntil = now + 320; }
+      }
+    } else if (phase === 'hold') {
+      if (now >= holdUntil) release();
+    } else if (phase === 'field') {
+      stepField(); drawField();
+    }
+    telemetry(now);
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     WIRING
+     ══════════════════════════════════════════════════════════════════ */
+  function resize() {
+    const r = cv.getBoundingClientRect();
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scale = Math.min(W, H) * 0.42; cx = W * 0.5; cy = H * 0.5;
+    drawContours();
+    if (phase === 'field') return;
+    buildLattice();
+  }
+
+  function boot() {
+    resize();
+    cv.classList.add('on');
+    if (reducedMotion()) {           // no sequence: land straight on the steady state
+      buildLattice();
+      s = Int8Array.from(X[root.dataset.lang === 'zh' ? 1 : 0]);
+      release(); stepField(); drawField(); telemetry(performance.now());
+      return;
+    }
+    nameEl.classList.add('cloaked');
+    beginRetrieval(root.dataset.lang === 'zh' ? 1 : 0);
+    running = true; raf = requestAnimationFrame(frame);
+  }
+
+  let rt;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
+
+  new IntersectionObserver(es => {
+    const vis = es[0].isIntersecting;
+    if (vis && !running && !reducedMotion()) { running = true; raf = requestAnimationFrame(frame); }
+    if (!vis) { running = false; cancelAnimationFrame(raf); }
+  }, { threshold: 0.02 }).observe(cv);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { running = false; cancelAnimationFrame(raf); }
+    else if (!reducedMotion()) { running = true; raf = requestAnimationFrame(frame); }
+  });
+
+  // theme toggle = temperature quench
+  addEventListener('themechange', () => { quench = 0.9; drawContours(); });
+
+  // language toggle = retrieval cue: re-corrupt, converge on the other pattern
+  addEventListener('langchange', () => {
+    if (reducedMotion()) return;
+    nameEl.classList.remove('resolved');
+    nameEl.classList.add('cloaked');
+    beginRetrieval(root.dataset.lang === 'zh' ? 1 : 0);
+    if (!running) { running = true; raf = requestAnimationFrame(frame); }
+  });
+
+  cv.parentElement?.addEventListener('pointermove', e => {
+    if (reducedMotion() || phase !== 'field') return;
+    const r = cv.getBoundingClientRect();
+    const mx = ((e.clientX - r.left) - cx) / (scale * 1.35);
+    const my = (cy - (e.clientY - r.top)) / scale;
+    for (const w of walkers) {
+      const d = Math.hypot(w.x - mx, w.y - my);
+      if (d < 0.22) { w.x += (w.x - mx) * 0.06; w.y += (w.y - my) * 0.06; }
+    }
+  }, { passive: true });
+
+  // Cloak immediately so the name never flashes in before the lattice replaces it.
+  // The timeout is the safety net: if fonts never resolve, the type comes back anyway.
+  if (!reducedMotion()) nameEl.classList.add('cloaked');
+  let booted = false;
+  const once = () => { if (!booted) { booted = true; boot(); } };
+  setTimeout(once, 900);
+  if (document.fonts?.ready) document.fonts.ready.then(once).catch(once);
+  else setTimeout(once, 250);
+})();
+
+
+observeAll();
+</script>
 </body>
 </html>
