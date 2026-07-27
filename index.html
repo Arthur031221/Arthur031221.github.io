@@ -48,11 +48,29 @@
   --step-1:clamp(1.12rem,1.04rem + .38vw,1.38rem);
   --step-2:clamp(1.45rem,1.26rem + .9vw,2.05rem);
   --step-3:clamp(1.9rem,1.5rem + 2vw,3.2rem);
-  --step-4:clamp(2.6rem,1.5rem + 5vw,6.2rem);
+  --step-4:clamp(3rem,2rem + 11vw,13rem);
 
   --gut:clamp(1.15rem,4vw,3.25rem);
   --maxw:1180px;
   --ease:cubic-bezier(.22,1,.36,1);
+
+  /* Motion vocabulary. Durations first — every one of these is a considered
+     number, not a round one. */
+  --e-out-strong:cubic-bezier(.23,1,.32,1);
+  --e-inout-strong:cubic-bezier(.77,0,.175,1);
+  --e-ios:cubic-bezier(.32,.72,0,1);
+  --e-prod:cubic-bezier(.2,0,.38,.9);
+  --e-expr:cubic-bezier(.4,.14,.3,1);
+  --e-exit:cubic-bezier(.3,0,.8,.15);
+  --d-press:70ms; --d-fade:110ms; --d-small:150ms; --d-med:240ms; --d-large:400ms;
+}
+/* The metaphor changes with the theme, so the motion does too: an oscilloscope
+   never overshoots; ink settling on paper does. */
+:root[data-theme="dark"]{--e-house:var(--e-prod)}
+:root[data-theme="light"]{--e-house:var(--e-expr)}
+@media (prefers-reduced-motion:reduce){
+  /* 1ms rather than 0ms so transitionend still fires and no state machine hangs. */
+  :root{--d-press:1ms;--d-fade:1ms;--d-small:1ms;--d-med:1ms;--d-large:1ms}
 }
 :root[data-theme="dark"]{
   --bg:#0B0E14; --surface:#131722; --surface-2:#1A2030;
@@ -133,11 +151,15 @@ img{max-width:100%;display:block}
 :root[data-lang="en"] [data-en],:root[data-lang="zh"] [data-zh]{display:revert}
 
 /* ── reveal ───────────────────────────────────────────────────────── */
-.rise{opacity:0;transform:translateY(16px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rise{opacity:0;transform:translateY(12px);transition:opacity var(--d-med) var(--e-out-strong),transform var(--d-med) var(--e-out-strong)}
 .rise.in{opacity:1;transform:none}
 :root[data-motion="reduced"] .rise{opacity:1;transform:none;transition:none}
 
 footer{border-top:1px solid var(--rule);padding-block:2.5rem;color:var(--dim)}
+
+/* M1 — 3% over 70ms is functional feedback, so it survives reduced-motion. */
+button,.sw,a.pager-link,.shot{transition:transform var(--d-press) var(--e-prod)}
+button:active,.sw:active,a.pager-link:active,.shot:active{transform:scale(.97)}
 /* ══════════════════════════════════════════════════════════════════════
    HERO — a live preconditioned-Langevin sampler exploring a multimodal
    energy landscape. Not decoration: it is the algorithm from the paper.
@@ -419,6 +441,168 @@ footer{border-top:1px solid var(--rule);padding-block:2.5rem;color:var(--dim)}
 .pager-link:hover{border-color:var(--rule-hi);background:var(--surface);transform:translateY(-2px)}
 .pager-t{font-size:var(--step-1);color:var(--ink-hi)}
 :root[data-motion="reduced"] .pager-link:hover{transform:none}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INTERACTION LAYER
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* I12 · magic line under the nav */
+.nav{position:relative}
+.nav-ind{
+  position:absolute;left:0;bottom:-2px;height:1.5px;width:var(--ind-w,0);
+  transform:translateX(var(--ind-x,0));background:var(--accent);
+  opacity:0;transition:transform var(--d-small) var(--e-out-strong),
+    width var(--d-small) var(--e-out-strong),opacity var(--d-fade) linear;
+}
+.nav[data-ind="1"] .nav-ind{opacity:1}
+:root[data-motion="reduced"] .nav-ind{transition:none}
+
+/* M8 · theme wipe — a circle opening from the button that caused it */
+::view-transition-old(root){animation:none}
+::view-transition-new(root){
+  animation:wipe var(--d-large) var(--e-out-strong);
+  mix-blend-mode:normal;
+}
+@keyframes wipe{
+  from{clip-path:circle(0 at var(--wipe-x,50%) var(--wipe-y,0))}
+  to{clip-path:circle(var(--wipe-r,150vmax) at var(--wipe-x,50%) var(--wipe-y,0))}
+}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-new(root),::view-transition-old(root){animation:none}
+}
+
+/* I7 · command palette */
+.palette{
+  border:1px solid var(--rule-hi);border-radius:6px;padding:0;
+  background:var(--surface);color:var(--ink);
+  width:min(560px,92vw);margin:14vh auto auto;
+  box-shadow:0 24px 70px -20px rgb(0 0 0/.55);
+}
+.palette::backdrop{background:color-mix(in oklab,var(--bg) 72%,transparent);backdrop-filter:blur(6px)}
+.pal-q{
+  width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;
+  color:var(--ink-hi);font:inherit;font-size:var(--step-1);padding:1rem 1.1rem;outline:0;
+}
+.pal-list{list-style:none;margin:0;padding:.4rem;max-height:46vh;overflow:auto}
+.pal-list li{
+  display:flex;align-items:baseline;gap:.8rem;padding:.6rem .7rem;border-radius:4px;cursor:pointer;
+}
+.pal-list li.on{background:var(--surface-2)}
+.pal-list li.on .pal-label{color:var(--ink-hi)}
+.pal-kind{font-size:.6rem;min-width:4.5rem;color:var(--accent)}
+.pal-label{color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-empty{color:var(--dim);padding:.9rem}
+.pal-hint{padding:.6rem 1.1rem;border-top:1px solid var(--rule);font-size:.62rem;margin:0}
+
+/* I13 · mobile instrument bar */
+.ibar{
+  position:fixed;inset:auto 0 0 0;z-index:70;display:none;
+  grid-template-columns:repeat(5,1fr);gap:1px;
+  background:color-mix(in oklab,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px);border-top:1px solid var(--rule);
+  padding:.4rem .3rem calc(.4rem + env(safe-area-inset-bottom));
+  transition:transform var(--d-med) var(--e-house);
+}
+.ibar[data-hide="1"]{transform:translateY(110%)}
+.ibar a{
+  display:grid;justify-items:center;gap:.25rem;padding:.4rem .2rem;text-decoration:none;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;color:var(--dim);
+}
+.ibar a.on{color:var(--accent)}
+/* Glyphs drawn from the site's own language, not a stock icon set. */
+.ibar-g{width:14px;height:14px;border:1px solid currentColor;border-radius:1px}
+.ibar a:nth-child(2) .ibar-g{border-radius:50%}
+.ibar a:nth-child(3) .ibar-g{border-radius:1px;transform:rotate(45deg)}
+.ibar a:nth-child(4) .ibar-g{border-radius:50% 50% 1px 50%}
+.ibar a:nth-child(5) .ibar-g{border-width:1px 1px 3px 1px}
+@media(max-width:940px){
+  .ibar{display:grid}
+  body{padding-bottom:4.6rem}
+}
+:root[data-motion="reduced"] .ibar{transition:none}
+:root[data-motion="reduced"] .ibar[data-hide="1"]{transform:none}
+
+/* I10 / M7 · publication expand — grid-template-rows, never max-height */
+.note-btn{
+  display:inline-flex;align-items:center;gap:.45rem;margin-top:.7rem;
+  font-family:var(--mono);font-size:var(--step--1);letter-spacing:.08em;text-transform:uppercase;
+  background:transparent;color:var(--dim);border:1px solid var(--rule);border-radius:3px;
+  padding:.28rem .55rem;cursor:pointer;
+  transition:color var(--d-small) var(--e-house),border-color var(--d-small) var(--e-house),
+             transform var(--d-press) var(--e-prod);
+}
+.note-btn:hover{color:var(--ink-hi);border-color:var(--rule-hi)}
+.note-btn .chev{transition:transform var(--d-med) var(--e-prod)}
+.note-btn[data-open="1"] .chev{transform:rotate(180deg)}
+.note-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--d-med) var(--e-prod)}
+.note-wrap[data-open="1"]{grid-template-rows:1fr}
+.note-wrap>.paper-note{overflow:hidden;margin-top:0}
+.note-wrap[data-open="1"]>.paper-note{margin-top:.75rem}
+
+/* M9 · chip stagger, clamped so a long list still finishes fast */
+.facts .fact,.awards .award{
+  transition-delay:calc(min(var(--i,0),6) * 45ms);
+}
+
+/* M6 · headings arrive by clip wipe, not fade. The -8% keeps descenders
+   and 中文 strokes from being shaved at rest. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .sec-t,.page-head h1{
+      animation:wipeup 560ms var(--e-inout-strong) both;
+      animation-timeline:view();
+      animation-range:entry 15% entry 60%;
+    }
+  }
+}
+@keyframes wipeup{
+  from{clip-path:inset(0 0 100% 0)}
+  to{clip-path:inset(0 0 -8% 0)}
+}
+
+/* M3 · photographs arrive scroll-driven; the scroll is the easing */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .shot{
+      animation:photoin linear both;
+      animation-timeline:view();
+      animation-range:entry 10% entry 70%;
+    }
+  }
+}
+@keyframes photoin{
+  from{opacity:0;transform:translateY(24px) scale(.985);filter:blur(4px)}
+  to{opacity:1;transform:none;filter:blur(0)}
+}
+
+
+/* I2 · the noise dial */
+.dial{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;
+  padding-block:1.4rem;border-bottom:1px solid var(--rule);
+}
+.dial-l{white-space:nowrap}
+.dial input[type=range]{
+  appearance:none;width:100%;height:2px;background:var(--rule-hi);border-radius:2px;outline:0;
+}
+.dial input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);cursor:grab;
+  transition:transform var(--d-press) var(--e-prod);
+}
+.dial input[type=range]:active::-webkit-slider-thumb{transform:scale(1.25);cursor:grabbing}
+.dial input[type=range]::-moz-range-thumb{
+  width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);cursor:grab;
+}
+.dial output{font-size:var(--step--1);color:var(--dim);white-space:nowrap;letter-spacing:.05em}
+.dial output b{color:var(--ink-hi);font-weight:500}
+.dial .good{color:var(--accent)}
+.dial .bad{color:var(--emphasis)}
+@media(max-width:700px){
+  .dial{grid-template-columns:1fr;gap:.6rem}
+  .dial input[type=range]{height:4px}
+  .dial input[type=range]::-webkit-slider-thumb{width:24px;height:24px}
+}
 
 </style>
 </head>
@@ -762,6 +946,220 @@ document.querySelectorAll('.lr-more').forEach(btn => {
 
 
 /* ══════════════════════════════════════════════════════════════════════
+   INTERACTION LAYER
+   Six of these compute something real; the rest are cheap furniture.
+   Every keydown handler bails during IME composition — without that the
+   palette is broken for exactly the audience the Chinese tree exists for.
+   ══════════════════════════════════════════════════════════════════════ */
+const typing = el => el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable);
+const composing = e => e.isComposing || e.keyCode === 229;
+
+/* ── I12 · magic-line nav indicator ─────────────────────────────────── */
+(() => {
+  const nav = document.getElementById('nav');
+  if (!nav) return;
+  const line = document.createElement('span');
+  line.className = 'nav-ind';
+  nav.appendChild(line);
+  const move = a => {
+    if (!a) return;
+    nav.style.setProperty('--ind-x', a.offsetLeft + 'px');
+    nav.style.setProperty('--ind-w', a.offsetWidth + 'px');
+    nav.dataset.ind = '1';
+  };
+  const rest = () => move(nav.querySelector('a.on')) || (nav.dataset.ind = nav.querySelector('a.on') ? '1' : '0');
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('pointerenter', () => move(a));
+    a.addEventListener('focus', () => move(a));
+  });
+  nav.addEventListener('pointerleave', rest);
+  addEventListener('load', rest);
+  rest();
+})();
+
+/* ── I8 / M8 · theme wipe: a circle expanding from the button ───────── */
+(() => {
+  const btn = document.getElementById('theme-btn');
+  if (!btn) return;
+  btn.addEventListener('pointerdown', e => {
+    const r = btn.getBoundingClientRect();
+    document.documentElement.style.setProperty('--wipe-x', (r.left + r.width / 2) + 'px');
+    document.documentElement.style.setProperty('--wipe-y', (r.top + r.height / 2) + 'px');
+    const far = Math.hypot(Math.max(e.clientX, innerWidth - e.clientX),
+                           Math.max(e.clientY, innerHeight - e.clientY));
+    document.documentElement.style.setProperty('--wipe-r', far + 'px');
+  });
+})();
+
+/* ── I7 · command palette (⌘K / Ctrl+K / “/”) ───────────────────────── */
+(() => {
+  const items = [
+    ...PAGES.map(p => ({ en: p.en, zh: p.zh, roman: p.id, href: p.href, kind: 'page' })),
+    ...(DATA.publications || []).map(p => ({
+      en: p.title, zh: p.title, roman: p.venue,
+      href: p.doi || 'publications.html', kind: 'paper',
+    })),
+    { en: 'Download CV (PDF)', zh: '下載履歷 (PDF)', roman: 'cv', href: DATA.meta.cv, kind: 'action' },
+    { en: 'Email me', zh: '寄信給我', roman: 'email mail', href: 'mailto:' + DATA.meta.email, kind: 'action' },
+    { en: 'GitHub', zh: 'GitHub', roman: 'github code', href: DATA.meta.github, kind: 'action' },
+  ];
+
+  const dlg = document.createElement('dialog');
+  dlg.className = 'palette';
+  dlg.innerHTML = `
+    <input type="text" class="pal-q" autocomplete="off" spellcheck="false"
+           aria-label="Search" placeholder="">
+    <ul class="pal-list" role="listbox"></ul>
+    <p class="pal-hint label"></p>`;
+  document.body.appendChild(dlg);
+  const q = dlg.querySelector('.pal-q'), list = dlg.querySelector('.pal-list');
+  const hint = dlg.querySelector('.pal-hint');
+  let cur = 0, shown = items;
+
+  // NFKC so a full-width Ｋ typed in a Chinese IME still matches.
+  const norm = s => (s || '').normalize('NFKC').toLowerCase();
+
+  const paint = () => {
+    const en = root.dataset.lang === 'en';
+    q.placeholder = en ? 'Search pages, papers, actions…' : '搜尋頁面、論文、動作…';
+    hint.textContent = en ? '↑↓ move · ⏎ open · esc close' : '↑↓ 移動 · ⏎ 開啟 · esc 關閉';
+    list.innerHTML = shown.map((it, i) => `
+      <li role="option" aria-selected="${i === cur}" data-i="${i}" class="${i === cur ? 'on' : ''}">
+        <span class="pal-kind label">${it.kind}</span>
+        <span class="pal-label">${esc(en ? it.en : it.zh)}</span>
+      </li>`).join('') || `<li class="pal-empty">${en ? 'nothing found' : '找不到'}</li>`;
+  };
+  const filter = () => {
+    const t = norm(q.value).trim();
+    shown = !t ? items : items.filter(it =>
+      norm(it.en).includes(t) || norm(it.zh).includes(t) || norm(it.roman).includes(t));
+    cur = 0; paint();
+  };
+  const go = () => { const it = shown[cur]; if (it) location.href = it.href; };
+  const open = () => { if (dlg.open) return; dlg.showModal(); q.value = ''; filter(); q.focus(); };
+
+  q.addEventListener('input', filter);
+  list.addEventListener('click', e => {
+    const li = e.target.closest('li[data-i]');
+    if (li) { cur = +li.dataset.i; go(); }
+  });
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', e => {
+    if (composing(e)) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); cur = Math.min(cur + 1, shown.length - 1); paint(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); cur = Math.max(cur - 1, 0); paint(); }
+    else if (e.key === 'Enter') { e.preventDefault(); go(); }
+  });
+
+  addEventListener('keydown', e => {
+    if (composing(e)) return;
+    const k = e.key.toLowerCase();
+    if ((e.metaKey || e.ctrlKey) && k === 'k') { e.preventDefault(); open(); return; }
+    if (typing(e.target)) return;
+    if (k === '/') { e.preventDefault(); open(); }
+    /* ── I19 · single-key shortcuts ── */
+    else if (k === 't') document.getElementById('theme-btn')?.click();
+    else if (k === 'l') document.getElementById('lang-btn')?.click();
+    else if (k === '?') { open(); }
+  });
+  window.__palette = open;
+})();
+
+/* ── I13 · mobile instrument bar ────────────────────────────────────── */
+(() => {
+  if (!matchMedia('(max-width: 940px)').matches) return;
+  const bar = document.createElement('nav');
+  bar.className = 'ibar';
+  bar.setAttribute('aria-label', 'Sections');
+  bar.innerHTML = PAGES.map(p => `
+    <a href="${p.href}"${p.id === PAGE ? ' class="on" aria-current="page"' : ''}>
+      <span class="ibar-g" aria-hidden="true"></span>
+      <span data-en>${p.en}</span><span data-zh>${p.zh}</span>
+    </a>`).join('');
+  document.body.appendChild(bar);
+  let last = scrollY;
+  addEventListener('scroll', () => {
+    const y = scrollY;
+    bar.dataset.hide = (y > last && y > 220) ? '1' : '0';
+    last = y;
+  }, { passive: true });
+})();
+
+/* ── I10 / M7 · publication expand-in-place ─────────────────────────── */
+document.querySelectorAll('.paper-note').forEach(note => {
+  const main = note.closest('.paper-main');
+  if (!main) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'note-wrap';
+  note.parentNode.insertBefore(wrap, note);
+  wrap.appendChild(note);
+  const btn = document.createElement('button');
+  btn.className = 'note-btn';
+  btn.type = 'button';
+  btn.innerHTML = '<span data-en>Contribution</span><span data-zh>貢獻</span><span class="chev" aria-hidden="true">▾</span>';
+  wrap.before(btn);
+  btn.setAttribute('aria-expanded', 'false');
+  btn.addEventListener('click', () => {
+    const on = wrap.dataset.open === '1';
+    wrap.dataset.open = on ? '0' : '1';
+    btn.dataset.open = on ? '0' : '1';
+    btn.setAttribute('aria-expanded', String(!on));
+  });
+});
+
+/* ── M9 · stagger index for chips ───────────────────────────────────── */
+document.querySelectorAll('.facts .fact, .awards .award').forEach((el, i) => {
+  el.style.setProperty('--i', Math.min(i, 6));
+});
+
+
+/* ── I2 · noise dial — drag the corruption up until retrieval fails ─── */
+function mountNoiseDial() {
+  if (PAGE !== 'index') return;
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+  // site_hero.js is concatenated after this file and boots on document.fonts.ready,
+  // so poll briefly for its hook rather than assuming it is already there.
+  if (!window.__retrieve) { setTimeout(mountNoiseDial, 120); return; }
+  if (document.querySelector('.dial')) return;
+
+  const el = document.createElement('div');
+  el.className = 'dial wrap';
+  el.innerHTML = `
+    <label class="dial-l label" for="noise">
+      <span data-en>Corrupt the cue</span><span data-zh>破壞線索</span>
+    </label>
+    <input id="noise" type="range" min="0" max="60" value="42" step="1"
+           aria-describedby="dial-out">
+    <output id="dial-out" class="mono"></output>`;
+  hero.after(el);
+
+  const range = el.querySelector('#noise'), out = el.querySelector('#dial-out');
+  let t = 0;
+  const label = () => {
+    const en = root.dataset.lang === 'en';
+    const p = +range.value;
+    const m = window.__overlap ? window.__overlap() : 0;
+    const failed = m < 0.9;
+    out.innerHTML =
+      `<b>${p}%</b> ${en ? 'bit-flip' : '位元翻轉'} · ` +
+      `${en ? 'overlap' : '重疊'} <b>${m.toFixed(2)}</b> ` +
+      `<span class="${failed ? 'bad' : 'good'}">${failed
+        ? (en ? 'retrieval failed' : '檢索失敗')
+        : (en ? 'retrieved' : '檢索成功')}</span>`;
+  };
+  range.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(() => { window.__retrieve(+range.value / 100); }, 90);
+    label();
+  });
+  setInterval(label, 400);
+  label();
+}
+mountNoiseDial();
+
+
+/* ══════════════════════════════════════════════════════════════════════
    THE HERO IS THE PAPER — both of them, in order, run on the visitor's
    only reason for being here: the author's name.
 
@@ -921,12 +1319,15 @@ document.querySelectorAll('.lr-more').forEach(btn => {
     }
   }
 
+  let flipRate = 0.42;
+
   /** Corrupt the target pattern and start the sweeps. */
-  function beginRetrieval(which) {
+  function beginRetrieval(which, rate) {
     if (!N) buildLattice();
     targetPattern = which;
+    if (rate != null) flipRate = rate;
     s = Int8Array.from(X[which]);
-    const flip = 0.42;
+    const flip = flipRate;
     for (let i = 0; i < N; i++) if (rnd() < flip) s[i] = -s[i];
     overlaps();
     shuffle();
@@ -1225,6 +1626,18 @@ document.querySelectorAll('.lr-more').forEach(btn => {
 
   // Cloak immediately so the name never flashes in before the lattice replaces it.
   // The timeout is the safety net: if fonts never resolve, the type comes back anyway.
+  /* I2 — the dial re-runs the solver at a chosen corruption level. Past the
+     basin-of-attraction boundary the retrieval genuinely fails, which is the
+     point: the reader gets to break it. */
+  window.__retrieve = (rate) => {
+    nameEl.classList.remove('resolved');
+    nameEl.classList.add('cloaked');
+    beginRetrieval(root.dataset.lang === 'zh' ? 1 : 0, rate);
+    if (!running && !reducedMotion()) { running = true; raf = requestAnimationFrame(frame); }
+    if (reducedMotion()) { for (let i = 0; i < 14; i++) { shuffle(); sweepSlice(0, N); } drawLatticeFull(); }
+  };
+  window.__overlap = () => (m ? Math.max(...m) : 0);
+
   if (!reducedMotion()) nameEl.classList.add('cloaked');
   let booted = false;
   const once = () => { if (!booted) { booted = true; boot(); } };
