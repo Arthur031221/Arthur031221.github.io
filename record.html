@@ -604,6 +604,166 @@ button:active,.sw:active,a.pager-link:active,.shot:active{transform:scale(.97)}
   .dial input[type=range]::-webkit-slider-thumb{width:24px;height:24px}
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════
+   PHOTOGRAPHY PIPELINE
+   Never style a photo individually. One grade, one grain, two ratios —
+   consistency of treatment beats quality of source, and nobody asks what
+   camera it was.
+   ══════════════════════════════════════════════════════════════════════ */
+:root[data-theme="light"]{
+  --ph-sat:.62; --ph-con:1.06; --ph-bri:1.04; --ph-hue:-4deg;
+  --ph-grain:.055; --ph-blend:multiply;
+}
+:root[data-theme="dark"]{
+  --ph-sat:.30; --ph-con:1.22; --ph-bri:.88; --ph-hue:8deg;
+  --ph-grain:.11; --ph-blend:soft-light;
+}
+
+.ph{
+  position:relative;margin:0;overflow:hidden;
+  background-image:var(--thumb);background-size:cover;background-position:center;
+  border:1px solid var(--rule);
+}
+.ph img{
+  display:block;inline-size:100%;aspect-ratio:var(--ar,3/2);
+  object-fit:cover;object-position:var(--fx,50%) var(--fy,50%);
+  /* filters are not commutative — this order is deliberate */
+  filter:saturate(var(--ph-sat)) contrast(var(--ph-con))
+         brightness(var(--ph-bri)) hue-rotate(var(--ph-hue));
+  opacity:0;transform:scale(1.04);
+  transition:opacity var(--d-large) var(--e-out-strong),
+             transform 900ms var(--e-out-strong),
+             filter var(--d-large) var(--e-house);
+}
+.ph[data-loaded="1"] img{opacity:1;transform:none}
+/* Grain: one shared noise field is what glues mismatched phone shots together.
+   Tiled at 180px — never one full-viewport surface. */
+.ph::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+  opacity:var(--ph-grain);mix-blend-mode:var(--ph-blend);
+}
+.ph figcaption{
+  display:grid;gap:.25rem;padding:.75rem .85rem 1rem;
+  border-top:1px solid var(--rule);background:var(--bg);
+}
+.ph-cap{font-size:var(--step--1);color:var(--ink-2)}
+.ph-slug{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+
+/* Full-bleed escapes the wrap without horizontal overflow. */
+.bleed{width:100vw;margin-inline:calc(50% - 50vw)}
+.ph-bleed{border-inline:0;border-radius:0}
+.ph-bleed img{aspect-ratio:var(--ar,3/2);max-height:78svh}
+.ph-bleed figcaption{
+  width:min(100% - var(--gut)*2,var(--maxw));margin-inline:auto;border-top:0;background:transparent;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   FIELD — the gateway
+   ══════════════════════════════════════════════════════════════════════ */
+.fcards{display:grid;gap:clamp(1rem,3vw,2rem);grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.fcard{
+  display:grid;gap:1rem;text-decoration:none;
+  transition:transform var(--d-med) var(--e-house);
+}
+.fcard:hover{transform:translateY(-4px)}
+.fcard-ph{border-radius:3px}
+.fcard-t h2{font-size:var(--step-2);color:var(--ink-hi)}
+:root[data-motion="reduced"] .fcard:hover{transform:none}
+
+/* I18 · comparison slider — corrupt and retrieve, on a photograph */
+.cmp{position:relative;overflow:hidden;border:1px solid var(--rule);aspect-ratio:3/2;--pos:50%}
+.cmp img,.cmp canvas{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(var(--ph-sat)) contrast(var(--ph-con)) brightness(var(--ph-bri));
+}
+.cmp canvas{clip-path:inset(0 0 0 var(--pos))}
+.cmp-h{
+  position:absolute;inset-block:0;left:var(--pos);width:1px;background:var(--accent);
+  pointer-events:none;box-shadow:0 0 12px color-mix(in oklab,var(--accent) 60%,transparent);
+}
+.cmp input[type=range]{
+  position:absolute;inset-block-end:1rem;inset-inline:1.2rem;width:auto;
+  appearance:none;height:2px;background:color-mix(in oklab,var(--ink-hi) 35%,transparent);
+  border-radius:2px;outline:0;
+}
+.cmp input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);cursor:grab;
+}
+.cmp input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);
+}
+.cmp-slug{margin-top:.7rem}
+
+/* Contact sheet — the one maximalist moment. Gaps read as hairlines. */
+.contact-sheet{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));
+  gap:1px;background:var(--rule);padding:1px;
+  content-visibility:auto;contain-intrinsic-size:auto 600px;
+}
+.sheet-i{
+  position:relative;padding:0;border:0;background:var(--bg);cursor:zoom-in;
+  aspect-ratio:1/1;overflow:hidden;
+}
+.sheet-i img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  /* index entries, not photographs — so these get the full duotone */
+  filter:grayscale(1) contrast(1.15) sepia(.35) hue-rotate(85deg) saturate(2.2) brightness(.9);
+  transition:filter var(--d-med) var(--e-house),transform var(--d-large) var(--e-out-strong);
+}
+:root[data-theme="light"] .sheet-i img{
+  filter:grayscale(1) contrast(1.1) sepia(.2) hue-rotate(175deg) saturate(1.6) brightness(1.02);
+}
+.sheet-i:hover img,.sheet-i:focus-visible img{filter:none;transform:scale(1.04)}
+.sheet-n{
+  position:absolute;left:.4rem;bottom:.35rem;font-size:.58rem;color:var(--ink-hi);
+  letter-spacing:.1em;opacity:0;transition:opacity var(--d-fade) linear;
+}
+.sheet-i:hover .sheet-n{opacity:1}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ESSAY
+   ══════════════════════════════════════════════════════════════════════ */
+.essay-head{padding-block:clamp(2.5rem,6vh,4.5rem) 0}
+.essay-head h1{font-size:var(--step-3);color:var(--ink-hi);margin-top:.6rem}
+.essay-grid{
+  display:grid;gap:clamp(1.5rem,4vw,3.5rem);
+  grid-template-columns:minmax(0,10rem) minmax(0,1fr);
+  padding-block:clamp(2.5rem,6vh,4rem);
+}
+@media(max-width:860px){.essay-grid{grid-template-columns:1fr}}
+.essay-body p{margin-bottom:1.5rem;color:var(--ink-2);max-width:66ch;font-size:var(--step-0)}
+.essay-body p:first-of-type{font-size:var(--step-1);color:var(--ink-hi)}
+.essay-plate{padding-block:clamp(1.5rem,4vh,3rem)}
+.essay-plate.wrap .ph{max-width:52rem;margin-inline:auto}
+
+/* I6 · reading progress — a 1:1 map of the reader's own scroll */
+.toc{position:sticky;top:5rem;align-self:start;display:grid;gap:.5rem}
+@media(max-width:860px){.toc{position:static;grid-template-columns:1fr auto auto;align-items:center;gap:.8rem}}
+.toc-bar{height:2px;background:var(--rule);border-radius:2px;overflow:hidden}
+.toc-fill{display:block;height:100%;width:0;background:var(--accent);transition:width 90ms linear}
+.toc-pct{font-size:var(--step--1);color:var(--ink-hi)}
+
+
+/* I14 · lightbox */
+.lb{
+  border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;
+  width:100vw;height:100vh;display:grid;place-content:center;gap:1rem;
+}
+.lb::backdrop{background:color-mix(in oklab,var(--bg) 94%,transparent);backdrop-filter:blur(20px)}
+.lb img{
+  max-width:min(94vw,1100px);max-height:76svh;object-fit:contain;
+  border:1px solid var(--rule);
+  filter:saturate(var(--ph-sat)) contrast(var(--ph-con)) brightness(var(--ph-bri));
+}
+.lb footer{display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.lb-cap{font-size:var(--step--1);color:var(--ink-2)}
+.lb-n{font-size:var(--step--1);color:var(--dim);letter-spacing:.1em}
+.lb-x{position:fixed;top:1.2rem;right:1.2rem;cursor:pointer}
+
 </style>
 </head>
 
@@ -631,7 +791,7 @@ button:active,.sw:active,a.pager-link:active,.shot:active{transform:scale(.97)}
   </div>
 </footer>
 
-<script id="content" type="application/json">{"meta":{"name":{"en":"Chi-Wei Lee","zh":"李騏維"},"handle":"Arthur","role":{"en":"NeuroAI researcher","zh":"腦神經 × 機器學習研究者"},"tagline":{"en":"Predictive coding, associative memory, and Bayesian inference — in brains and in machines.","zh":"預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"},"email":"levi74108520963@gmail.com","github":"https://github.com/Arthur031221","site":"https://arthur031221.github.io/","cv":"Chi-Wei_Lee_CV.pdf","location":{"en":"Hsinchu, Taiwan · currently at UCLA","zh":"台灣新竹 · 現於 UCLA"}},"about":{"lead":{"en":"I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.","zh":"我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"},"body":{"en":["I am a graduating B.S. student at National Tsing Hua University, double majoring in Physics and Electrical Engineering & Computer Science (AI Track).","My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review at NeurIPS 2026: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.","My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.","Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."],"zh":["我是國立清華大學應屆畢業生,雙主修物理系與電機資訊學院學士班(AI 組)。","理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 NeurIPS 2026 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。","實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。","在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"]},"facts":[{"k":{"en":"University","zh":"學校"},"v":{"en":"National Tsing Hua University","zh":"國立清華大學"}},{"k":{"en":"Major","zh":"主修"},"v":{"en":"Physics × EECS (AI Track), double major","zh":"物理系 × 電資學士班(AI 組),雙主修"}},{"k":{"en":"Now","zh":"現況"},"v":{"en":"HMI Lab, NTHU · visiting UCLA","zh":"清華 HMI Lab · 訪問 UCLA"}},{"k":{"en":"Looking for","zh":"尋找"},"v":{"en":"PhD positions in NeuroAI, 2027 entry","zh":"NeuroAI 博士班,2027 入學"}}]},"threads":[{"id":"pc","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Predictive coding needs a memory","zh":"預測編碼需要記憶"},"body":{"en":"Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.","zh":"預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"}},{"id":"langevin","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Inference should sample, not just peak","zh":"推論應該取樣,而不只是找峰"},"body":{"en":"Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.","zh":"時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"}},{"id":"fmri","tag":{"en":"Neural data","zh":"神經資料"},"title":{"en":"Reading space out of the brain","zh":"從大腦裡讀出空間"},"body":{"en":"At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.","zh":"在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"}},{"id":"diffusion","tag":{"en":"Generative","zh":"生成模型"},"title":{"en":"Control without losing the picture","zh":"在不失去畫面的前提下控制"},"body":{"en":"MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.","zh":"MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"}}],"publications":[{"status":"review","title":"Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.","zh":"以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"}},{"status":"review","title":"Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.","zh":"把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"}},{"status":"accepted","title":"MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation","authors":"C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen","venue":"TAAI 2025","badge":{"en":"Accepted · poster","zh":"已接受 · 海報"},"year":"2025","note":{"en":"Extended abstract. Full paper in preparation.","zh":"延伸摘要。完整論文撰寫中。"}},{"status":"published","title":"Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods","authors":"X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee","venue":"Journal of Modern Physics 15(12)","badge":{"en":"Published","zh":"已發表"},"year":"2024","doi":"https://doi.org/10.4236/jmp.2024.1512087","note":{"en":"","zh":""}},{"status":"service","title":"Building Machine Learning Challenges for Anomaly Detection in Science","authors":"E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)","venue":"arXiv:2503.02112 · preprint, under submission","badge":{"en":"Co-author","zh":"共同作者"},"year":"2025","doi":"https://arxiv.org/abs/2503.02112","note":{"en":"A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.","zh":"源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。"}}],"awards":[{"year":"2026","title":{"en":"Mei Yi-Chi Memorial Medal","zh":"梅貽琦紀念獎章"},"org":{"en":"National Tsing Hua University","zh":"國立清華大學"},"hero":true,"note":{"en":"NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.","zh":"清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"}},{"year":"2025","title":{"en":"2nd worldwide — NSF HDR ML Challenge","zh":"全球第二 — NSF HDR ML Challenge"},"org":{"en":"U.S. National Science Foundation · Overall Track","zh":"美國國家科學基金會 · 總積分"},"hero":true,"note":{"en":"2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.","zh":"全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"}},{"year":"2026","title":{"en":"3rd worldwide — NSF HDR ML Challenge","zh":"全球第三 — NSF HDR ML Challenge"},"org":{"en":"Climate Prediction Track","zh":"氣候預測賽道"},"note":{"en":"Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.","zh":"以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"}},{"year":"2025","title":{"en":"1st place — Mei-Chu Hackathon","zh":"第一名 — 梅竹黑客松"},"org":{"en":"Maker Track","zh":"Maker 組"},"note":{"en":"A wearable-and-app system modelling walking trajectories for dementia safety monitoring.","zh":"穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"}},{"year":"2023","title":{"en":"Gold Medal — iGEM","zh":"金牌 — iGEM"},"org":{"en":"NTHU-Taiwan · Dry Lab Lead","zh":"NTHU-Taiwan · Dry Lab 組長"},"note":{"en":"Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.","zh":"以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"}}],"longreads":{"nsf":{"title":{"en":"20 days, 20 iterations","zh":"20 天,20 次迭代"},"place":"Philadelphia · New York","date":"2025.02.28 – 03.09","photos":[{"src":"img/NSF0","cap":{"en":"AAAI-25 workshop, Philadelphia","zh":"費城 AAAI-25 workshop"}},{"src":"img/NSF1","cap":{"en":"The six of us — team 20iterations","zh":"我們六個 —— 20iterations"}},{"src":"img/NSF2","cap":{"en":"Second worldwide, of 600+ teams","zh":"600 支以上隊伍中的全球第二"}}],"zh":["美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。","NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元","每次開會，絕對會聽到","「欸咦等一下讓我想一下」","「我覺得你說得很有道理，但是...」","「這次不可能錯了吧⋯⋯」","「真的沒有任何理由了，如果再是 0 那我也真的...」","「欸咦等一下...」","老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了","這趟紐約與費城之旅，真的很神奇。","體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......","這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......","謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。","時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。","#20iterations"],"en":["The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.","The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.","To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.","In every meeting, you would definitely hear:","\"Wait-hold on  let me think \"","\"You're totally right, but...\"","\"This time it can't be wrong... right...\"","\"There's literally no reason-if it's still 0, I'm going to...\"","\"Wait... hold on...\"","Honestly, in that one month, I heard these lines not 100 times, but at least dozens","The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)","Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...","Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.","Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.","Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.","#20iterations"]},"igem":{"title":{"en":"57 big meows, 45 small ones","zh":"57 次大咪,45 次小咪"},"place":"Paris, France","date":"2023.10.31 – 11.11","photos":[{"src":"img/igem0","cap":{"en":"iGEM Grand Jamboree, Paris","zh":"巴黎 iGEM Grand Jamboree"}},{"src":"img/igem1","cap":{"en":"The Dry Lab bench","zh":"Dry Lab 的工作現場"}},{"src":"img/igem2","cap":{"en":"Sixteen people, one gold medal","zh":"十六個人,一面金牌"}},{"src":"img/igem3","cap":{"en":"Presenting the diagnostic device","zh":"展示我們的診斷裝置"}}],"zh":["57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..","記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！","在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...","人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。","#8th"],"en":["57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.","I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.","That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.","In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.","Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.","#8th"]}}}</script>
+<script id="content" type="application/json">{"meta":{"name":{"en":"Chi-Wei Lee","zh":"李騏維"},"handle":"Arthur","role":{"en":"NeuroAI researcher","zh":"腦神經 × 機器學習研究者"},"tagline":{"en":"Predictive coding, associative memory, and Bayesian inference — in brains and in machines.","zh":"預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"},"email":"levi74108520963@gmail.com","github":"https://github.com/Arthur031221","site":"https://arthur031221.github.io/","cv":"Chi-Wei_Lee_CV.pdf","location":{"en":"Hsinchu, Taiwan · currently at UCLA","zh":"台灣新竹 · 現於 UCLA"}},"about":{"lead":{"en":"I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.","zh":"我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"},"body":{"en":["I am a graduating B.S. student at National Tsing Hua University, double majoring in Physics and Electrical Engineering & Computer Science (AI Track).","My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review at NeurIPS 2026: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.","My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.","Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."],"zh":["我是國立清華大學應屆畢業生,雙主修物理系與電機資訊學院學士班(AI 組)。","理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 NeurIPS 2026 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。","實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。","在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"]},"facts":[{"k":{"en":"University","zh":"學校"},"v":{"en":"National Tsing Hua University","zh":"國立清華大學"}},{"k":{"en":"Major","zh":"主修"},"v":{"en":"Physics × EECS (AI Track), double major","zh":"物理系 × 電資學士班(AI 組),雙主修"}},{"k":{"en":"Now","zh":"現況"},"v":{"en":"HMI Lab, NTHU · visiting UCLA","zh":"清華 HMI Lab · 訪問 UCLA"}},{"k":{"en":"Looking for","zh":"尋找"},"v":{"en":"PhD positions in NeuroAI, 2027 entry","zh":"NeuroAI 博士班,2027 入學"}}]},"threads":[{"id":"pc","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Predictive coding needs a memory","zh":"預測編碼需要記憶"},"body":{"en":"Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.","zh":"預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"}},{"id":"langevin","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Inference should sample, not just peak","zh":"推論應該取樣,而不只是找峰"},"body":{"en":"Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.","zh":"時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"}},{"id":"fmri","tag":{"en":"Neural data","zh":"神經資料"},"title":{"en":"Reading space out of the brain","zh":"從大腦裡讀出空間"},"body":{"en":"At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.","zh":"在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"}},{"id":"diffusion","tag":{"en":"Generative","zh":"生成模型"},"title":{"en":"Control without losing the picture","zh":"在不失去畫面的前提下控制"},"body":{"en":"MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.","zh":"MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"}}],"publications":[{"status":"review","title":"Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.","zh":"以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"}},{"status":"review","title":"Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.","zh":"把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"}},{"status":"accepted","title":"MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation","authors":"C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen","venue":"TAAI 2025","badge":{"en":"Accepted · poster","zh":"已接受 · 海報"},"year":"2025","note":{"en":"Extended abstract. Full paper in preparation.","zh":"延伸摘要。完整論文撰寫中。"}},{"status":"published","title":"Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods","authors":"X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee","venue":"Journal of Modern Physics 15(12)","badge":{"en":"Published","zh":"已發表"},"year":"2024","doi":"https://doi.org/10.4236/jmp.2024.1512087","note":{"en":"","zh":""}},{"status":"service","title":"Building Machine Learning Challenges for Anomaly Detection in Science","authors":"E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)","venue":"arXiv:2503.02112 · preprint, under submission","badge":{"en":"Co-author","zh":"共同作者"},"year":"2025","doi":"https://arxiv.org/abs/2503.02112","note":{"en":"A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.","zh":"源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。"}}],"awards":[{"year":"2026","title":{"en":"Mei Yi-Chi Memorial Medal","zh":"梅貽琦紀念獎章"},"org":{"en":"National Tsing Hua University","zh":"國立清華大學"},"hero":true,"note":{"en":"NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.","zh":"清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"}},{"year":"2025","title":{"en":"2nd worldwide — NSF HDR ML Challenge","zh":"全球第二 — NSF HDR ML Challenge"},"org":{"en":"U.S. National Science Foundation · Overall Track","zh":"美國國家科學基金會 · 總積分"},"hero":true,"note":{"en":"2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.","zh":"全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"}},{"year":"2026","title":{"en":"3rd worldwide — NSF HDR ML Challenge","zh":"全球第三 — NSF HDR ML Challenge"},"org":{"en":"Climate Prediction Track","zh":"氣候預測賽道"},"note":{"en":"Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.","zh":"以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"}},{"year":"2025","title":{"en":"1st place — Mei-Chu Hackathon","zh":"第一名 — 梅竹黑客松"},"org":{"en":"Maker Track","zh":"Maker 組"},"note":{"en":"A wearable-and-app system modelling walking trajectories for dementia safety monitoring.","zh":"穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"}},{"year":"2023","title":{"en":"Gold Medal — iGEM","zh":"金牌 — iGEM"},"org":{"en":"NTHU-Taiwan · Dry Lab Lead","zh":"NTHU-Taiwan · Dry Lab 組長"},"note":{"en":"Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.","zh":"以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"}}],"longreads":{"nsf":{"title":{"en":"20 days, 20 iterations","zh":"20 天,20 次迭代"},"place":"Philadelphia · New York","date":"2025.02.28 – 03.09","hero":"img/NSF1","photos":[{"src":"img/NSF1","fx":"50%","fy":"34%","role":"hero","slug":"PHL · 39.95 N, 75.16 W · 2025-03 · NSF HDR","cap":{"en":"The six of us — team 20iterations","zh":"我們六個 —— 20iterations"}},{"src":"img/NSF0","fx":"50%","fy":"42%","role":"plate","slug":"PHL · AAAI-25 WORKSHOP · 2025-03-01","cap":{"en":"AAAI-25 workshop, Philadelphia","zh":"費城 AAAI-25 workshop"}},{"src":"img/NSF2","fx":"50%","fy":"40%","role":"bleed","slug":"PHL · 2ND OF 600+ TEAMS · 2025-03","cap":{"en":"Second worldwide, of 600+ teams","zh":"600 支以上隊伍中的全球第二"}}],"zh":["美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。","NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元","每次開會，絕對會聽到","「欸咦等一下讓我想一下」","「我覺得你說得很有道理，但是...」","「這次不可能錯了吧⋯⋯」","「真的沒有任何理由了，如果再是 0 那我也真的...」","「欸咦等一下...」","老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了","這趟紐約與費城之旅，真的很神奇。","體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......","這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......","謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。","時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。","#20iterations"],"en":["The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.","The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.","To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.","In every meeting, you would definitely hear:","\"Wait-hold on  let me think \"","\"You're totally right, but...\"","\"This time it can't be wrong... right...\"","\"There's literally no reason-if it's still 0, I'm going to...\"","\"Wait... hold on...\"","Honestly, in that one month, I heard these lines not 100 times, but at least dozens","The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)","Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...","Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.","Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.","Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.","#20iterations"]},"igem":{"title":{"en":"57 big meows, 45 small ones","zh":"57 次大咪,45 次小咪"},"place":"Paris, France","date":"2023.10.31 – 11.11","hero":"img/igem2","photos":[{"src":"img/igem2","fx":"50%","fy":"38%","role":"hero","slug":"CDG · 48.86 N, 2.35 E · 2023-11 · iGEM","cap":{"en":"Sixteen people, one gold medal","zh":"十六個人,一面金牌"}},{"src":"img/igem1","fx":"50%","fy":"45%","role":"detail","slug":"NTHU · DRY LAB · 2023","cap":{"en":"The Dry Lab bench","zh":"Dry Lab 的工作現場"}},{"src":"img/igem3","fx":"50%","fy":"42%","role":"plate","slug":"CDG · GRAND JAMBOREE · 2023-11","cap":{"en":"Presenting the diagnostic device","zh":"展示我們的診斷裝置"}},{"src":"img/igem0","fx":"50%","fy":"40%","role":"bleed","slug":"CDG · 2023-11-11 · GOLD","cap":{"en":"iGEM Grand Jamboree, Paris","zh":"巴黎 iGEM Grand Jamboree"}}],"zh":["57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..","記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！","在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...","人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。","#8th"],"en":["57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.","I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.","That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.","In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.","Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.","#8th"]}},"slider":{"src":"img/S__16670722","slug":"FORMOSA TRAIL · TAIWAN","cap":{"en":"Trail running, at night — corrupted, then retrieved","zh":"夜間越野跑 —— 加噪,然後還原"}}}</script>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -693,6 +853,7 @@ const PAGES = [
   { id: 'index',        href: './',                  en: 'Home',         zh: '首頁' },
   { id: 'research',     href: 'research.html',       en: 'Research',     zh: '研究' },
   { id: 'publications', href: 'publications.html',   en: 'Publications', zh: '論文' },
+  { id: 'field',        href: 'field.html',          en: 'Field',        zh: '現場' },
   { id: 'record',       href: 'record.html',         en: 'Record',       zh: '歷程' },
   { id: 'about',        href: 'about.html',          en: 'About',        zh: '關於' },
 ];
@@ -722,6 +883,24 @@ const pager = (id) => {
 };
 
 /* ── shared blocks ──────────────────────────────────────────────────── */
+/** One photograph, framed like a scientific plate: hairline inset, mono slug, grain. */
+const plate = (ph, opt) => {
+  const o = opt || {};
+  const ar = o.ar || '3/2';
+  return `
+  <figure class="ph ${o.cls || ''}" style="--ar:${ar};--thumb:url('${esc(ph.src)}.thumb.webp')">
+    <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}"
+         style="--fx:${esc(ph.fx || '50%')};--fy:${esc(ph.fy || '50%')}"
+         ${o.vt ? `data-vt="${esc(o.vt)}"` : ''}
+         ${o.eager ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}
+         onload="this.closest('.ph').dataset.loaded='1'">
+    <figcaption>
+      <span class="ph-cap">${bi(ph.cap)}</span>
+      <span class="ph-slug mono">${esc(ph.slug || '')}</span>
+    </figcaption>
+  </figure>`;
+};
+
 const galleryHTML = (photos) => !photos?.length ? '' : `
   <div class="gal">
     ${photos.map((ph, i) => `
@@ -868,6 +1047,66 @@ const RENDER = {
         </article>`).join('')}
     </section>`,
 
+  field: () => {
+    const all = DATA.longreads.nsf.photos
+      .concat(DATA.longreads.igem.photos)
+      .concat([DATA.slider]);
+    const card = (key, lr) => `
+      <a class="fcard" href="field-${key}.html">
+        <figure class="ph fcard-ph" style="--ar:1/1;--thumb:url('${esc(lr.hero)}.thumb.webp')">
+          <img src="${esc(lr.hero)}.webp" alt="" data-vt="photo-${key}"
+               loading="lazy" decoding="async"
+               onload="this.closest('.ph').dataset.loaded='1'">
+        </figure>
+        <div class="fcard-t">
+          <h2>${bi(lr.title)}</h2>
+          <p class="label">${esc(lr.place)} · ${esc(lr.date)}</p>
+        </div>
+      </a>`;
+    return `
+    <header class="page-head wrap">
+      <p class="label">${bi({ en: 'Section 03', zh: '第 03 節' })}</p>
+      <h1>${bi({ en: 'Field', zh: '現場' })}</h1>
+      <p class="page-lead">${bi({
+        en: 'Two trips I wrote down at the time, because they changed what I wanted to do.',
+        zh: '兩趟旅程,我當時就寫了下來,因為它們改變了我想做的事。',
+      })}</p>
+    </header>
+
+    <section class="sec wrap">
+      <div class="fcards">${card('nsf', DATA.longreads.nsf)}${card('igem', DATA.longreads.igem)}</div>
+    </section>
+
+    <section class="sec wrap">
+      ${secHead('', { en: 'Corrupt and retrieve', zh: '加噪與還原' })}
+      <p class="lead rise">${bi({
+        en: 'The same corruption model as the hero, pointed at a photograph. Drag it.',
+        zh: '和首頁同一個加噪模型,這次指向一張照片。拖拖看。',
+      })}</p>
+      <div class="cmp" id="cmp">
+        <img class="cmp-a" src="${esc(DATA.slider.src)}.webp" alt="${esc(DATA.slider.cap.en)}">
+        <canvas class="cmp-b" id="cmp-noise" aria-hidden="true"></canvas>
+        <input type="range" id="cmp-r" min="0" max="100" value="50" aria-label="Corruption level">
+        <span class="cmp-h" aria-hidden="true"></span>
+      </div>
+      <p class="ph-slug mono cmp-slug">${esc(DATA.slider.slug)}</p>
+    </section>
+
+    <section class="sec wrap">
+      ${secHead('', { en: 'Contact sheet', zh: '接觸印樣' })}
+      <div class="contact-sheet">
+        ${all.map((ph, i) => `
+          <button class="sheet-i" data-i="${i}" type="button" aria-label="${esc(ph.cap.en)}">
+            <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}" loading="lazy" decoding="async">
+            <span class="sheet-n mono">${String(i + 1).padStart(2, '0')}</span>
+          </button>`).join('')}
+      </div>
+    </section>`;
+  },
+
+  'field-nsf': () => essayPage('nsf'),
+  'field-igem': () => essayPage('igem'),
+
   about: () => `
     <header class="page-head wrap">
       <p class="label">${bi({ en: 'Section 04', zh: '第 04 節' })}</p>
@@ -905,7 +1144,47 @@ const RENDER = {
     </section>`,
 };
 
+function essayPage(key) {
+  const lr = DATA.longreads[key];
+  const hero = lr.photos.find(p => p.role === 'hero') || lr.photos[0];
+  const rest = lr.photos.filter(p => p !== hero);
+  const paras = l => lr[l].map((t, i) => `<p data-${l}>${esc(t)}</p>`).join('');
+
+  return `
+  <article class="essay">
+    <div class="bleed">
+      ${plate(hero, { ar: '3/2', cls: 'ph-bleed', vt: 'photo-' + key, eager: true })}
+    </div>
+    <header class="essay-head wrap">
+      <p class="label">${esc(lr.place)} · ${esc(lr.date)}</p>
+      <h1>${bi(lr.title)}</h1>
+    </header>
+    <div class="essay-grid wrap">
+      <aside class="toc" aria-label="Reading progress">
+        <div class="toc-bar"><span class="toc-fill" id="toc-fill"></span></div>
+        <p class="label toc-l">${bi({ en: 'Reading', zh: '閱讀進度' })}</p>
+        <p class="mono toc-pct" id="toc-pct">0%</p>
+      </aside>
+      <div class="essay-body" id="essay-body">
+        ${['en', 'zh'].map(paras).join('')}
+      </div>
+    </div>
+    ${rest.map((ph) => `
+      <div class="${ph.role === 'bleed' ? 'bleed' : 'wrap'} essay-plate">
+        ${plate(ph, { ar: ph.role === 'detail' ? '4/5' : '3/2',
+                      cls: ph.role === 'bleed' ? 'ph-bleed' : '' })}
+      </div>`).join('')}
+    <p class="wrap more"><a href="field.html">${bi({ en: 'Back to the field', zh: '回到現場' })} →</a></p>
+  </article>`;
+}
+
 document.getElementById('main').innerHTML = (RENDER[PAGE] || RENDER.index)() + pager(PAGE);
+
+/* I4 — naming the shared elements is what makes the card photo morph into the
+   essay hero across a document navigation. */
+document.querySelectorAll('img[data-vt]').forEach(img => {
+  img.style.viewTransitionName = img.dataset.vt;
+});
 
 /* ── long-read expand ───────────────────────────────────────────────── */
 document.querySelectorAll('.lr-more').forEach(btn => {
@@ -1157,6 +1436,120 @@ function mountNoiseDial() {
   label();
 }
 mountNoiseDial();
+
+
+/* ── I6 · reading progress — a 1:1 map of the reader's own scroll ────── */
+(() => {
+  const body = document.getElementById('essay-body');
+  const fill = document.getElementById('toc-fill');
+  const pct = document.getElementById('toc-pct');
+  if (!body || !fill) return;
+  let queued = false;
+  const measure = () => {
+    queued = false;
+    const r = body.getBoundingClientRect();
+    const total = r.height - innerHeight;
+    const done = total <= 0 ? 1 : Math.min(1, Math.max(0, -r.top / total));
+    fill.style.width = (done * 100).toFixed(1) + '%';
+    if (pct) pct.textContent = Math.round(done * 100) + '%';
+  };
+  addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(measure);
+  }, { passive: true });
+  addEventListener('resize', measure, { passive: true });
+  measure();
+})();
+
+/* ── I18 · comparison slider — the hero's corruption model, on a photo ─ */
+(() => {
+  const wrap = document.getElementById('cmp');
+  const cvs = document.getElementById('cmp-noise');
+  const range = document.getElementById('cmp-r');
+  if (!wrap || !cvs || !range) return;
+  const src = wrap.querySelector('.cmp-a');
+  const ctx = cvs.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return;
+
+  let base = null;
+  const paint = () => {
+    if (!base) return;
+    const p = +range.value / 100;
+    const out = ctx.createImageData(base);
+    const b = base.data, o = out.data;
+    // Same idea as the lattice: flip a fraction of the samples. On an image that
+    // means pushing pixels to one extreme or the other, which is what a corrupted
+    // cue actually looks like before retrieval.
+    for (let i = 0; i < b.length; i += 4) {
+      if (Math.random() < p) {
+        const v = Math.random() < 0.5 ? 0 : 255;
+        o[i] = v; o[i + 1] = v; o[i + 2] = v;
+      } else {
+        o[i] = b[i]; o[i + 1] = b[i + 1]; o[i + 2] = b[i + 2];
+      }
+      o[i + 3] = 255;
+    }
+    ctx.putImageData(out, 0, 0);
+  };
+
+  const load = () => {
+    const w = Math.min(720, src.naturalWidth || 720);
+    const h = Math.round(w * (src.naturalHeight || 480) / (src.naturalWidth || 720));
+    cvs.width = w; cvs.height = h;
+    ctx.drawImage(src, 0, 0, w, h);
+    base = ctx.getImageData(0, 0, w, h);
+    paint();
+  };
+  if (src.complete && src.naturalWidth) load();
+  else src.addEventListener('load', load);
+
+  let t = 0;
+  const onInput = () => {
+    wrap.style.setProperty('--pos', range.value + '%');
+    clearTimeout(t);
+    t = setTimeout(paint, 60);
+  };
+  range.addEventListener('input', onInput);
+  wrap.style.setProperty('--pos', range.value + '%');
+})();
+
+/* ── I14 · contact-sheet lightbox with counter and arrow keys ────────── */
+(() => {
+  const sheet = document.querySelector('.contact-sheet');
+  if (!sheet) return;
+  const shots = [...sheet.querySelectorAll('.sheet-i')];
+  const dlg = document.createElement('dialog');
+  dlg.className = 'lb';
+  dlg.innerHTML = `
+    <button class="lb-x sw" type="button" aria-label="Close">ESC</button>
+    <img alt="">
+    <footer>
+      <p class="lb-cap"></p>
+      <p class="lb-n mono"></p>
+    </footer>`;
+  document.body.appendChild(dlg);
+  const img = dlg.querySelector('img');
+  const cap = dlg.querySelector('.lb-cap');
+  const num = dlg.querySelector('.lb-n');
+  let i = 0;
+
+  const show = k => {
+    i = (k + shots.length) % shots.length;
+    const s = shots[i].querySelector('img');
+    img.src = s.src; img.alt = s.alt;
+    cap.textContent = s.alt;
+    num.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(shots.length).padStart(2, '0');
+  };
+  shots.forEach((b, k) => b.addEventListener('click', () => { show(k); dlg.showModal(); }));
+  dlg.querySelector('.lb-x').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', e => {
+    if (composing(e)) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
+  });
+})();
 
 
 observeAll();
