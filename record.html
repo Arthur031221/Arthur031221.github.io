@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Record — Chi-Wei Lee">
 <meta property="og:description" content="NSF HDR ML Challenge in Philadelphia, and iGEM in Paris — written up at the time.">
-<meta property="og:url" content="https://arthur031221.github.io/">
+<meta property="og:url" content="https://arthur031221.github.io/record.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='%234FE0A0' stroke-width='2.5'/><circle cx='16' cy='16' r='3.5' fill='%234FE0A0'/></svg>">
 
 <!-- Theme and language restored before first paint: no flash of the wrong register. -->
@@ -23,13 +23,10 @@
   r.dataset.theme = s('theme', prefersLight ? 'light' : 'dark');
   r.dataset.lang  = s('lang', (navigator.language || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en');
   r.lang = r.dataset.lang === 'zh' ? 'zh-Hant' : 'en';
+  r.style.colorScheme = r.dataset.theme;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) r.dataset.motion = 'reduced';
 })();
 </script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 
 <style>
 /* ══════════════════════════════════════════════════════════════════════
@@ -39,8 +36,8 @@
    Chroma is reserved: C >= .12 encodes a quantity; below that is chrome.
    ══════════════════════════════════════════════════════════════════════ */
 :root {
-  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+  --sans:'Arial Nova','Helvetica Neue',system-ui,-apple-system,'Segoe UI',sans-serif;
   --cjk:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
 
   --step--1:clamp(.76rem,.74rem + .1vw,.83rem);
@@ -944,6 +941,279 @@ body::after{
 .strip-t{font-size:var(--step-1);color:var(--ink-hi)}
 :root[data-motion="reduced"] .strip-i:hover{transform:none}
 
+
+/* ======================================================================
+   V3 — PROBABILISTIC INSTRUMENTARIUM
+   This file loads last and deliberately cools the generic spectacle layer.
+   ====================================================================== */
+:root{
+  --maxw:1440px;
+  --plate:color-mix(in oklab,var(--bg) 94%,var(--ink) 6%);
+  --chrome:color-mix(in oklab,var(--ink) 42%,transparent);
+  --quiet-rule:color-mix(in oklab,var(--ink) 12%,transparent);
+  --rail-w:42px;
+}
+
+/* No generic ambient bitmap/canvas. Computation belongs inside figures. */
+.substrate{display:none!important}
+body{transition:none;background:var(--bg)}
+/* site_extra's substrate stacking rule gives every direct body child
+   position:relative. Restore the actual chrome geometry after that rule: the
+   header, mobile bar, overlays, telemetry and rail are viewport instruments. */
+body>.top,body>.ibar,body>.lightbox,body>.palette,body>.lb,
+body>.atlas-hud,body>.atlas-rail,body>.nav-transit{position:fixed!important}
+body>.top{z-index:60!important}
+body>.ibar{z-index:70!important}
+body>.atlas-hud{z-index:47!important}
+body>.atlas-rail{z-index:48!important}
+body>.nav-transit{z-index:90!important}
+body>.lightbox,body>.lb,body>.palette{z-index:200!important}
+body::before{
+  content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0,
+    transparent calc(8.333333% - 1px),var(--quiet-rule) calc(8.333333% - 1px),
+    var(--quiet-rule) 8.333333%);
+  opacity:.22;
+}
+:root[data-theme="dark"] body::before{opacity:.11}
+
+/* Expensive generic depth cues are explicitly removed. */
+.top,.palette,.ibar,.lb,.lightbox,.peek-box{backdrop-filter:none!important;box-shadow:none!important}
+.top{
+  background:var(--bg);border-bottom-color:var(--quiet-rule);
+  padding-block:.75rem;mix-blend-mode:normal;
+}
+.nav a:hover,.nav a.on{background:transparent}
+.brand{font-size:.78rem}
+.brand::before{content:"+";color:var(--chrome);margin-inline-end:.65rem}
+.switches::before{content:"T";font:500 .66rem/1 var(--mono);color:var(--chrome);align-self:center}
+
+/* Editorial chassis: sections feel composed, not stacked cards. */
+.wrap{width:min(100% - max(var(--gut)*2,5.5vw),var(--maxw))}
+.sec{padding-block:clamp(6rem,13vh,11rem);content-visibility:auto;contain-intrinsic-size:auto 820px}
+.sec::before{
+  content:attr(data-section);position:absolute;inset-block-start:3.2rem;inset-inline-start:-.15em;
+  font:600 clamp(4rem,10vw,10rem)/.8 var(--mono);letter-spacing:-.08em;
+  color:color-mix(in oklab,var(--ink) 4%,transparent);pointer-events:none;
+}
+.sec-head{margin-bottom:clamp(2.5rem,5vw,5.5rem)}
+.sec-head::after{background:var(--quiet-rule)}
+.sec-t{font-size:clamp(2rem,4.8vw,5.8rem);letter-spacing:-.055em;max-inline-size:15ch}
+.page-head{padding-block:clamp(11rem,23vh,18rem) clamp(5rem,10vh,9rem)}
+.page-head h1{font-size:clamp(4.2rem,15vw,14rem);letter-spacing:-.075em;line-height:.75;max-inline-size:none}
+.page-lead{max-inline-size:44ch;margin-block-start:4rem;margin-inline-start:min(17vw,12rem);font-size:var(--step-1)}
+
+/* Home cover. The simulation, type, and portrait occupy one measured plate. */
+.hero{min-height:100svh;height:auto;padding-block:7rem 5rem;display:grid;grid-template-columns:repeat(12,1fr);align-items:center}
+.hero-in{position:relative;grid-column:2/9;width:auto;margin:0;z-index:4;align-self:center}
+.hero-eyebrow{margin-bottom:1.4rem}
+.hero-name{font-size:clamp(4.9rem,11.8vw,12.8rem);line-height:.72;letter-spacing:-.078em;max-inline-size:7ch}
+.hero-name.cloaked{color:color-mix(in oklab,var(--ink-hi) 16%,transparent)}
+:root[data-lang="zh"] .hero-name{font-size:clamp(5.8rem,13vw,13.5rem);letter-spacing:-.12em;line-height:.8}
+.hero-tag{font-size:clamp(1.2rem,2.2vw,2.1rem);max-inline-size:34ch;margin-top:3rem}
+.hero-meta{margin-top:2.8rem}
+.hero-portrait{grid-column:9/13;position:relative;inset:auto;width:min(100%,400px);align-self:center;justify-self:end;z-index:5}
+.hero-portrait img{opacity:1;transform:none;transition:filter var(--d-large) var(--e-house)}
+.hero-portrait::before,.ph::before,.paper-acq::before{
+  content:"";position:absolute;inset:-9px;pointer-events:none;
+  background:
+    linear-gradient(var(--ink),var(--ink)) left top/16px 1px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) left top/1px 16px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) right bottom/16px 1px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) right bottom/1px 16px no-repeat;
+  opacity:.34;
+}
+.hero-readout{inset:auto var(--gut) 1rem auto;max-width:40vw}
+#field{z-index:1;opacity:.72;transition:none}
+.hero[data-probe="1"]::after{
+  content:"";position:absolute;z-index:3;left:var(--probe-x);top:var(--probe-y);width:54px;height:54px;
+  translate:-50% -50%;pointer-events:none;border:1px solid var(--accent);border-radius:50%;
+  background:linear-gradient(var(--accent),var(--accent)) 50%/100% 1px no-repeat,
+             linear-gradient(var(--accent),var(--accent)) 50%/1px 100% no-repeat;
+}
+
+/* V21 phase control: compact, physical, and close to the instrument. */
+.phase-lab{
+  position:relative;
+  grid-column:2/13;align-self:end;z-index:8;display:grid;grid-template-columns:minmax(0,1fr) minmax(20ch,34ch);
+  gap:1rem;align-items:center;border-top:1px solid var(--rule-hi);padding:1rem var(--gut) 0;margin-top:2rem;
+  font-size:.72rem;color:var(--dim);
+}
+.phase-tabs{display:flex;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.phase-tabs button,.paper-filter button,.paper-tools button,.contact-utils button,.essay-tools button{
+  appearance:none;border:0;background:var(--bg);color:var(--dim);font:500 .72rem/1.2 var(--mono);
+  padding:.7rem .9rem;cursor:pointer;text-transform:uppercase;letter-spacing:.08em;
+}
+.phase-tabs button[aria-pressed="true"],.paper-filter button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.phase-probe{text-align:end;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.dial{position:relative;border-block:1px solid var(--quiet-rule);padding-block:1.2rem!important}
+.dial-truth{grid-column:1/-1;text-transform:none;letter-spacing:.02em;max-inline-size:66ch}
+
+/* V24 section calibration rail. */
+.atlas-rail{
+  position:fixed;z-index:48;inset-inline-end:0;inset-block:20% 16%;width:var(--rail-w);
+  display:flex;flex-direction:column;justify-content:center;border-inline-start:1px solid var(--quiet-rule);
+}
+.atlas-rail a{position:relative;display:flex;align-items:center;min-height:38px;color:var(--dim);text-decoration:none}
+.rail-tick{width:9px;height:1px;background:currentColor;transition:width var(--d-small) var(--e-house),background var(--d-small)}
+.rail-n{font-size:.56rem;margin-inline-start:5px;font-variant-numeric:tabular-nums}
+.rail-name{
+  position:absolute;right:calc(100% + 9px);white-space:nowrap;padding:.38rem .55rem;
+  color:var(--ink);background:var(--bg);border:1px solid var(--rule);font-size:.62rem;
+  opacity:0;translate:8px 0;pointer-events:none;transition:opacity var(--d-small),translate var(--d-small) var(--e-house);
+}
+.atlas-rail a:hover .rail-name,.atlas-rail a:focus-visible .rail-name{opacity:1;translate:0}
+.atlas-rail a.on{color:var(--accent)}
+.atlas-rail a.on .rail-tick{width:20px;background:var(--accent)}
+
+/* V25 sparse perimeter telemetry. */
+.atlas-hud{position:fixed;z-index:47;inset:auto auto 1rem 1rem;width:max-content;display:flex;gap:.9rem;align-items:center;color:var(--chrome);font-size:.58rem;letter-spacing:.08em;pointer-events:none}
+.hud-page,.hud-section{color:var(--ink-2)}
+.hud-owner{color:var(--accent)}
+
+.nav-transit{
+  position:fixed;z-index:90;inset:0 0 auto;height:3px;background:var(--rule);pointer-events:none;
+  opacity:0;transition:opacity var(--d-fade) linear;
+}
+.nav-transit i{display:block;width:100%;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.nav-transit span{position:absolute;inset:.75rem var(--gut) auto auto;color:var(--dim);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}
+.nav-transit[data-on="1"]{opacity:1}.nav-transit[data-on="1"] i{animation:v3-transit 420ms var(--e-out-strong) both}
+@keyframes v3-transit{to{transform:scaleX(1)}}
+
+/* A13 — a graticule exposure, not the usual portfolio circle wipe. */
+::view-transition-new(root){animation:v3-quench 380ms steps(10,end) both!important}
+::view-transition-old(root){animation:none!important}
+@keyframes v3-quench{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* A14 — heading acquisition: content is readable before the line passes. */
+.sec-head,.relation-map>header,.career-raster>header{position:relative;overflow:clip}
+.sec-head::before,.relation-map>header::before,.career-raster>header::before{
+  content:"";position:absolute;z-index:2;inset:0 auto 0 0;width:1px;background:var(--accent);opacity:0;
+}
+@supports(animation-timeline:view()){
+  @media(prefers-reduced-motion:no-preference){
+    .sec-head::before,.relation-map>header::before,.career-raster>header::before{
+      animation:v3-scan linear both;animation-timeline:view();animation-range:entry 12% entry 62%;
+    }
+  }
+}
+@keyframes v3-scan{0%{opacity:0;left:0}8%,82%{opacity:.9}100%{opacity:0;left:100%}}
+
+/* V32 research incidence. */
+.relation-map{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(4rem,10vh,9rem) auto;padding-block:3rem;border-block:1px solid var(--rule)}
+.relation-map h2,.career-raster h2{font-size:clamp(2rem,5vw,5rem);margin-block-start:.5rem}
+.relation-map svg{width:100%;height:auto;margin-block:2rem;overflow:visible}
+.rel-edges path{fill:none;stroke:var(--rule-hi);stroke-width:1.3;stroke-dasharray:8 5;vector-effect:non-scaling-stroke}
+.rel-node{cursor:default;outline:none}
+.rel-node circle{fill:var(--bg);stroke:var(--accent);stroke-width:2}
+.rel-node text{fill:var(--ink);font:500 16px/1 var(--mono)}
+.relation-map[data-focus]:not([data-focus=""]) .rel-node,.relation-map[data-focus]:not([data-focus=""]) .rel-edges path{opacity:.16}
+.relation-map[data-focus="t0"] [data-node="t0"],.relation-map[data-focus="t0"] [data-a="t0"],
+.relation-map[data-focus="t1"] [data-node="t1"],.relation-map[data-focus="t1"] [data-a="t1"],
+.relation-map[data-focus="t3"] [data-node="t3"],.relation-map[data-focus="t3"] [data-a="t3"],
+.relation-map[data-focus="p0"] [data-node="p0"],.relation-map[data-focus="p0"] [data-b="p0"],
+.relation-map[data-focus="p1"] [data-node="p1"],.relation-map[data-focus="p1"] [data-b="p1"],
+.relation-map[data-focus="p2"] [data-node="p2"],.relation-map[data-focus="p2"] [data-b="p2"]{opacity:1}
+.rel-note{border-top:1px solid var(--quiet-rule);padding-top:1rem;text-transform:none;letter-spacing:.02em}
+
+/* A17 — true edges draw once; focus never starts another loop. */
+@media(prefers-reduced-motion:no-preference){
+  .relation-map .rel-edges path{stroke-dasharray:600;stroke-dashoffset:600;animation:v3-edge 720ms linear forwards}
+  .relation-map .rel-edges path:nth-child(2){animation-delay:90ms}.relation-map .rel-edges path:nth-child(3){animation-delay:180ms}
+}
+@keyframes v3-edge{to{stroke-dashoffset:0}}
+
+/* Publication evidence bench. */
+.paper-filter{position:sticky;top:3.5rem;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.65rem;border:1px solid var(--rule);background:var(--bg);margin-bottom:2rem}
+.paper-filter [role="group"]{display:flex;gap:1px;flex-wrap:wrap}.paper-filter output{padding-inline:1rem;color:var(--accent)}
+.paper[hidden]{display:none!important}
+.paper-tools{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.paper-tools button,.contact-utils button,.essay-tools button{border:1px solid var(--rule);background:transparent}
+.evidence{font-size:.78rem;max-inline-size:44ch}.evidence summary{cursor:pointer;color:var(--ink-2);padding:.55rem .7rem;border:1px solid var(--rule)}
+.evidence p{padding:.8rem;border-inline-start:1px solid var(--rule)}
+.paper-acq{position:relative;margin:0 0 1.5rem;border:1px solid var(--rule);background:var(--bg)}
+.paper-acq canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+.paper-acq figcaption{padding:.5rem .7rem;margin:0;border-top:1px solid var(--rule);font:500 .62rem/1.4 var(--mono);color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.sr-live{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+/* V38 — paragraph focus is contrast management, not paragraph motion. */
+.essay-tools{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;border-bottom:1px solid var(--rule);padding-bottom:1rem}
+.essay-body[data-focus="1"] p{opacity:.22;transition:opacity var(--d-small) linear}
+.essay-body[data-focus="1"] p.current{opacity:1}
+.essay-index{color:var(--accent);font-size:.72rem}
+
+/* V39 career raster. */
+.career-raster{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(4rem,10vh,9rem) auto;padding-block:4rem;border-block:1px solid var(--rule)}
+.career-raster svg{width:100%;height:auto;margin-top:2.5rem;overflow:visible}
+.career-raster svg path{stroke:var(--rule-hi);fill:none;vector-effect:non-scaling-stroke}
+.career-raster svg text{fill:var(--dim);font:500 13px var(--mono);text-anchor:middle}
+.career-event path{stroke:var(--accent)!important}.career-event circle{fill:var(--bg);stroke:var(--accent);stroke-width:2}
+.career-event text{text-anchor:start!important;fill:var(--accent)!important}
+@media(prefers-reduced-motion:no-preference){
+  .career-event{opacity:0;animation:v3-spike 320ms var(--e-out-strong) forwards}
+  .career-event:nth-of-type(2){animation-delay:45ms}.career-event:nth-of-type(3){animation-delay:90ms}.career-event:nth-of-type(4){animation-delay:135ms}.career-event:nth-of-type(n+5){animation-delay:180ms}
+}
+@keyframes v3-spike{from{opacity:0;translate:0 9px}to{opacity:1;translate:0}}
+
+.contact-utils{display:flex;gap:.8rem;align-items:center;margin-top:1.25rem;color:var(--dim);font-size:.72rem}
+.taipei-time{font-variant-numeric:tabular-nums}
+
+/* A19 — aperture around real photography; no image parallax. */
+@media(prefers-reduced-motion:no-preference){
+  .ph[data-loaded="1"]{animation:v3-aperture 420ms var(--e-out-strong) both}
+}
+@keyframes v3-aperture{from{clip-path:inset(5% 5% 5% 5%)}to{clip-path:inset(0)}}
+
+/* A20 — live values hard-lock, then remain quiet. */
+.hero-readout b,.fig-read b{animation:v3-lock 240ms steps(4,end) both}
+@keyframes v3-lock{0%{opacity:.25}25%{opacity:.8}50%{opacity:.4}75%{opacity:1}100%{opacity:1;text-decoration:underline;text-decoration-thickness:1px}}
+
+/* Known v2 defects corrected here. */
+dialog.lb:not([open]){display:none!important}
+:root[data-motion="reduced"] button:active,:root[data-motion="reduced"] .sw:active,
+:root[data-motion="reduced"] a.pager-link:active,:root[data-motion="reduced"] .shot:active{transform:none!important;background:var(--surface)}
+:root[data-motion="reduced"] ::view-transition-new(root),:root[data-motion="reduced"] ::view-transition-old(root){animation:none!important}
+:root[data-motion="reduced"] .essay-body p{transition:none}
+
+@media(max-width:940px){
+  :root{--rail-w:0px}
+  body{padding-bottom:7.5rem}
+  body::before{background:repeating-linear-gradient(90deg,transparent 0,transparent calc(25% - 1px),var(--quiet-rule) calc(25% - 1px),var(--quiet-rule) 25%)}
+  .atlas-rail{inset:auto 0 5.35rem 0;width:auto;height:28px;flex-direction:row;border:0;border-top:1px solid var(--quiet-rule);background:var(--bg);overflow-x:auto;justify-content:flex-start}
+  .atlas-rail a{min-width:48px;min-height:28px}.rail-name{display:none}.rail-tick{width:5px}.atlas-rail a.on .rail-tick{width:12px}
+  .atlas-hud{display:none}
+  .hero{display:block;padding-block:8rem 0;min-height:100svh}
+  .hero-in{width:min(100% - var(--gut)*2,var(--maxw));margin-inline:auto}
+  .hero-name{font-size:clamp(4.5rem,20vw,8rem);max-inline-size:none;line-height:.8}
+  .hero-tag{font-size:clamp(1.3rem,6.2vw,2rem)}
+  .hero-portrait{width:min(76vw,370px);margin:5rem 0 0 auto}
+  .phase-lab{display:block;margin-top:2rem;padding:1rem var(--gut)}
+  .phase-tabs{display:grid;grid-template-columns:repeat(4,1fr)}
+  .phase-tabs button{padding:.7rem .25rem;font-size:.62rem}.phase-probe{display:block;text-align:start;margin-top:.7rem;min-height:2.8em}
+  .hero-readout{display:none}
+  .page-head h1{font-size:clamp(4rem,20vw,8rem);line-height:.82}
+  .page-lead{margin-inline-start:0}
+  .paper-filter{top:3.65rem;align-items:flex-start}.paper-filter [role="group"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));flex:1}
+  .relation-map svg{min-width:760px}.relation-map{overflow-x:auto}
+  .career-raster svg{min-width:720px}.career-raster{overflow-x:auto}
+  .ibar{grid-template-columns:repeat(3,1fr)!important;height:auto!important}
+}
+
+@media(max-width:520px){
+  .hero-name{font-size:clamp(4rem,19vw,6.8rem)}
+  .hero-meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.9rem 1.2rem;width:100%}
+  .hero-meta>span:first-child{grid-column:1/-1}.hero-meta a{min-width:0}
+  .phase-tabs{grid-template-columns:repeat(2,1fr)}
+  .sec{padding-block:5.5rem}.sec-t{font-size:clamp(2rem,12vw,3.7rem)}
+  .contact-utils{align-items:flex-start;flex-direction:column}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
+  .ph[data-loaded="1"],.career-event,.rel-edges path{animation:none!important;opacity:1;translate:0;stroke-dashoffset:0}
+  .hero[data-probe="1"]::after{display:none}
+}
+
 </style>
 </head>
 
@@ -962,7 +1232,13 @@ body::after{
   </div>
 </header>
 
-<main id="main"></main>
+<main id="main"><noscript>
+  <section style="padding:9rem max(1.25rem,6vw);max-width:76rem;margin:auto">
+    <p lang="en">Chi-Wei Lee — NeuroAI researcher. JavaScript is disabled, so the live scientific figures are unavailable; the CV and every page remain directly accessible below.</p>
+    <p lang="zh-Hant">李騏維——神經人工智慧研究者。JavaScript 已停用，因此即時科學圖表目前無法操作；履歷與各頁面仍可由下方直接開啟。</p>
+    <p><a href="Chi-Wei_Lee_CV.pdf">CV / 履歷</a> · <a href="research.html">Research / 研究</a> · <a href="publications.html">Publications / 論文</a> · <a href="field.html">Field / 現場</a> · <a href="record.html">Record / 歷程</a> · <a href="about.html">About / 關於</a></p>
+  </section>
+</noscript></main>
 
 <footer>
   <div class="wrap mono" style="font-size:var(--step--1)">
@@ -971,7 +1247,7 @@ body::after{
   </div>
 </footer>
 
-<script id="content" type="application/json">{"meta":{"name":{"en":"Chi-Wei Lee","zh":"李騏維"},"handle":"Arthur","role":{"en":"NeuroAI researcher","zh":"腦神經 × 機器學習研究者"},"tagline":{"en":"Predictive coding, associative memory, and Bayesian inference — in brains and in machines.","zh":"預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"},"email":"levi74108520963@gmail.com","github":"https://github.com/Arthur031221","site":"https://arthur031221.github.io/","cv":"Chi-Wei_Lee_CV.pdf","location":{"en":"Hsinchu, Taiwan · currently at UCLA","zh":"台灣新竹 · 現於 UCLA"}},"about":{"lead":{"en":"I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.","zh":"我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"},"body":{"en":["I am a graduating B.S. student at National Tsing Hua University, double majoring in Physics and Electrical Engineering & Computer Science (AI Track).","My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review at NeurIPS 2026: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.","My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.","Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."],"zh":["我是國立清華大學應屆畢業生,雙主修物理系與電機資訊學院學士班(AI 組)。","理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 NeurIPS 2026 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。","實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。","在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"]},"facts":[{"k":{"en":"University","zh":"學校"},"v":{"en":"National Tsing Hua University","zh":"國立清華大學"}},{"k":{"en":"Major","zh":"主修"},"v":{"en":"Physics × EECS (AI Track), double major","zh":"物理系 × 電資學士班(AI 組),雙主修"}},{"k":{"en":"Now","zh":"現況"},"v":{"en":"HMI Lab, NTHU · visiting UCLA","zh":"清華 HMI Lab · 訪問 UCLA"}},{"k":{"en":"Looking for","zh":"尋找"},"v":{"en":"PhD positions in NeuroAI, 2027 entry","zh":"NeuroAI 博士班,2027 入學"}}]},"threads":[{"id":"pc","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Predictive coding needs a memory","zh":"預測編碼需要記憶"},"body":{"en":"Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.","zh":"預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"}},{"id":"langevin","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Inference should sample, not just peak","zh":"推論應該取樣,而不只是找峰"},"body":{"en":"Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.","zh":"時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"}},{"id":"fmri","tag":{"en":"Neural data","zh":"神經資料"},"title":{"en":"Reading space out of the brain","zh":"從大腦裡讀出空間"},"body":{"en":"At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.","zh":"在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"}},{"id":"diffusion","tag":{"en":"Generative","zh":"生成模型"},"title":{"en":"Control without losing the picture","zh":"在不失去畫面的前提下控制"},"body":{"en":"MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.","zh":"MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"}}],"publications":[{"status":"review","title":"Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.","zh":"以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"}},{"status":"review","title":"Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities","authors":"C.-W. Lee (co-first author) et al.","venue":"NeurIPS 2026","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.","zh":"把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"}},{"status":"accepted","title":"MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation","authors":"C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen","venue":"TAAI 2025","badge":{"en":"Accepted · poster","zh":"已接受 · 海報"},"year":"2025","note":{"en":"Extended abstract. Full paper in preparation.","zh":"延伸摘要。完整論文撰寫中。"}},{"status":"published","title":"Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods","authors":"X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee","venue":"Journal of Modern Physics 15(12)","badge":{"en":"Published","zh":"已發表"},"year":"2024","doi":"https://doi.org/10.4236/jmp.2024.1512087","note":{"en":"","zh":""}},{"status":"service","title":"Building Machine Learning Challenges for Anomaly Detection in Science","authors":"E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)","venue":"arXiv:2503.02112 · preprint, under submission","badge":{"en":"Co-author","zh":"共同作者"},"year":"2025","doi":"https://arxiv.org/abs/2503.02112","note":{"en":"A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.","zh":"源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。"}}],"awards":[{"year":"2026","title":{"en":"Mei Yi-Chi Memorial Medal","zh":"梅貽琦紀念獎章"},"org":{"en":"National Tsing Hua University","zh":"國立清華大學"},"hero":true,"note":{"en":"NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.","zh":"清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"}},{"year":"2025","title":{"en":"2nd worldwide — NSF HDR ML Challenge","zh":"全球第二 — NSF HDR ML Challenge"},"org":{"en":"U.S. National Science Foundation · Overall Track","zh":"美國國家科學基金會 · 總積分"},"hero":true,"note":{"en":"2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.","zh":"全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"}},{"year":"2026","title":{"en":"3rd worldwide — NSF HDR ML Challenge","zh":"全球第三 — NSF HDR ML Challenge"},"org":{"en":"Climate Prediction Track","zh":"氣候預測賽道"},"note":{"en":"Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.","zh":"以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"}},{"year":"2025","title":{"en":"1st place — Mei-Chu Hackathon","zh":"第一名 — 梅竹黑客松"},"org":{"en":"Maker Track","zh":"Maker 組"},"note":{"en":"A wearable-and-app system modelling walking trajectories for dementia safety monitoring.","zh":"穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"}},{"year":"2023","title":{"en":"Gold Medal — iGEM","zh":"金牌 — iGEM"},"org":{"en":"NTHU-Taiwan · Dry Lab Lead","zh":"NTHU-Taiwan · Dry Lab 組長"},"note":{"en":"Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.","zh":"以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"}}],"longreads":{"nsf":{"title":{"en":"20 days, 20 iterations","zh":"20 天,20 次迭代"},"place":"Philadelphia · New York","date":"2025.02.28 – 03.09","hero":"img/NSF1","photos":[{"src":"img/NSF1","fx":"50%","fy":"34%","role":"hero","slug":"PHL · 39.95 N, 75.16 W · 2025-03 · NSF HDR","cap":{"en":"The six of us — team 20iterations","zh":"我們六個 —— 20iterations"}},{"src":"img/NSF0","fx":"50%","fy":"42%","role":"plate","slug":"PHL · AAAI-25 WORKSHOP · 2025-03-01","cap":{"en":"AAAI-25 workshop, Philadelphia","zh":"費城 AAAI-25 workshop"}},{"src":"img/NSF2","fx":"50%","fy":"40%","role":"bleed","slug":"PHL · 2ND OF 600+ TEAMS · 2025-03","cap":{"en":"Second worldwide, of 600+ teams","zh":"600 支以上隊伍中的全球第二"}}],"zh":["美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。","NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元","每次開會，絕對會聽到","「欸咦等一下讓我想一下」","「我覺得你說得很有道理，但是...」","「這次不可能錯了吧⋯⋯」","「真的沒有任何理由了，如果再是 0 那我也真的...」","「欸咦等一下...」","老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了","這趟紐約與費城之旅，真的很神奇。","體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......","這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......","謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。","時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。","#20iterations"],"en":["The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.","The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.","To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.","In every meeting, you would definitely hear:","\"Wait-hold on  let me think \"","\"You're totally right, but...\"","\"This time it can't be wrong... right...\"","\"There's literally no reason-if it's still 0, I'm going to...\"","\"Wait... hold on...\"","Honestly, in that one month, I heard these lines not 100 times, but at least dozens","The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)","Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...","Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.","Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.","Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.","#20iterations"]},"igem":{"title":{"en":"57 big meows, 45 small ones","zh":"57 次大咪,45 次小咪"},"place":"Paris, France","date":"2023.10.31 – 11.11","hero":"img/igem2","photos":[{"src":"img/igem2","fx":"50%","fy":"38%","role":"hero","slug":"CDG · 48.86 N, 2.35 E · 2023-11 · iGEM","cap":{"en":"Sixteen people, one gold medal","zh":"十六個人,一面金牌"}},{"src":"img/igem1","fx":"50%","fy":"45%","role":"detail","slug":"NTHU · DRY LAB · 2023","cap":{"en":"The Dry Lab bench","zh":"Dry Lab 的工作現場"}},{"src":"img/igem3","fx":"50%","fy":"42%","role":"plate","slug":"CDG · GRAND JAMBOREE · 2023-11","cap":{"en":"Presenting the diagnostic device","zh":"展示我們的診斷裝置"}},{"src":"img/igem0","fx":"50%","fy":"40%","role":"bleed","slug":"CDG · 2023-11-11 · GOLD","cap":{"en":"iGEM Grand Jamboree, Paris","zh":"巴黎 iGEM Grand Jamboree"}}],"zh":["57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..","記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！","在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...","人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。","#8th"],"en":["57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.","I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.","That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.","In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.","Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.","#8th"]}},"portrait":{"src":"img/portrait","cap":{"en":"Hsinchu, June 2026","zh":"新竹,2026 年 6 月"}},"slider":{"src":"img/S__16670722","slug":"FORMOSA TRAIL · TAIWAN","cap":{"en":"Trail running, at night — corrupted, then retrieved","zh":"夜間越野跑 —— 加噪,然後還原"}}}</script>
+<script id="content" type="application/json">{"meta":{"name":{"en":"Chi-Wei Lee","zh":"李騏維"},"handle":"Arthur","role":{"en":"NeuroAI researcher","zh":"腦神經 × 機器學習研究者"},"tagline":{"en":"Predictive coding, associative memory, and Bayesian inference — in brains and in machines.","zh":"預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"},"email":"levi74108520963@gmail.com","github":"https://github.com/Arthur031221","site":"https://arthur031221.github.io/","cv":"Chi-Wei_Lee_CV.pdf","location":{"en":"Hsinchu, Taiwan · currently at UCLA","zh":"台灣新竹 · 現於 UCLA"}},"about":{"lead":{"en":"I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.","zh":"我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"},"body":{"en":["I am a B.S. graduate of National Tsing Hua University, where I double-majored in Physics and Electrical Engineering & Computer Science (AI Track).","My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.","My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.","Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."],"zh":["我畢業於國立清華大學,雙主修物理系與電機資訊學院學士班(AI 組)。","理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。","實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。","在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"]},"facts":[{"k":{"en":"University","zh":"學校"},"v":{"en":"National Tsing Hua University","zh":"國立清華大學"}},{"k":{"en":"Major","zh":"主修"},"v":{"en":"Physics × EECS (AI Track), double major","zh":"物理系 × 電資學士班(AI 組),雙主修"}},{"k":{"en":"Now","zh":"現況"},"v":{"en":"HMI Lab, NTHU · visiting UCLA","zh":"清華 HMI Lab · 訪問 UCLA"}},{"k":{"en":"Looking for","zh":"尋找"},"v":{"en":"PhD positions in NeuroAI, 2027 entry","zh":"NeuroAI 博士班,2027 入學"}}]},"threads":[{"id":"pc","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Predictive coding needs a memory","zh":"預測編碼需要記憶"},"body":{"en":"Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.","zh":"預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"}},{"id":"langevin","tag":{"en":"Theory","zh":"理論"},"title":{"en":"Inference should sample, not just peak","zh":"推論應該取樣,而不只是找峰"},"body":{"en":"Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.","zh":"時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"}},{"id":"fmri","tag":{"en":"Neural data","zh":"神經資料"},"title":{"en":"Reading space out of the brain","zh":"從大腦裡讀出空間"},"body":{"en":"At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.","zh":"在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"}},{"id":"diffusion","tag":{"en":"Generative","zh":"生成模型"},"title":{"en":"Control without losing the picture","zh":"在不失去畫面的前提下控制"},"body":{"en":"MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.","zh":"MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"}}],"publications":[{"status":"review","title":"Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser","authors":"C.-W. Lee (co-first author) et al.","venue":"Preprint · under submission","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.","zh":"以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"}},{"status":"review","title":"Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities","authors":"C.-W. Lee (co-first author) et al.","venue":"Preprint · under submission","badge":{"en":"Under review","zh":"審查中"},"year":"2026","note":{"en":"Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.","zh":"把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"}},{"status":"accepted","title":"MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation","authors":"C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen","venue":"TAAI 2025","badge":{"en":"Accepted · poster","zh":"已接受 · 海報"},"year":"2025","note":{"en":"Extended abstract. Full paper in preparation.","zh":"延伸摘要。完整論文撰寫中。"}},{"status":"published","title":"Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods","authors":"X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee","venue":"Journal of Modern Physics 15(12)","badge":{"en":"Published","zh":"已發表"},"year":"2024","doi":"https://doi.org/10.4236/jmp.2024.1512087","note":{"en":"","zh":""}},{"status":"service","title":"Building Machine Learning Challenges for Anomaly Detection in Science","authors":"E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)","venue":"arXiv:2503.02112 · preprint, under submission","badge":{"en":"Co-author","zh":"共同作者"},"year":"2025","doi":"https://arxiv.org/abs/2503.02112","note":{"en":"A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.","zh":"源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。"}}],"awards":[{"year":"2026","title":{"en":"Mei Yi-Chi Memorial Medal","zh":"梅貽琦紀念獎章"},"org":{"en":"National Tsing Hua University","zh":"國立清華大學"},"hero":true,"note":{"en":"NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.","zh":"清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"}},{"year":"2025","title":{"en":"2nd worldwide — NSF HDR ML Challenge","zh":"全球第二 — NSF HDR ML Challenge"},"org":{"en":"U.S. National Science Foundation · Overall Track","zh":"美國國家科學基金會 · 總積分"},"hero":true,"note":{"en":"2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.","zh":"全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"}},{"year":"2026","title":{"en":"3rd worldwide — NSF HDR ML Challenge","zh":"全球第三 — NSF HDR ML Challenge"},"org":{"en":"Climate Prediction Track","zh":"氣候預測賽道"},"note":{"en":"Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.","zh":"以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"}},{"year":"2025","title":{"en":"1st place — Mei-Chu Hackathon","zh":"第一名 — 梅竹黑客松"},"org":{"en":"Maker Track","zh":"Maker 組"},"note":{"en":"A wearable-and-app system modelling walking trajectories for dementia safety monitoring.","zh":"穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"}},{"year":"2023","title":{"en":"Gold Medal — iGEM","zh":"金牌 — iGEM"},"org":{"en":"NTHU-Taiwan · Dry Lab Lead","zh":"NTHU-Taiwan · Dry Lab 組長"},"note":{"en":"Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.","zh":"以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"}}],"longreads":{"nsf":{"title":{"en":"20 days, 20 iterations","zh":"20 天,20 次迭代"},"place":"Philadelphia · New York","date":"2025.02.28 – 03.09","hero":"img/NSF1","photos":[{"src":"img/NSF1","fx":"50%","fy":"34%","role":"hero","slug":"PHL · 39.95 N, 75.16 W · 2025-03 · NSF HDR","cap":{"en":"The six of us — team 20iterations","zh":"我們六個 —— 20iterations"}},{"src":"img/NSF0","fx":"50%","fy":"42%","role":"plate","slug":"PHL · AAAI-25 WORKSHOP · 2025-03-01","cap":{"en":"AAAI-25 workshop, Philadelphia","zh":"費城 AAAI-25 workshop"}},{"src":"img/NSF2","fx":"50%","fy":"40%","role":"bleed","slug":"PHL · 2ND OF 600+ TEAMS · 2025-03","cap":{"en":"Second worldwide, of 600+ teams","zh":"600 支以上隊伍中的全球第二"}}],"zh":["美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。","NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元","每次開會，絕對會聽到","「欸咦等一下讓我想一下」","「我覺得你說得很有道理，但是...」","「這次不可能錯了吧⋯⋯」","「真的沒有任何理由了，如果再是 0 那我也真的...」","「欸咦等一下...」","老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了","這趟紐約與費城之旅，真的很神奇。","體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......","這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......","謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。","時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。","#20iterations"],"en":["The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.","The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.","To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.","In every meeting, you would definitely hear:","\"Wait-hold on  let me think \"","\"You're totally right, but...\"","\"This time it can't be wrong... right...\"","\"There's literally no reason-if it's still 0, I'm going to...\"","\"Wait... hold on...\"","Honestly, in that one month, I heard these lines not 100 times, but at least dozens","The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)","Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...","Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.","Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.","Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.","#20iterations"]},"igem":{"title":{"en":"57 big meows, 45 small ones","zh":"57 次大咪,45 次小咪"},"place":"Paris, France","date":"2023.10.31 – 11.11","hero":"img/igem2","photos":[{"src":"img/igem2","fx":"50%","fy":"38%","role":"hero","slug":"CDG · 48.86 N, 2.35 E · 2023-11 · iGEM","cap":{"en":"Sixteen people, one gold medal","zh":"十六個人,一面金牌"}},{"src":"img/igem1","fx":"50%","fy":"45%","role":"detail","slug":"NTHU · DRY LAB · 2023","cap":{"en":"The Dry Lab bench","zh":"Dry Lab 的工作現場"}},{"src":"img/igem3","fx":"50%","fy":"42%","role":"plate","slug":"CDG · GRAND JAMBOREE · 2023-11","cap":{"en":"Presenting the diagnostic device","zh":"展示我們的診斷裝置"}},{"src":"img/igem0","fx":"50%","fy":"40%","role":"bleed","slug":"CDG · 2023-11-11 · GOLD","cap":{"en":"iGEM Grand Jamboree, Paris","zh":"巴黎 iGEM Grand Jamboree"}}],"zh":["57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..","記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！","在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...","人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。","#8th"],"en":["57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.","I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.","That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.","In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.","Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.","#8th"]}},"portrait":{"src":"img/portrait","cap":{"en":"Hsinchu, June 2026","zh":"新竹,2026 年 6 月"}},"slider":{"src":"img/S__16670722","slug":"FORMOSA TRAIL · TAIWAN","cap":{"en":"Trail running, at night — corrupted, then retrieved","zh":"夜間越野跑 —— 加噪,然後還原"}}}</script>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -998,23 +1274,52 @@ function swap(fn) {
   if (document.startViewTransition && !reduced()) document.startViewTransition(fn);
   else fn();
 }
-document.getElementById('theme-btn').addEventListener('click', () => swap(() => {
+const themeBtn = document.getElementById('theme-btn');
+const langBtn = document.getElementById('lang-btn');
+function syncSwitches() {
+  const light = root.dataset.theme === 'light';
+  themeBtn.setAttribute('role', 'switch');
+  themeBtn.setAttribute('aria-checked', String(light));
+  themeBtn.querySelector('[data-en]').innerHTML = light ? '<b>PAPER</b>' : '<b>PHOSPHOR</b>';
+  themeBtn.querySelector('[data-zh]').innerHTML = light ? '<b>紙本</b>' : '<b>螢光</b>';
+  langBtn.setAttribute('aria-pressed', String(root.dataset.lang === 'zh'));
+}
+themeBtn.addEventListener('click', () => swap(() => {
   const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
   root.dataset.theme = next;
+  root.style.colorScheme = next;
   try { localStorage.setItem('theme', next); } catch {}
   window.dispatchEvent(new Event('themechange'));
+  window.dispatchEvent(new CustomEvent('site:theme', { detail: { theme: next } }));
+  syncSwitches();
 }));
-document.getElementById('lang-btn').addEventListener('click', () => swap(() => {
+langBtn.addEventListener('click', () => {
+  const anchors = [...document.querySelectorAll('[data-section]')];
+  const anchor = anchors.filter(el => el.getBoundingClientRect().top <= innerHeight * .35).at(-1) || anchors[0];
+  const before = anchor?.getBoundingClientRect().top || 0;
+  swap(() => {
   const next = root.dataset.lang === 'en' ? 'zh' : 'en';
   root.dataset.lang = next;
   root.lang = next === 'zh' ? 'zh-Hant' : 'en';
   try { localStorage.setItem('lang', next); } catch {}
   window.dispatchEvent(new Event('langchange'));
-}));
+  window.dispatchEvent(new CustomEvent('site:language', { detail: { language: next } }));
+  syncSwitches();
+  requestAnimationFrame(() => {
+    const after = anchor?.getBoundingClientRect().top || before;
+    scrollBy({ top: after - before, behavior: 'instant' });
+  });
+  });
+});
+syncSwitches();
 
 /* ── header ───────────────────────────────────────────────────────── */
 const topbar = document.getElementById('top');
-addEventListener('scroll', () => { topbar.dataset.stuck = scrollY > 12 ? '1' : '0'; }, { passive: true });
+const topSentinel = document.createElement('span');
+topSentinel.className = 'top-sentinel';
+topSentinel.setAttribute('aria-hidden', 'true');
+document.body.prepend(topSentinel);
+new IntersectionObserver(([entry]) => { topbar.dataset.stuck = entry.isIntersecting ? '0' : '1'; }).observe(topSentinel);
 
 /* ── reveal ───────────────────────────────────────────────────────── */
 const io = new IntersectionObserver(es => es.forEach(e => {
@@ -1059,7 +1364,7 @@ const pager = (id) => {
       <span class="label">${dir === 'next' ? bi({ en: 'Next', zh: '下一頁' }) : bi({ en: 'Previous', zh: '上一頁' })}</span>
       <span class="pager-t"><span data-en>${p.en}</span><span data-zh>${p.zh}</span></span>
     </a>`;
-  return `<nav class="pager wrap" aria-label="Pagination">${cell(prev, 'prev')}${cell(next, 'next')}</nav>`;
+  return `<nav class="pager wrap" aria-label="Pagination / 分頁">${cell(prev, 'prev')}${cell(next, 'next')}</nav>`;
 };
 
 /* ── shared blocks ──────────────────────────────────────────────────── */
@@ -1070,6 +1375,7 @@ const plate = (ph, opt) => {
   return `
   <figure class="ph ${o.cls || ''}" style="--ar:${ar};--thumb:url('${esc(ph.src)}.thumb.webp')">
     <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}"
+         data-alt-en="${esc(ph.cap.en)}" data-alt-zh="${esc(ph.cap.zh)}"
          style="--fx:${esc(ph.fx || '50%')};--fy:${esc(ph.fy || '50%')}"
          ${o.vt ? `data-vt="${esc(o.vt)}"` : ''}
          ${o.eager ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}
@@ -1085,14 +1391,15 @@ const galleryHTML = (photos) => !photos?.length ? '' : `
   <div class="gal">
     ${photos.map((ph, i) => `
       <figure class="shot" data-i="${i}" style="--thumb:url('${esc(ph.src)}.thumb.webp')">
-        <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}" loading="lazy" decoding="async"
+        <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}"
+             data-alt-en="${esc(ph.cap.en)}" data-alt-zh="${esc(ph.cap.zh)}" loading="lazy" decoding="async"
              onload="this.parentElement.dataset.loaded='1'">
         <figcaption class="label">${bi(ph.cap)}</figcaption>
       </figure>`).join('')}
   </div>`;
 
 const paperItem = p => `
-  <li class="paper rise" data-status="${p.status}">
+  <li class="paper rise" data-status="${p.status}" data-paper-id="${esc(p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}">
     <div class="paper-year mono">${esc(p.year)}</div>
     <div class="paper-main">
       <h3 class="paper-title">${esc(p.title)}</h3>
@@ -1122,7 +1429,8 @@ const heroHTML = () => `
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="hero-in wrap">
     <p class="label hero-eyebrow">${bi(DATA.meta.role)}</p>
-    <h1 class="hero-name" id="hero-name" aria-label="${esc(DATA.meta.name.en)}">
+    <h1 class="hero-name" id="hero-name" aria-label="${esc(DATA.meta.name.en)}"
+        data-label-en="${esc(DATA.meta.name.en)}" data-label-zh="${esc(DATA.meta.name.zh)}">
       <span data-en>${esc(DATA.meta.name.en)}</span><span data-zh>${esc(DATA.meta.name.zh)}</span>
     </h1>
     <p class="hero-tag">${bi(DATA.meta.tagline)}</p>
@@ -1135,6 +1443,7 @@ const heroHTML = () => `
   </div>
   <figure class="hero-portrait" style="--thumb:url('${esc(DATA.portrait.src)}.thumb.webp')">
     <img src="${esc(DATA.portrait.src)}.webp" alt="${esc(DATA.meta.name.en)}"
+         data-alt-en="${esc(DATA.portrait.cap.en)}" data-alt-zh="${esc(DATA.portrait.cap.zh)}"
          fetchpriority="high" onload="this.parentElement.dataset.loaded='1'">
     <figcaption class="mono">${bi(DATA.portrait.cap)}</figcaption>
   </figure>
@@ -1279,15 +1588,16 @@ const RENDER = {
     </section>
 
     <section class="sec wrap">
-      ${secHead('', { en: 'Corrupt and retrieve', zh: '加噪與還原' })}
+      ${secHead('', { en: 'Corrupt and compare', zh: '擾動與比較' })}
       <p class="lead rise">${bi({
-        en: 'The same corruption model as the hero, pointed at a photograph. Drag it.',
-        zh: '和首頁同一個加噪模型,這次指向一張照片。拖拖看。',
+        en: 'A deterministic, seeded corruption mask beside the reference photograph. Drag it.',
+        zh: '將可重現的固定種子擾動遮罩與原始照片並列比較；請拖曳控制器。',
       })}</p>
       <div class="cmp" id="cmp">
         <img class="cmp-a" src="${esc(DATA.slider.src)}.webp" alt="${esc(DATA.slider.cap.en)}">
         <canvas class="cmp-b" id="cmp-noise" aria-hidden="true"></canvas>
-        <input type="range" id="cmp-r" min="0" max="100" value="50" aria-label="Corruption level">
+        <input type="range" id="cmp-r" min="0" max="100" value="50" aria-label="Corruption level"
+               data-label-en="Corruption level" data-label-zh="擾動程度">
         <span class="cmp-h" aria-hidden="true"></span>
       </div>
       <p class="ph-slug mono cmp-slug">${esc(DATA.slider.slug)}</p>
@@ -1297,8 +1607,10 @@ const RENDER = {
       ${secHead('', { en: 'Contact sheet', zh: '接觸印樣' })}
       <div class="contact-sheet">
         ${all.map((ph, i) => `
-          <button class="sheet-i" data-i="${i}" type="button" aria-label="${esc(ph.cap.en)}">
-            <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}" loading="lazy" decoding="async">
+          <button class="sheet-i" data-i="${i}" type="button" aria-label="${esc(ph.cap.en)}"
+                  data-label-en="${esc(ph.cap.en)}" data-label-zh="${esc(ph.cap.zh)}">
+            <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}"
+                 data-alt-en="${esc(ph.cap.en)}" data-alt-zh="${esc(ph.cap.zh)}" loading="lazy" decoding="async">
             <span class="sheet-n mono">${String(i + 1).padStart(2, '0')}</span>
           </button>`).join('')}
       </div>
@@ -1374,7 +1686,7 @@ function essayPage(key) {
       <h1>${bi(lr.title)}</h1>
     </header>
     <div class="essay-grid wrap">
-      <aside class="toc" aria-label="Reading progress">
+      <aside class="toc" aria-label="Reading progress / 閱讀進度">
         <div class="toc-bar"><span class="toc-fill" id="toc-fill"></span></div>
         <p class="label toc-l">${bi({ en: 'Reading', zh: '閱讀進度' })}</p>
         <p class="mono toc-pct" id="toc-pct">0%</p>
@@ -1415,7 +1727,7 @@ document.querySelectorAll('.lr-more').forEach(btn => {
   if (!document.querySelector('.shot')) return;
   const box = document.createElement('div');
   box.className = 'lightbox'; box.hidden = true;
-  box.innerHTML = '<button class="lb-close sw" aria-label="Close">ESC</button><img alt=""><p class="label lb-cap"></p>';
+  box.innerHTML = '<button class="lb-close sw" aria-label="Close" data-label-en="Close" data-label-zh="關閉">ESC</button><img alt=""><p class="label lb-cap"></p>';
   document.body.appendChild(box);
   const img = box.querySelector('img'), cap = box.querySelector('.lb-cap');
   const close = () => {
@@ -1436,6 +1748,724 @@ document.querySelectorAll('.lr-more').forEach(btn => {
   });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) close(); });
 })();
+
+
+/* Shared runtime for every generated page.
+   Zero dependencies, no module syntax, and exactly one public global. */
+(function initSiteRuntime(global) {
+  'use strict';
+
+  if (global.SiteRuntime) return;
+
+  var doc = global.document;
+  var root = doc && doc.documentElement;
+  var perf = global.performance;
+  var raf = global.requestAnimationFrame
+    ? global.requestAnimationFrame.bind(global)
+    : function (fn) { return global.setTimeout(function () { fn(now()); }, 16); };
+  var caf = global.cancelAnimationFrame
+    ? global.cancelAnimationFrame.bind(global)
+    : global.clearTimeout.bind(global);
+
+  var EVENTS = Object.freeze({
+    quality: 'sitequalitychange',
+    motion: 'sitemotionchange',
+    loop: 'site:loop',
+    error: 'siteruntimeerror'
+  });
+
+  function now() {
+    return perf && typeof perf.now === 'function' ? perf.now() : Date.now();
+  }
+
+  function dispatch(name, detail) {
+    if (!global.dispatchEvent || typeof global.CustomEvent !== 'function') return;
+    try {
+      global.dispatchEvent(new global.CustomEvent(name, { detail: detail }));
+    } catch (_) {
+      /* Events are advisory. Runtime work must not depend on dispatch support. */
+    }
+  }
+
+  function report(error, source, fatal) {
+    var value = error instanceof Error ? error : new Error(String(error));
+    dispatch(EVENTS.error, { error: value, source: source || 'runtime', fatal: !!fatal });
+    if (global.console && typeof global.console.error === 'function') {
+      global.console.error('[SiteRuntime:' + (source || 'runtime') + ']', value);
+    }
+  }
+
+  function callSafely(fn, args, source) {
+    if (typeof fn !== 'function') return undefined;
+    try {
+      return fn.apply(null, args || []);
+    } catch (error) {
+      report(error, source, false);
+      return undefined;
+    }
+  }
+
+  function media(query) {
+    try {
+      return global.matchMedia ? global.matchMedia(query) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  var reduceQuery = media('(prefers-reduced-motion: reduce)');
+  var darkQuery = media('(prefers-color-scheme: dark)');
+  var hoverQuery = media('(hover: hover)');
+  var coarseQuery = media('(pointer: coarse)');
+
+  function getMotion() {
+    return Object.freeze({
+      reduced: !!((root && root.dataset.motion === 'reduced') ||
+        (reduceQuery && reduceQuery.matches)),
+      hover: !!(hoverQuery && hoverQuery.matches),
+      coarse: !!(coarseQuery && coarseQuery.matches)
+    });
+  }
+
+  function getTheme() {
+    if (root && root.dataset.theme) return root.dataset.theme;
+    return darkQuery && darkQuery.matches ? 'dark' : 'light';
+  }
+
+  function getLang() {
+    if (root && root.dataset.lang) return root.dataset.lang;
+    var lang = (root && root.lang) || (global.navigator && global.navigator.language) || 'en';
+    return String(lang).toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+  }
+
+  /* FNV-1a with a final avalanche. It accepts strings, numbers, or structured
+     values and always returns an unsigned 32-bit integer. */
+  function hash(value, seed) {
+    var input;
+    if (typeof value === 'string') input = value;
+    else {
+      try { input = JSON.stringify(value); }
+      catch (_) { input = String(value); }
+    }
+    if (input === undefined) input = String(value);
+
+    var h = seed === undefined ? 2166136261 : (Number(seed) >>> 0);
+    for (var i = 0; i < input.length; i += 1) {
+      h ^= input.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    h ^= h >>> 16;
+    h = Math.imul(h, 2246822507);
+    h ^= h >>> 13;
+    h = Math.imul(h, 3266489909);
+    h ^= h >>> 16;
+    return h >>> 0;
+  }
+
+  /* Mulberry32. The returned function carries small helpers so consumers do
+     not each grow their own random utility namespace. */
+  function seededRandom(seed) {
+    var state = typeof seed === 'number' ? seed >>> 0 : hash(seed);
+    if (state === 0) state = 0x6d2b79f5;
+
+    function random() {
+      state = (state + 0x6d2b79f5) >>> 0;
+      var n = state;
+      n = Math.imul(n ^ (n >>> 15), n | 1);
+      n ^= n + Math.imul(n ^ (n >>> 7), n | 61);
+      return ((n ^ (n >>> 14)) >>> 0) / 4294967296;
+    }
+
+    random.float = function (min, max) {
+      var lo = min === undefined ? 0 : Number(min);
+      var hi = max === undefined ? 1 : Number(max);
+      return lo + (hi - lo) * random();
+    };
+    random.int = function (min, max) {
+      var lo = Math.ceil(Number(min));
+      var hi = Math.floor(Number(max));
+      if (hi < lo) { var swap = lo; lo = hi; hi = swap; }
+      return lo + Math.floor(random() * (hi - lo + 1));
+    };
+    random.pick = function (items) {
+      return items && items.length ? items[Math.floor(random() * items.length)] : undefined;
+    };
+    random.state = function () { return state >>> 0; };
+    return random;
+  }
+
+  var QUALITY_NAMES = Object.freeze(['static', 'low', 'medium', 'high']);
+
+  function initialQuality() {
+    var nav = global.navigator || {};
+    var connection = nav.connection || nav.mozConnection || nav.webkitConnection;
+    if (connection && connection.saveData) return 1;
+    if (typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 2) return 1;
+    if (typeof nav.hardwareConcurrency === 'number' && nav.hardwareConcurrency <= 4) return 2;
+    return 3;
+  }
+
+  var qualityLevel = initialQuality();
+  var qualityReason = 'capability';
+  var qualitySamples = [];
+  var qualityCooldown = 0;
+
+  function qualityName(level) {
+    return QUALITY_NAMES[Math.max(0, Math.min(3, level))];
+  }
+
+  function getQuality() {
+    return Object.freeze({
+      tier: qualityName(qualityLevel),
+      level: qualityLevel,
+      reason: qualityReason,
+      dprCap: qualityLevel >= 3 ? 1.5 : qualityLevel === 2 ? 1.25 : 1
+    });
+  }
+
+  function parseQuality(target) {
+    if (typeof target === 'number' && isFinite(target)) {
+      return Math.max(0, Math.min(3, Math.floor(target)));
+    }
+    var index = QUALITY_NAMES.indexOf(String(target || '').toLowerCase());
+    return index < 0 ? null : index;
+  }
+
+  function downgradeQuality(target, reason) {
+    var next = target === undefined ? qualityLevel - 1 : parseQuality(target);
+    if (next === null || next >= qualityLevel) return getQuality();
+
+    var previous = getQuality();
+    qualityLevel = Math.max(0, next);
+    qualityReason = reason || 'manual';
+    qualitySamples.length = 0;
+    qualityCooldown = 90;
+    var current = getQuality();
+    dispatch(EVENTS.quality, { from: previous, to: current, reason: qualityReason });
+    if (qualityLevel === 0 && activeClaim && !unsafeToAnimate()) {
+      cancelScheduledFrame();
+      activeClaim.staticRendered = false;
+      renderStatic(activeClaim, now(), 'quality');
+    }
+    return current;
+  }
+
+  function noteFrame(delta, work) {
+    if (qualityLevel === 0 || delta <= 0 || delta > 80) return;
+    if (qualityCooldown > 0) { qualityCooldown -= 1; return; }
+
+    qualitySamples.push({ delta: delta, work: work });
+    if (qualitySamples.length > 48) qualitySamples.shift();
+    if (qualitySamples.length < 36) return;
+
+    var totalDelta = 0;
+    var totalWork = 0;
+    for (var i = 0; i < qualitySamples.length; i += 1) {
+      totalDelta += qualitySamples[i].delta;
+      totalWork += qualitySamples[i].work;
+    }
+    var averageDelta = totalDelta / qualitySamples.length;
+    var averageWork = totalWork / qualitySamples.length;
+    var threshold = qualityLevel === 3 ? 22 : qualityLevel === 2 ? 29 : 40;
+    if (averageDelta > threshold || averageWork > threshold * 0.72) {
+      downgradeQuality(qualityLevel - 1, 'frame-budget');
+    }
+  }
+
+  var Quality = Object.freeze({
+    get: getQuality,
+    downgrade: downgradeQuality,
+    isAtLeast: function (tier) {
+      var parsed = parseQuality(tier);
+      return parsed !== null && qualityLevel >= parsed;
+    }
+  });
+
+  /* The broker owns all animation frames requested through this runtime.
+     Continuous claims are exclusive; one-shot jobs join the owner's next
+     frame instead of creating a second RAF chain. */
+  var activeClaim = null;
+  var frameRequest = 0;
+  var frameJobs = [];
+  var pageHidden = false;
+  var frameCount = 0;
+  var lastStamp = 0;
+  var lastDelta = 0;
+  var averageDelta = 0;
+  var lastWork = 0;
+  var averageWork = 0;
+  var droppedFrames = 0;
+  var frameDurations = [];
+  var workDurations = [];
+
+  function unsafeToAnimate() {
+    return pageHidden || !doc || !!doc.hidden || !!doc.prerendering;
+  }
+
+  function motionBlocked(claim) {
+    if (!claim) return false;
+    return ((!claim.allowReduced && getMotion().reduced) || qualityLevel === 0);
+  }
+
+  function cancelScheduledFrame() {
+    if (!frameRequest) return;
+    caf(frameRequest);
+    frameRequest = 0;
+  }
+
+  function renderStatic(claim, stamp, reason) {
+    if (!claim || claim.staticRendered) return;
+    claim.staticRendered = true;
+    var fn = claim.staticFrame || claim.step;
+    var keep = callSafely(fn, [stamp || now(), 0, Object.freeze({
+      id: claim.id,
+      static: true,
+      reason: reason || 'static',
+      quality: getQuality(),
+      frame: frameCount
+    })], 'loop:' + claim.id + ':static');
+    if (keep === false) release(claim.id, 'complete');
+  }
+
+  function flushJobs(stamp) {
+    if (!frameJobs.length) return;
+    var jobs = frameJobs.slice();
+    frameJobs.length = 0;
+    for (var i = 0; i < jobs.length; i += 1) {
+      if (!jobs[i].cancelled) {
+        callSafely(jobs[i].fn, [stamp], 'frame:' + jobs[i].label);
+      }
+    }
+  }
+
+  function tick(stamp) {
+    frameRequest = 0;
+    if (unsafeToAnimate()) return;
+
+    var workStart = now();
+    flushJobs(stamp);
+
+    var claim = activeClaim;
+    if (claim && motionBlocked(claim)) {
+      renderStatic(claim, stamp, getMotion().reduced ? 'reduced-motion' : 'quality');
+    } else if (claim) {
+      var delta = lastStamp ? Math.min(50, Math.max(0, stamp - lastStamp)) : 16.667;
+      lastStamp = stamp;
+      lastDelta = delta;
+      frameCount += 1;
+      averageDelta += (delta - averageDelta) / Math.min(frameCount, 60);
+      if (delta > 25) droppedFrames += 1;
+      frameDurations.push(delta);
+      if (frameDurations.length > 120) frameDurations.shift();
+
+      try {
+        var keep = claim.step(stamp, delta, Object.freeze({
+          id: claim.id,
+          static: false,
+          quality: getQuality(),
+          frame: frameCount
+        }));
+        if (keep === false) {
+          release(claim.id, 'complete');
+          claim = null;
+        }
+      } catch (error) {
+        report(error, 'loop:' + claim.id, true);
+        release(claim.id, 'error');
+        claim = null;
+      }
+    }
+
+    lastWork = now() - workStart;
+    if (claim) {
+      workDurations.push(lastWork);
+      if (workDurations.length > 120) workDurations.shift();
+    }
+    averageWork += (lastWork - averageWork) / Math.min(Math.max(frameCount, 1), 60);
+    if (claim && activeClaim === claim) noteFrame(lastDelta, lastWork);
+
+    if ((activeClaim && !motionBlocked(activeClaim)) || frameJobs.length) scheduleFrame();
+  }
+
+  function scheduleFrame() {
+    if (frameRequest || unsafeToAnimate()) return;
+    if ((!activeClaim || motionBlocked(activeClaim)) && !frameJobs.length) return;
+    frameRequest = raf(tick);
+  }
+
+  function claim(id, step, onYield) {
+    if (!id || typeof step !== 'function') {
+      report(new TypeError('LoopBroker.claim requires an id and step function.'), 'loop:claim', false);
+      return function () {};
+    }
+
+    /* The public contract is claim(id, frame, onYield?). An options object is
+       also accepted so figures may supply an explicit reduced-motion frame. */
+    var opts = typeof onYield === 'function' ? { onYield: onYield } : (onYield || {});
+    if (activeClaim && activeClaim.id !== String(id)) {
+      var previous = activeClaim;
+      activeClaim = null;
+      cancelScheduledFrame();
+      callSafely(previous.onYield, [String(id)], 'loop:' + previous.id + ':yield');
+    }
+
+    activeClaim = {
+      id: String(id),
+      step: step,
+      staticFrame: typeof opts.staticFrame === 'function' ? opts.staticFrame : null,
+      onYield: typeof opts.onYield === 'function' ? opts.onYield : null,
+      onSuspend: typeof opts.onSuspend === 'function' ? opts.onSuspend : null,
+      onResume: typeof opts.onResume === 'function' ? opts.onResume : null,
+      allowReduced: opts.allowReduced === true,
+      staticRendered: false
+    };
+    dispatch(EVENTS.loop, { owner: activeClaim.id, previous: null, reason: 'claim' });
+    lastStamp = 0;
+    callSafely(opts.onClaim, [activeClaim.id], 'loop:' + activeClaim.id + ':claim');
+
+    var claimedId = String(id);
+    if (!unsafeToAnimate()) {
+      if (motionBlocked(activeClaim)) renderStatic(activeClaim, now(),
+        getMotion().reduced ? 'reduced-motion' : 'quality');
+      else scheduleFrame();
+    }
+
+    return function releaseClaim() { release(claimedId, 'consumer'); };
+  }
+
+  function release(id, reason) {
+    if (!activeClaim || (id !== undefined && String(id) !== activeClaim.id)) return false;
+    var previous = activeClaim;
+    activeClaim = null;
+    dispatch(EVENTS.loop, { owner: null, previous: previous.id, reason: reason || 'release' });
+    lastStamp = 0;
+    if (!frameJobs.length) cancelScheduledFrame();
+    callSafely(previous.onYield, [null, reason || 'release'], 'loop:' + previous.id + ':release');
+    return true;
+  }
+
+  function currentOwner() {
+    return activeClaim ? activeClaim.id : null;
+  }
+
+  function requestFrame(fn, label) {
+    if (typeof fn !== 'function') return function () {};
+    var job = { fn: fn, label: label || 'anonymous', cancelled: false };
+    frameJobs.push(job);
+    scheduleFrame();
+    return function cancelFrameJob() { job.cancelled = true; };
+  }
+
+  function metrics() {
+    var sorted = frameDurations.slice().sort(function (a, b) { return a - b; });
+    var sortedWork = workDurations.slice().sort(function (a, b) { return a - b; });
+    var sampleCount = sorted.length;
+    var total = 0;
+    for (var i = 0; i < sampleCount; i += 1) total += sorted[i];
+    var frameMean = sampleCount ? total / sampleCount : 0;
+    var frameP95 = sampleCount ? sorted[Math.min(sampleCount - 1, Math.ceil(sampleCount * 0.95) - 1)] : 0;
+    var workTotal = 0;
+    for (var j = 0; j < sortedWork.length; j += 1) workTotal += sortedWork[j];
+    var workMean = sortedWork.length ? workTotal / sortedWork.length : 0;
+    var workP95 = sortedWork.length ? sortedWork[Math.min(sortedWork.length - 1, Math.ceil(sortedWork.length * 0.95) - 1)] : 0;
+    return Object.freeze({
+      owner: currentOwner(),
+      running: !!frameRequest,
+      suspended: unsafeToAnimate(),
+      mean: workMean,
+      p95: workP95,
+      frameMean: frameMean,
+      frameP95: frameP95,
+      sampleCount: sampleCount,
+      samples: sampleCount,
+      frames: frameCount,
+      lastDelta: lastDelta,
+      averageDelta: averageDelta,
+      fps: averageDelta > 0 ? 1000 / averageDelta : 0,
+      lastWork: lastWork,
+      averageWork: averageWork,
+      droppedFrames: droppedFrames,
+      queuedFrames: frameJobs.length,
+      quality: getQuality()
+    });
+  }
+
+  function suspend(reason) {
+    cancelScheduledFrame();
+    lastStamp = 0;
+    if (activeClaim) callSafely(activeClaim.onSuspend, [reason || 'suspend'],
+      'loop:' + activeClaim.id + ':suspend');
+  }
+
+  function resume() {
+    if (unsafeToAnimate()) return;
+    if (activeClaim && !unsafeToAnimate()) {
+      activeClaim.staticRendered = false;
+      callSafely(activeClaim.onResume, [activeClaim.id], 'loop:' + activeClaim.id + ':resume');
+      if (motionBlocked(activeClaim)) renderStatic(activeClaim, now(),
+        getMotion().reduced ? 'reduced-motion' : 'quality');
+    }
+    scheduleFrame();
+  }
+
+  var LoopBroker = {
+    claim: claim,
+    release: release,
+    frame: requestFrame,
+    metrics: metrics
+  };
+  Object.defineProperty(LoopBroker, 'owner', {
+    enumerable: true,
+    get: currentOwner
+  });
+  Object.freeze(LoopBroker);
+
+  /* IntersectionObserver instances are pooled by option signature. */
+  var observerBuckets = new Map();
+  var rootIds = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var nextRootId = 1;
+
+  function thresholdKey(value) {
+    return Array.isArray(value) ? value.join(',') : String(value === undefined ? 0 : value);
+  }
+
+  function observerKey(options) {
+    var observerRoot = options.root || null;
+    var rootKey = 'viewport';
+    if (observerRoot && rootIds) {
+      if (!rootIds.has(observerRoot)) rootIds.set(observerRoot, nextRootId++);
+      rootKey = 'root-' + rootIds.get(observerRoot);
+    }
+    return rootKey + '|' + (options.rootMargin || '0px') + '|' + thresholdKey(options.threshold);
+  }
+
+  function makeBucket(options, key) {
+    var records = new Map();
+    var observer = new global.IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i += 1) {
+        var entry = entries[i];
+        var subscribers = records.get(entry.target);
+        if (!subscribers) continue;
+        subscribers.forEach(function (subscription) {
+          var visible = entry.isIntersecting && entry.intersectionRatio >= subscription.minRatio;
+          if (subscription.last === visible && !subscription.always) return;
+          subscription.last = visible;
+          callSafely(subscription.callback, [visible, entry], 'visibility');
+          if (visible && subscription.once) subscription.dispose();
+        });
+      }
+    }, options);
+
+    return { key: key, observer: observer, records: records };
+  }
+
+  function onVisible(element, callback, options) {
+    if (!element || typeof callback !== 'function') return function () {};
+    var opts = options || {};
+
+    if (typeof global.IntersectionObserver !== 'function') {
+      var cancelled = false;
+      Promise.resolve().then(function () {
+        if (!cancelled) callSafely(callback, [true, null], 'visibility:fallback');
+      });
+      return function () { cancelled = true; };
+    }
+
+    var ioOptions = {
+      root: opts.root || null,
+      rootMargin: opts.rootMargin || '0px',
+      threshold: opts.threshold === undefined ? [0, 0.01] : opts.threshold
+    };
+    var key = observerKey(ioOptions);
+    var bucket = observerBuckets.get(key);
+    if (!bucket) {
+      bucket = makeBucket(ioOptions, key);
+      observerBuckets.set(key, bucket);
+    }
+
+    var subscribers = bucket.records.get(element);
+    if (!subscribers) {
+      subscribers = new Set();
+      bucket.records.set(element, subscribers);
+      bucket.observer.observe(element);
+    }
+
+    var subscription = {
+      callback: callback,
+      once: opts.once === true,
+      always: opts.always === true,
+      minRatio: Math.max(0, Number(opts.minRatio) || 0),
+      last: null,
+      dispose: null
+    };
+
+    function dispose() {
+      var set = bucket.records.get(element);
+      if (!set) return;
+      set.delete(subscription);
+      if (!set.size) {
+        bucket.observer.unobserve(element);
+        bucket.records.delete(element);
+      }
+      if (!bucket.records.size) {
+        bucket.observer.disconnect();
+        observerBuckets.delete(bucket.key);
+      }
+    }
+
+    subscription.dispose = dispose;
+    subscribers.add(subscription);
+    return dispose;
+  }
+
+  var ObserverHub = Object.freeze({
+    observe: onVisible,
+    disconnect: function () {
+      observerBuckets.forEach(function (bucket) { bucket.observer.disconnect(); });
+      observerBuckets.clear();
+    },
+    size: function () { return observerBuckets.size; }
+  });
+
+  /* Resize a canvas backing store while keeping drawing coordinates in CSS
+     pixels. The callback redraws only after a real size or quality change. */
+  function observeCanvas(canvas, callback, options) {
+    if (!canvas || typeof callback !== 'function') return function () {};
+    var opts = options || {};
+    var disposed = false;
+    var pending = null;
+    var resizeObserver = null;
+    var lastWidth = -1;
+    var lastHeight = -1;
+    var lastDpr = -1;
+
+    function measure() {
+      if (disposed) return;
+      var rect = canvas.getBoundingClientRect();
+      var width = Math.max(0, rect.width || canvas.clientWidth || 0);
+      var height = Math.max(0, rect.height || canvas.clientHeight || 0);
+      if (!width || !height) return;
+
+      var quality = getQuality();
+      var dpr = Math.max(1, Number(global.devicePixelRatio) || 1);
+      dpr = Math.min(dpr, Number(opts.maxDpr) || quality.dprCap, quality.dprCap);
+      var maxPixels = Number(opts.maxPixels) || 2400000;
+      var pixels = width * height * dpr * dpr;
+      if (pixels > maxPixels) dpr *= Math.sqrt(maxPixels / pixels);
+      dpr = Math.max(Number(opts.minDpr) || 0.75, dpr);
+
+      var pixelWidth = Math.max(1, Math.round(width * dpr));
+      var pixelHeight = Math.max(1, Math.round(height * dpr));
+      var changed = pixelWidth !== lastWidth || pixelHeight !== lastHeight ||
+        Math.abs(dpr - lastDpr) > 0.001;
+      if (!changed && opts.always !== true) return;
+
+      lastWidth = pixelWidth;
+      lastHeight = pixelHeight;
+      lastDpr = dpr;
+      if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
+      if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
+
+      var context = opts.context || null;
+      if (context && typeof context.setTransform === 'function') {
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      callSafely(callback, [Object.freeze({
+        canvas: canvas,
+        context: context,
+        width: width,
+        height: height,
+        pixelWidth: pixelWidth,
+        pixelHeight: pixelHeight,
+        dpr: dpr,
+        changed: changed,
+        quality: quality,
+        rect: rect
+      })], 'canvas:resize');
+    }
+
+    function queueMeasure() {
+      if (disposed || pending) return;
+      pending = requestFrame(function () {
+        pending = null;
+        measure();
+      }, 'canvas-resize');
+    }
+
+    if (typeof global.ResizeObserver === 'function') {
+      resizeObserver = new global.ResizeObserver(queueMeasure);
+      resizeObserver.observe(canvas);
+    } else {
+      global.addEventListener('resize', queueMeasure, { passive: true });
+    }
+    global.addEventListener(EVENTS.quality, queueMeasure);
+    queueMeasure();
+
+    function dispose() {
+      if (disposed) return;
+      disposed = true;
+      if (pending) pending();
+      if (resizeObserver) resizeObserver.disconnect();
+      else global.removeEventListener('resize', queueMeasure);
+      global.removeEventListener(EVENTS.quality, queueMeasure);
+    }
+    dispose.measure = measure;
+    return dispose;
+  }
+
+  function handleMotionChange() {
+    var reduced = getMotion().reduced;
+    dispatch(EVENTS.motion, { reduced: reduced, motion: getMotion() });
+    cancelScheduledFrame();
+    lastStamp = 0;
+    if (activeClaim && !unsafeToAnimate()) {
+      activeClaim.staticRendered = false;
+      if (reduced && !activeClaim.allowReduced) renderStatic(activeClaim, now(), 'reduced-motion');
+      else scheduleFrame();
+    }
+  }
+
+  function listenMedia(query, fn) {
+    if (!query) return;
+    if (typeof query.addEventListener === 'function') query.addEventListener('change', fn);
+    else if (typeof query.addListener === 'function') query.addListener(fn);
+  }
+
+  listenMedia(reduceQuery, handleMotionChange);
+
+  if (doc) {
+    doc.addEventListener('visibilitychange', function () {
+      if (doc.hidden) suspend('visibility');
+      else resume();
+    });
+    doc.addEventListener('prerenderingchange', resume);
+    global.addEventListener('pagehide', function () {
+      pageHidden = true;
+      suspend('pagehide');
+    });
+    global.addEventListener('pageshow', function () {
+      pageHidden = false;
+      resume();
+    });
+  }
+
+  global.SiteRuntime = Object.freeze({
+    version: '1.0.0',
+    EVENTS: EVENTS,
+    loop: LoopBroker,
+    ObserverHub: ObserverHub,
+    onVisible: onVisible,
+    observeCanvas: observeCanvas,
+    hash: hash,
+    seededRandom: seededRandom,
+    getMotion: getMotion,
+    getTheme: getTheme,
+    getLang: getLang,
+    quality: Quality,
+    report: report
+  });
+})(window);
 
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1501,7 +2531,7 @@ const composing = e => e.isComposing || e.keyCode === 229;
   dlg.className = 'palette';
   dlg.innerHTML = `
     <input type="text" class="pal-q" autocomplete="off" spellcheck="false"
-           aria-label="Search" placeholder="">
+           aria-label="Search" data-label-en="Search" data-label-zh="搜尋" placeholder="">
     <ul class="pal-list" role="listbox"></ul>
     <p class="pal-hint label"></p>`;
   document.body.appendChild(dlg);
@@ -1570,12 +2600,10 @@ const composing = e => e.isComposing || e.keyCode === 229;
       <span data-en>${p.en}</span><span data-zh>${p.zh}</span>
     </a>`).join('');
   document.body.appendChild(bar);
-  let last = scrollY;
-  addEventListener('scroll', () => {
-    const y = scrollY;
-    bar.dataset.hide = (y > last && y > 220) ? '1' : '0';
-    last = y;
-  }, { passive: true });
+  // V3 keeps the primary mobile navigation permanently available. Autohiding
+  // a two-row navigation bar both obscured the final content and required a
+  // global scroll listener for purely decorative behaviour.
+  bar.dataset.hide = '0';
 })();
 
 /* ── I10 / M7 · publication expand-in-place ─────────────────────────── */
@@ -1589,6 +2617,9 @@ document.querySelectorAll('.paper-note').forEach(note => {
   const btn = document.createElement('button');
   btn.className = 'note-btn';
   btn.type = 'button';
+  btn.setAttribute('aria-label', 'Contribution');
+  btn.dataset.labelEn = 'Contribution';
+  btn.dataset.labelZh = '貢獻';
   btn.innerHTML = '<span data-en>Contribution</span><span data-zh>貢獻</span><span class="chev" aria-hidden="true">▾</span>';
   wrap.before(btn);
   btn.setAttribute('aria-expanded', 'false');
@@ -1623,6 +2654,8 @@ function mountNoiseDial() {
       <span data-en>Corrupt the cue</span><span data-zh>破壞線索</span>
     </label>
     <input id="noise" type="range" min="0" max="60" value="42" step="1"
+           aria-label="${root.dataset.lang === 'zh' ? '線索擾動程度' : 'Corruption level'}"
+           data-label-en="Corruption level" data-label-zh="線索擾動程度"
            aria-describedby="dial-out">
     <output id="dial-out" class="mono"></output>`;
   hero.after(el);
@@ -1632,7 +2665,10 @@ function mountNoiseDial() {
   const label = () => {
     const en = root.dataset.lang === 'en';
     const p = +range.value;
-    const m = window.__overlap ? window.__overlap() : 0;
+    const metrics = window.HeroController?.getMetrics?.();
+    const m = Number.isFinite(metrics?.targetOverlap)
+      ? metrics.targetOverlap
+      : (window.__overlap ? window.__overlap() : 0);
     const failed = m < 0.9;
     out.innerHTML =
       `<b>${p}%</b> ${en ? 'bit-flip' : '位元翻轉'} · ` +
@@ -1643,7 +2679,10 @@ function mountNoiseDial() {
   };
   range.addEventListener('input', () => {
     clearTimeout(t);
-    t = setTimeout(() => { window.__retrieve(+range.value / 100); }, 90);
+    t = setTimeout(() => {
+      if (window.HeroController?.setCorruption) window.HeroController.setCorruption(+range.value / 100);
+      else window.__retrieve?.(+range.value / 100);
+    }, 90);
     label();
   });
   setInterval(label, 400);
@@ -1658,22 +2697,19 @@ mountNoiseDial();
   const fill = document.getElementById('toc-fill');
   const pct = document.getElementById('toc-pct');
   if (!body || !fill) return;
-  let queued = false;
-  const measure = () => {
-    queued = false;
-    const r = body.getBoundingClientRect();
-    const total = r.height - innerHeight;
-    const done = total <= 0 ? 1 : Math.min(1, Math.max(0, -r.top / total));
+  const paras = [...body.querySelectorAll('p')].filter(p => getComputedStyle(p).display !== 'none');
+  let current = 0;
+  const measure = i => {
+    current = Math.max(current, i);
+    const done = paras.length < 2 ? 1 : current / (paras.length - 1);
     fill.style.width = (done * 100).toFixed(1) + '%';
     if (pct) pct.textContent = Math.round(done * 100) + '%';
   };
-  addEventListener('scroll', () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(measure);
-  }, { passive: true });
-  addEventListener('resize', measure, { passive: true });
-  measure();
+  const progressIO = new IntersectionObserver(entries => {
+    entries.filter(e => e.isIntersecting).forEach(e => measure(paras.indexOf(e.target)));
+  }, { rootMargin: '-38% 0px -48% 0px', threshold: 0 });
+  paras.forEach(p => progressIO.observe(p));
+  measure(0);
 })();
 
 /* ── I18 · comparison slider — the hero's corruption model, on a photo ─ */
@@ -1686,7 +2722,7 @@ mountNoiseDial();
   const ctx = cvs.getContext('2d', { willReadFrequently: true });
   if (!ctx) return;
 
-  let base = null;
+  let base = null, rank = null;
   const paint = () => {
     if (!base) return;
     const p = +range.value / 100;
@@ -1696,8 +2732,9 @@ mountNoiseDial();
     // means pushing pixels to one extreme or the other, which is what a corrupted
     // cue actually looks like before retrieval.
     for (let i = 0; i < b.length; i += 4) {
-      if (Math.random() < p) {
-        const v = Math.random() < 0.5 ? 0 : 255;
+      const n = i / 4;
+      if (rank[n] < p) {
+        const v = rank[(n * 17 + 31) % rank.length] < 0.5 ? 0 : 255;
         o[i] = v; o[i + 1] = v; o[i + 2] = v;
       } else {
         o[i] = b[i]; o[i + 1] = b[i + 1]; o[i + 2] = b[i + 2];
@@ -1713,6 +2750,11 @@ mountNoiseDial();
     cvs.width = w; cvs.height = h;
     ctx.drawImage(src, 0, 0, w, h);
     base = ctx.getImageData(0, 0, w, h);
+    const random = window.SiteRuntime?.seededRandom?.('field-corruption') || (() => {
+      let s = 0x9e3779b9;
+      return () => ((s = Math.imul(s ^ (s >>> 15), 1 | s), s ^= s + Math.imul(s ^ (s >>> 7), 61 | s), ((s ^ (s >>> 14)) >>> 0) / 4294967296));
+    })();
+    rank = Array.from({ length: w * h }, random);
     paint();
   };
   if (src.complete && src.naturalWidth) load();
@@ -1736,7 +2778,7 @@ mountNoiseDial();
   const dlg = document.createElement('dialog');
   dlg.className = 'lb';
   dlg.innerHTML = `
-    <button class="lb-x sw" type="button" aria-label="Close">ESC</button>
+    <button class="lb-x sw" type="button" aria-label="Close" data-label-en="Close" data-label-zh="關閉">ESC</button>
     <img alt="">
     <footer>
       <p class="lb-cap"></p>
@@ -1866,295 +2908,421 @@ mountNoiseDial();
 })();
 
 
-/* ══════════════════════════════════════════════════════════════════════
-   THE SUBSTRATE — bubbles
-   One full-viewport canvas behind every page. Bubbles rise, wobble on a
-   noise field, and are pushed out of the way by the pointer. They read as
-   volume rather than as a texture printed on the background.
-
-   One rAF loop for the whole site: throttled hard when nothing is moving,
-   suspended when the tab is hidden.
-   ══════════════════════════════════════════════════════════════════════ */
+/* ======================================================================
+   V3 — PROBABILISTIC INSTRUMENTARIUM
+   Quiet UI around real computation. No dependency, no decorative loop.
+   ====================================================================== */
 (() => {
-  if (root.dataset.motion === 'reduced') return;
+  const RT = window.SiteRuntime || {};
+  const isReduced = () => root.dataset.motion === 'reduced';
+  const isZh = () => root.dataset.lang === 'zh';
+  const pair = (en, zh) => `<span data-en>${esc(en)}</span><span data-zh>${esc(zh)}</span>`;
+  const emit = (name, detail) => dispatchEvent(new CustomEvent(name, { detail }));
+  const syncLocaleAttributes = () => {
+    const l = isZh() ? 'zh' : 'en';
+    document.querySelectorAll('[data-alt-en]').forEach(el => { el.alt = el.dataset[`alt${l[0].toUpperCase()}${l.slice(1)}`] || el.dataset.altEn; });
+    document.querySelectorAll('[data-label-en]').forEach(el => { el.setAttribute('aria-label', el.dataset[`label${l[0].toUpperCase()}${l.slice(1)}`] || el.dataset.labelEn); });
+  };
+  addEventListener('langchange', syncLocaleAttributes);
+  syncLocaleAttributes();
 
-  const cvs = document.createElement('canvas');
-  cvs.className = 'substrate';
-  cvs.setAttribute('aria-hidden', 'true');
-  document.body.prepend(cvs);
-  const ctx = cvs.getContext('2d', { alpha: true });
-  if (!ctx) { cvs.remove(); return; }
-
-  const css = v => getComputedStyle(root).getPropertyValue(v).trim();
-
-  let W = 0, H = 0, dpr = 1;
-  let scrollV = 0, lastY = scrollY;
-  let px = -1e4, py = -1e4;
-  let idle = 0, raf = 0, t = 0;
-
-  /* ── bubbles ──────────────────────────────────────────────────────── */
-  let B = [];
-  const count = () => (innerWidth < 760 ? 26 : Math.min(70, Math.round(innerWidth * innerHeight / 26000)));
-
-  function make(seeded) {
-    // A spread of sizes is what stops it reading as a particle system: a few
-    // large slow ones carry the volume, the small fast ones carry the life.
-    const big = Math.random() < 0.22;
-    const r = big ? 26 + Math.random() * 52 : 4 + Math.random() * 16;
-    return {
-      x: Math.random() * W,
-      y: seeded ? Math.random() * H : H + r + Math.random() * 90,
-      r,
-      // buoyancy: bigger bubbles rise faster, as they do
-      vy: -(0.10 + r * 0.0072) * (0.75 + Math.random() * 0.5),
-      vx: 0,
-      phase: Math.random() * Math.PI * 2,
-      wob: 0.4 + Math.random() * 0.9,
-      alpha: big ? 0.16 + Math.random() * 0.14 : 0.22 + Math.random() * 0.26,
-    };
-  }
-  const seed = () => { B = Array.from({ length: count() }, () => make(true)); };
-
-  function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    W = innerWidth; H = innerHeight;
-    cvs.width = W * dpr; cvs.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    seed();
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    const accent = css('--accent') || '#4FE0A0';
-    const light = root.dataset.theme === 'light';
-
-    for (const b of B) {
-      ctx.globalAlpha = b.alpha;
-
-      if (light) {
-        // publication register: an ink outline, no glow
-        ctx.strokeStyle = accent;
-        ctx.lineWidth = b.r > 24 ? 1.3 : 1;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.stroke();
-        // a second inner arc gives the outline some body on paper
-        ctx.globalAlpha = b.alpha * 0.4;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 0.82, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke();
-      } else {
-        // instrument register: a soft membrane with a rim and a highlight,
-        // which is what actually makes a circle read as a bubble
-        const g = ctx.createRadialGradient(b.x, b.y, b.r * 0.15, b.x, b.y, b.r);
-        g.addColorStop(0, 'transparent');
-        g.addColorStop(0.72, 'transparent');
-        g.addColorStop(0.93, accent);
-        g.addColorStop(1, 'transparent');
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.fill();
-
-        ctx.globalAlpha = b.alpha * 0.55;
-        ctx.fillStyle = accent;
-        ctx.beginPath();
-        ctx.arc(b.x - b.r * 0.33, b.y - b.r * 0.36, Math.max(0.8, b.r * 0.11), 0, 7);
-        ctx.fill();
-      }
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  function step() {
-    t += 0.006;
-    for (const b of B) {
-      b.phase += 0.012 * b.wob;
-      // wobble sideways, and drift with the scroll
-      b.vx = Math.sin(b.phase + b.y * 0.004) * 0.42 * b.wob;
-      b.x += b.vx;
-      b.y += b.vy - scrollV * 0.05;
-
-      // the pointer shoulders them aside
-      const dx = b.x - px, dy = b.y - py;
-      const d2 = dx * dx + dy * dy;
-      const reach = (b.r + 110) ** 2;
-      if (d2 < reach && d2 > 0.01) {
-        const d = Math.sqrt(d2);
-        const f = (1 - d2 / reach) * 3.2;
-        b.x += (dx / d) * f;
-        b.y += (dy / d) * f;
-      }
-
-      if (b.y + b.r < -30 || b.x < -140 || b.x > W + 140) Object.assign(b, make(false));
-    }
-    scrollV *= 0.90;
-  }
-
-  function frame() {
-    raf = requestAnimationFrame(frame);
-    idle++;
-    if (Math.abs(scrollV) > 0.4) idle = 0;
-    if (idle > 140 && (idle & 1)) return;   // half rate once everything settles
-    step(); draw();
-  }
-
-  addEventListener('scroll', () => {
-    const y = scrollY;
-    scrollV = y - lastY; lastY = y;
-    const max = Math.max(1, document.body.scrollHeight - innerHeight);
-    root.style.setProperty('--sp', (y / max).toFixed(4));
-  }, { passive: true });
-
-  addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; idle = 0; }, { passive: true });
-  addEventListener('pointerleave', () => { px = py = -1e4; }, { passive: true });
-
-  let rt;
-  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf);
-    else raf = requestAnimationFrame(frame);
+  /* V24/V25 — the viewport becomes a calibrated plate, not a blank browser. */
+  const sectionNodes = [...document.querySelectorAll('#main > section, #main > header, #main > article > header, #main > article > .essay-grid')];
+  const sections = sectionNodes.filter((el, i, all) => all.indexOf(el) === i).map((el, i) => {
+    if (!el.id) el.id = `plate-${String(i + 1).padStart(2, '0')}`;
+    el.dataset.section = String(i + 1).padStart(2, '0');
+    const heading = el.querySelector('h1,h2,.sec-t') || el;
+    return { el, heading, id: el.id, n: el.dataset.section };
   });
 
-  resize();
-  raf = requestAnimationFrame(frame);
-})();
+  let activeSection = sections[0] || null;
+  const hud = document.createElement('aside');
+  hud.className = 'atlas-hud mono';
+  hud.setAttribute('aria-hidden', 'true');
+  hud.innerHTML = `
+    <span class="hud-axis">x<sub>1</sub></span>
+    <span class="hud-page">${esc(PAGE.toUpperCase())}</span>
+    <span class="hud-section">§ ${activeSection?.n || '00'}</span>
+    <span class="hud-state"></span>
+    <span class="hud-owner"></span>`;
+  document.body.appendChild(hud);
 
+  const rail = document.createElement('nav');
+  rail.className = 'atlas-rail mono';
+  rail.setAttribute('aria-label', 'Page sections / 頁面段落');
+  rail.innerHTML = sections.map((s, i) => `
+    <a href="#${s.id}" data-section-link="${s.n}"${i === 0 ? ' class="on" aria-current="location"' : ''}>
+      <span class="rail-tick" aria-hidden="true"></span>
+      <span class="rail-n">${s.n}</span>
+      <span class="rail-name">${esc((s.heading.textContent || PAGE).trim().slice(0, 42))}</span>
+    </a>`).join('');
+  if (sections.length) document.body.appendChild(rail);
 
-/* ══════════════════════════════════════════════════════════════════════
-   KINETIC TYPE — headings shear with scroll velocity and settle.
-   The page has weight; typography that ignores that reads as a screenshot.
-   ══════════════════════════════════════════════════════════════════════ */
-(() => {
-  if (root.dataset.motion === 'reduced') return;
-  const targets = [...document.querySelectorAll('.sec-t, .page-head h1, .essay-head h1, .hero-name')];
-  if (!targets.length) return;
-  let v = 0, last = scrollY, queued = false;
-  const apply = () => {
-    queued = false;
-    const s = Math.max(-1, Math.min(1, v / 46));
-    targets.forEach(el => {
-      el.style.transform = `skewY(${(s * 1.6).toFixed(2)}deg) translateY(${(s * -5).toFixed(1)}px)`;
+  const updateHud = () => {
+    hud.querySelector('.hud-section').textContent = `§ ${activeSection?.n || '00'}`;
+    hud.querySelector('.hud-state').textContent = `${root.dataset.lang?.toUpperCase()} · ${root.dataset.theme?.toUpperCase()}`;
+    const owner = RT.loop?.owner;
+    hud.querySelector('.hud-owner').textContent = owner ? `LIVE · ${owner}` : 'STATIC';
+  };
+  const setActive = s => {
+    activeSection = s;
+    rail.querySelectorAll('a').forEach(a => {
+      const on = a.dataset.sectionLink === s.n;
+      a.classList.toggle('on', on);
+      on ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current');
     });
-    v *= 0.86;
-    if (Math.abs(v) > 0.3) requestAnimationFrame(apply);
-    else targets.forEach(el => { el.style.transform = ''; });
+    updateHud();
+    emit('site:section', { id: s.id, index: s.n });
   };
-  addEventListener('scroll', () => {
-    v = scrollY - last; last = scrollY;
-    if (!queued) { queued = true; requestAnimationFrame(apply); }
-  }, { passive: true });
-})();
+  if (sections.length) {
+    const sio = new IntersectionObserver(entries => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(sections.find(s => s.el === visible.target));
+    }, { rootMargin: '-18% 0px -62% 0px', threshold: [0, .15, .5] });
+    sections.forEach(s => sio.observe(s.el));
+  }
+  addEventListener('themechange', updateHud);
+  addEventListener('langchange', updateHud);
+  addEventListener('site:loop', updateHud);
+  updateHud();
 
-
-/* ══════════════════════════════════════════════════════════════════════
-   I5 · PHOTO ⇄ PARTICLES
-   The essay hero is sampled into particles and reassembled on entry, using
-   the same retrieval framing as the site's thesis: a corrupted field
-   resolving into a picture.
-   ══════════════════════════════════════════════════════════════════════ */
-(() => {
-  if (root.dataset.motion === 'reduced') return;
-  const fig = document.querySelector('.essay .ph-bleed');
-  if (!fig) return;
-  const img = fig.querySelector('img');
-  if (!img) return;
-
-  const cvs = document.createElement('canvas');
-  cvs.className = 'ph-particles';
-  cvs.setAttribute('aria-hidden', 'true');
-  img.after(cvs);
-  const ctx = cvs.getContext('2d');
-  if (!ctx) { cvs.remove(); return; }
-
-  let pts = [], W = 0, H = 0, raf = 0, done = false;
-
-  function build() {
-    const r = img.getBoundingClientRect();
-    W = Math.round(r.width); H = Math.round(r.height);
-    if (!W || !H) return false;
-    const dpr = Math.min(devicePixelRatio || 1, 1.6);
-    cvs.width = W * dpr; cvs.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    // sample the decoded image on an offscreen canvas
-    const off = document.createElement('canvas');
-    const step = innerWidth < 760 ? 9 : 6;
-    const cols = Math.floor(W / step), rows = Math.floor(H / step);
-    off.width = cols; off.height = rows;
-    const octx = off.getContext('2d', { willReadFrequently: true });
-    if (!octx) return false;
-    try { octx.drawImage(img, 0, 0, cols, rows); } catch { return false; }
-    const d = octx.getImageData(0, 0, cols, rows).data;
-
-    pts = [];
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-      const k = (j * cols + i) * 4;
-      const lum = (d[k] * 0.2126 + d[k + 1] * 0.7152 + d[k + 2] * 0.0722) / 255;
-      if (lum < 0.14) continue;                       // skip dead shadow
-      pts.push({
-        tx: i * step + step / 2, ty: j * step + step / 2,
-        x: Math.random() * W, y: Math.random() * H,
-        r: d[k], g: d[k + 1], b: d[k + 2], a: 0.25 + lum * 0.75,
+  /* Pointer coordinates are labels, never a custom cursor. */
+  if (matchMedia('(pointer:fine)').matches) {
+    let queued = false, px = 0, py = 0;
+    addEventListener('pointermove', e => {
+      px = e.clientX; py = e.clientY;
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        hud.style.setProperty('--hx', (px / innerWidth).toFixed(3));
+        hud.style.setProperty('--hy', (py / innerHeight).toFixed(3));
+        hud.querySelector('.hud-axis').textContent = `x₁ ${(px / innerWidth).toFixed(2)} · x₂ ${(py / innerHeight).toFixed(2)}`;
       });
-    }
-    return pts.length > 0;
+    }, { passive: true });
   }
 
-  let t0 = 0;
-  function run(now) {
-    if (!t0) t0 = now;
-    const k = Math.min(1, (now - t0) / 1500);
-    const e = 1 - Math.pow(1 - k, 3);
-    ctx.clearRect(0, 0, W, H);
-    for (const p of pts) {
-      const x = p.x + (p.tx - p.x) * e;
-      const y = p.y + (p.ty - p.y) * e;
-      ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${p.a * (1 - e * 0.15)})`;
-      ctx.fillRect(x, y, 2, 2);
+  /* V21/V22/V23 — a phase laboratory and a real energy probe over the hero. */
+  (() => {
+    const hero = document.getElementById('hero');
+    const field = document.getElementById('field');
+    if (!hero || !field) return;
+    const lab = document.createElement('div');
+    lab.className = 'phase-lab mono';
+    lab.setAttribute('aria-label', 'Simulation phase / 模擬階段');
+    const phases = [
+      ['cue', 'Cue', '線索'], ['retrieve', 'Retrieve', '檢索'],
+      ['release', 'Release', '釋放'], ['sample', 'Sample', '取樣'],
+    ];
+    lab.innerHTML = `<div class="phase-tabs" role="group">${phases.map(([id, en, zh], i) =>
+      `<button type="button" data-phase="${id}" aria-pressed="${i === 0}">${pair(en, zh)}</button>`).join('')}</div>
+      <output class="phase-probe" aria-live="polite">${pair('Tap the field to probe energy', '點擊場域以量測能量')}</output>`;
+    hero.appendChild(lab);
+    const out = lab.querySelector('.phase-probe');
+    lab.addEventListener('click', e => {
+      const b = e.target.closest('[data-phase]');
+      if (!b) return;
+      lab.querySelectorAll('[data-phase]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      window.HeroController?.setPhase?.(b.dataset.phase);
+    });
+    const probe = e => {
+      const r = field.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      const y = Math.max(0, Math.min(1, (e.clientY - r.top) / r.height));
+      hero.style.setProperty('--probe-x', `${x * 100}%`);
+      hero.style.setProperty('--probe-y', `${y * 100}%`);
+      hero.dataset.probe = '1';
+      const m = window.HeroController?.probe?.(x, y);
+      if (m) {
+        const gradNorm = Math.hypot(m.grad?.x || 0, m.grad?.y || 0);
+        out.textContent = `x=(${m.x.toFixed(2)}, ${m.y.toFixed(2)}) · U=${m.U.toFixed(3)} · ‖∇U‖=${gradNorm.toFixed(3)}`;
+      }
+    };
+    field.addEventListener('pointerdown', probe);
+    field.addEventListener('pointermove', e => { if (e.buttons) probe(e); }, { passive: true });
+    field.addEventListener('pointerleave', () => hero.dataset.probe = '0');
+
+    const dial = document.querySelector('.dial');
+    if (dial) {
+      const marker = document.createElement('p');
+      marker.className = 'dial-truth label';
+      marker.innerHTML = pair('Target overlap is measured against the requested memory—not the nearest decoy.', '重疊率以指定記憶為目標量測，而非最接近的干擾記憶。');
+      dial.appendChild(marker);
     }
-    if (k < 1) raf = requestAnimationFrame(run);
-    else { fig.dataset.assembled = '1'; done = true; }
+  })();
+
+  /* V32 — a true incidence map: only relationships present in the record. */
+  (() => {
+    if (PAGE !== 'research' || !DATA.threads?.length || !DATA.publications?.length) return;
+    const host = document.querySelector('.threads-lg')?.parentElement;
+    if (!host) return;
+    const map = document.createElement('section');
+    map.className = 'relation-map';
+    map.innerHTML = `
+      <header><p class="label">${pair('Research incidence', '研究關聯')}</p>
+      <h2>${pair('Threads become evidence', '研究主軸如何形成證據')}</h2></header>
+      <svg viewBox="0 0 1000 420" role="img" aria-labelledby="rel-title rel-desc">
+        <title id="rel-title">Research threads and related publications / 研究主軸與相關論文</title>
+        <desc id="rel-desc">Only relationships stated by the current research record are shown.</desc>
+        <g class="rel-edges"></g><g class="rel-nodes"></g>
+      </svg>
+      <p class="label rel-note">${pair('Recorded relationships only · unmapped work remains visible in the publication list', '僅呈現已有紀錄的關聯；其他著作仍完整保留於論文頁')}</p>`;
+    host.after(map);
+    const svg = map.querySelector('svg'), edgesG = map.querySelector('.rel-edges'), nodesG = map.querySelector('.rel-nodes');
+    const tx = 90, px = 690;
+    const threadPos = DATA.threads.map((t, i) => ({ id: `t${i}`, x: tx, y: 70 + i * 88, en: t.title.en, zh: t.title.zh }));
+    const paperPos = DATA.publications.slice(0, 4).map((p, i) => ({ id: `p${i}`, x: px, y: 58 + i * 96, en: p.title, zh: p.title }));
+    const links = [[0, 0], [1, 1], [3, 2]];
+    edgesG.innerHTML = links.map(([a, b]) => `<path data-a="t${a}" data-b="p${b}" d="M${threadPos[a].x + 180},${threadPos[a].y} C460,${threadPos[a].y} 520,${paperPos[b].y} ${paperPos[b].x - 24},${paperPos[b].y}"/>`).join('');
+    nodesG.innerHTML = [...threadPos, ...paperPos].map(n => `<g class="rel-node" data-node="${n.id}" tabindex="0" role="button"
+      aria-label="${esc(n.en)}" data-label-en="${esc(n.en)}" data-label-zh="${esc(n.zh)}"><circle cx="${n.x}" cy="${n.y}" r="8"/>
+      <text x="${n.x + 18}" y="${n.y + 5}" data-en>${esc(n.en.slice(0, 42))}</text>
+      <text x="${n.x + 18}" y="${n.y + 5}" data-zh>${esc(n.zh.slice(0, 42))}</text></g>`).join('');
+    const focus = id => { map.dataset.focus = id || ''; };
+    map.addEventListener('pointerover', e => focus(e.target.closest('[data-node]')?.dataset.node));
+    map.addEventListener('pointerleave', () => focus(''));
+    map.addEventListener('focusin', e => focus(e.target.closest('[data-node]')?.dataset.node));
+    map.addEventListener('focusout', () => focus(''));
+    map.addEventListener('click', e => { const n = e.target.closest('[data-node]'); if (n) n.focus(); });
+    map.addEventListener('keydown', e => {
+      const n = e.target.closest('[data-node]');
+      if (n && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); focus(n.dataset.node); }
+    });
+  })();
+
+  /* V33–V36 — publications become an evidence index, not a card list. */
+  (() => {
+    if (PAGE !== 'publications') return;
+    const list = document.querySelector('.papers');
+    if (!list) return;
+    const papers = [...list.querySelectorAll('.paper')];
+    const statuses = ['all', ...new Set(papers.map(p => p.dataset.status))];
+    const labels = {
+      all: ['All', '全部'], review: ['Under review', '審查中'], accepted: ['Accepted', '已接受'],
+      published: ['Published', '已發表'], service: ['Community', '共同著作'],
+    };
+    const bar = document.createElement('div');
+    bar.className = 'paper-filter mono';
+    bar.innerHTML = `<div role="group" aria-label="Filter publications / 篩選論文">${statuses.map((s, i) =>
+      `<button type="button" data-filter="${s}" aria-pressed="${i === 0}">${pair(...(labels[s] || [s, s]))}</button>`).join('')}</div>
+      <output aria-live="polite">${papers.length}</output>`;
+    list.before(bar);
+    const count = bar.querySelector('output');
+    bar.addEventListener('click', e => {
+      const b = e.target.closest('[data-filter]');
+      if (!b) return;
+      const f = b.dataset.filter;
+      bar.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      let shown = 0;
+      papers.forEach(p => { p.hidden = f !== 'all' && p.dataset.status !== f; if (!p.hidden) shown++; });
+      count.textContent = `${shown} / ${papers.length}`;
+    });
+
+    const live = document.createElement('p');
+    live.className = 'sr-live'; live.setAttribute('aria-live', 'polite');
+    list.before(live);
+    const copyText = async text => {
+      try { await navigator.clipboard.writeText(text); return true; } catch {}
+      const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok;
+    };
+    papers.forEach((p, i) => {
+      const main = p.querySelector('.paper-main');
+      const tools = document.createElement('div');
+      tools.className = 'paper-tools mono';
+      tools.innerHTML = `<button type="button" data-cite>${pair('Copy citation', '複製引用')}</button>
+        <details class="evidence"><summary>${pair('Evidence', '證據')}</summary>
+          <p>${pair('Status is displayed exactly as recorded in the public content model.', '狀態完全依照公開內容模型中的紀錄顯示。')}</p>
+        </details>`;
+      main.appendChild(tools);
+      tools.querySelector('[data-cite]').addEventListener('click', async () => {
+        const citation = [p.querySelector('.paper-authors')?.innerText, p.querySelector('.paper-title')?.innerText,
+          p.querySelector('.paper-venue')?.innerText, p.querySelector('.paper-year')?.innerText].filter(Boolean).map(x => x.trim()).join('. ');
+        const ok = await copyText(citation);
+        live.textContent = ok ? (isZh() ? '引用已複製。' : 'Citation copied.') : (isZh() ? '無法複製。' : 'Copy failed.');
+      });
+
+      if (i < 2) mountDenoise(main, i === 0 ? 'HOPE' : 'LANGEVIN', i);
+    });
+  })();
+
+  function mountDenoise(host, word, seed) {
+    const fig = document.createElement('figure');
+    fig.className = 'paper-acq';
+    fig.innerHTML = `<canvas width="360" height="104" aria-hidden="true"></canvas><figcaption>${pair('Conceptual denoise acquisition—not benchmark data', '概念性去噪擷取——並非基準資料')}</figcaption>`;
+    host.prepend(fig);
+    const cvs = fig.querySelector('canvas'), ctx = cvs.getContext('2d');
+    if (!ctx) return;
+    const cols = 90, rows = 26, off = document.createElement('canvas'); off.width = cols; off.height = rows;
+    const o = off.getContext('2d');
+    o.fillStyle = '#fff'; o.font = `bold ${word.length > 5 ? 15 : 20}px system-ui`; o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillText(word, cols / 2, rows / 2);
+    const target = o.getImageData(0, 0, cols, rows).data;
+    const rnd = RT.seededRandom ? RT.seededRandom(`paper-${seed}`) : (() => { let x = 12345 + seed; return () => ((x = (x * 1664525 + 1013904223) >>> 0) / 4294967296); })();
+    const rank = Array.from({ length: cols * rows }, () => rnd());
+    const draw = k => {
+      const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+      const ink = getComputedStyle(root).getPropertyValue('--ink').trim();
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      const sx = cvs.width / cols, sy = cvs.height / rows;
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const n = j * cols + i, bit = target[n * 4 + 3] > 20;
+        const resolved = rank[n] < k;
+        const on = resolved ? bit : rank[(n * 17 + 11) % rank.length] > .5;
+        if (!on) continue;
+        ctx.globalAlpha = resolved ? .9 : .24;
+        ctx.fillStyle = resolved ? ink : accent;
+        ctx.fillRect(i * sx, j * sy, Math.max(1, sx - .6), Math.max(1, sy - .6));
+      }
+      ctx.globalAlpha = 1;
+    };
+    const start = () => {
+      if (isReduced() || !RT.loop) { draw(1); return; }
+      let elapsed = 0;
+      RT.loop.claim(`paper-${seed}`, (_now, dt) => {
+        elapsed += dt; draw(Math.min(1, elapsed / 680));
+        return elapsed < 680;
+      });
+    };
+    const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { threshold: .45 });
+    io.observe(fig); draw(isReduced() ? 1 : 0);
   }
 
-  const start = () => {
-    if (done || !img.complete || !img.naturalWidth) return;
-    if (!build()) { fig.dataset.assembled = '1'; return; }
-    fig.dataset.assembled = '0';
-    t0 = 0; raf = requestAnimationFrame(run);
-  };
+  /* V38 — focus mode moves attention, never the essay paragraphs themselves. */
+  (() => {
+    const body = document.getElementById('essay-body');
+    if (!body) return;
+    const tools = document.createElement('div');
+    tools.className = 'essay-tools mono';
+    tools.innerHTML = `<button type="button" aria-pressed="false">${pair('Focus paragraphs', '段落聚焦')}</button><span class="essay-index"></span>`;
+    body.before(tools);
+    const paras = [...body.querySelectorAll('p')];
+    paras.forEach((p, i) => { p.dataset.paragraph = String(i + 1); p.tabIndex = -1; });
+    const label = tools.querySelector('.essay-index');
+    const choose = p => {
+      paras.forEach(x => x.classList.toggle('current', x === p));
+      label.textContent = `${String(paras.indexOf(p) + 1).padStart(2, '0')} / ${String(paras.length).padStart(2, '0')}`;
+    };
+    tools.querySelector('button').addEventListener('click', e => {
+      const on = body.dataset.focus === '1'; body.dataset.focus = on ? '0' : '1';
+      e.currentTarget.setAttribute('aria-pressed', String(!on)); if (!on) choose(paras[0]);
+    });
+    body.addEventListener('click', e => { const p = e.target.closest('p'); if (p && body.dataset.focus === '1') choose(p); });
+    let pIndex = 0;
+    addEventListener('keydown', e => {
+      if (e.isComposing || e.keyCode === 229 || body.dataset.focus !== '1') return;
+      if (e.key === 'j' || e.key === 'k') {
+        e.preventDefault(); pIndex = Math.max(0, Math.min(paras.length - 1, pIndex + (e.key === 'j' ? 1 : -1)));
+        choose(paras[pIndex]); paras[pIndex].scrollIntoView({ block: 'center', behavior: isReduced() ? 'auto' : 'smooth' });
+      }
+    });
+  })();
 
-  const io = new IntersectionObserver(es => {
-    if (es[0].isIntersecting) { io.disconnect(); start(); }
-  }, { threshold: 0.15 });
+  /* V39/V40 — factual event raster and useful, quiet contact utilities. */
+  (() => {
+    if (PAGE !== 'about') return;
+    const awards = DATA.awards || [], pubs = DATA.publications || [];
+    const events = [...awards.map(a => ({ year: +a.year, title: `${a.title.en} / ${a.title.zh}`, type: 'award' })),
+      ...pubs.map(p => ({ year: +p.year, title: p.title, type: 'paper' }))].filter(e => Number.isFinite(e.year));
+    const host = document.querySelector('.awards')?.closest('.sec');
+    if (host && events.length) {
+      const min = Math.min(...events.map(e => e.year)), max = Math.max(...events.map(e => e.year));
+      const lanes = { award: 76, paper: 150 }, counts = {};
+      const raster = document.createElement('section'); raster.className = 'career-raster';
+      raster.innerHTML = `<header><p class="label">${pair('Selected public record', '精選公開紀錄')}</p><h2>${pair('Events in time', '時間中的事件')}</h2></header>
+        <svg viewBox="0 0 1000 220" role="img" aria-label="Career event raster / 生涯事件光柵">
+          <path class="career-axis" d="M70 188H940"/>
+          ${Array.from({ length: max - min + 1 }, (_, i) => { const x = 90 + i / Math.max(1, max - min) * 820; return `<g><path d="M${x} 180V196"/><text x="${x}" y="215">${min + i}</text></g>`; }).join('')}
+          ${events.map((e, i) => { const x = 90 + (e.year - min) / Math.max(1, max - min) * 820 + ((counts[e.year + e.type] = (counts[e.year + e.type] || 0) + 1) - 1) * 10; return `<g class="career-event" tabindex="0"><title>${esc(e.title)}</title><path d="M${x} 180V${lanes[e.type]}"/><circle cx="${x}" cy="${lanes[e.type]}" r="5"/><text x="${x + 9}" y="${lanes[e.type] + 4}">${e.type === 'award' ? 'A' : 'P'}</text></g>`; }).join('')}
+        </svg><p class="label">A = ${pair('award', '獎項')} · P = ${pair('publication', '著作')}</p>`;
+      host.after(raster);
+    }
 
-  if (img.complete && img.naturalWidth) io.observe(fig);
-  else img.addEventListener('load', () => io.observe(fig));
+    const contact = document.querySelector('.contact-links');
+    if (!contact) return;
+    const utilities = document.createElement('div'); utilities.className = 'contact-utils mono';
+    utilities.innerHTML = `<button type="button" data-copy-email aria-label="${isZh() ? '複製電子郵件' : 'Copy email'}"
+      data-label-en="Copy email" data-label-zh="複製電子郵件">${pair('Copy email', '複製電子郵件')}</button>
+      <span class="taipei-time" aria-live="off"></span><span class="copy-live sr-live" aria-live="polite"></span>`;
+    contact.after(utilities);
+    const clock = utilities.querySelector('.taipei-time');
+    const tick = () => { clock.textContent = `${isZh() ? '臺北' : 'TAIPEI'} · ${new Intl.DateTimeFormat(root.lang, { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date())}`; };
+    tick(); addEventListener('langchange', tick); const timer = setInterval(tick, 60000); addEventListener('pagehide', () => clearInterval(timer), { once: true });
+    utilities.querySelector('[data-copy-email]').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(DATA.meta.email); utilities.querySelector('.copy-live').textContent = isZh() ? '已複製。' : 'Copied.'; }
+      catch { utilities.querySelector('.copy-live').textContent = isZh() ? '請直接選取上方地址。' : 'Select the address above.'; }
+    });
+  })();
 })();
 
 
-/* ══════════════════════════════════════════════════════════════════════
-   PAGE TRANSITION CURTAIN
-   A full-viewport wipe carrying the destination's name, so navigation reads
-   as moving between places rather than swapping documents.
-   ══════════════════════════════════════════════════════════════════════ */
+/* ======================================================================
+   SPATIAL CONTINUITY
+   V3 deliberately contains no ambient canvas and no kinetic scroll skew.
+   Spectacle comes from the real figures; this file only preserves identity
+   while moving between documents.
+   ====================================================================== */
 (() => {
-  if (root.dataset.motion === 'reduced') return;
-  if (!document.startViewTransition) return;
+  const order = ['index', 'research', 'publications', 'field', 'field-nsf', 'field-igem', 'record', 'about', '404'];
+  const reduced = () => root.dataset.motion === 'reduced';
+  const meter = document.createElement('div');
+  meter.className = 'nav-transit mono';
+  meter.setAttribute('aria-hidden', 'true');
+  meter.innerHTML = '<span></span><i></i>';
+  document.body.appendChild(meter);
 
-  const curtain = document.createElement('div');
-  curtain.className = 'curtain';
-  curtain.innerHTML = '<span class="curtain-t mono"></span>';
-  document.body.appendChild(curtain);
-  const label = curtain.querySelector('.curtain-t');
-
-  addEventListener('pageswap', () => { curtain.dataset.on = '1'; });
-  addEventListener('pagereveal', () => {
-    curtain.dataset.on = '0';
-  });
+  const writeIntent = (href, label) => {
+    const u = new URL(href, location.href);
+    const file = u.pathname.split('/').pop() || 'index.html';
+    const id = file.replace('.html', '') || 'index';
+    const a = Math.max(0, order.indexOf(PAGE));
+    const b = Math.max(0, order.indexOf(id));
+    const direction = b > a ? 'deeper' : b < a ? 'shallower' : 'lateral';
+    const intent = { from: PAGE, to: id, direction, label: label.slice(0, 48) };
+    try { sessionStorage.setItem('site:navigation', JSON.stringify(intent)); } catch {}
+    return intent;
+  };
 
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href]');
-    if (!a) return;
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin || u.pathname === location.pathname) return;
-    if (a.target === '_blank' || u.pathname.endsWith('.pdf')) return;
-    const txt = (a.querySelector('[data-en],[data-zh]') || a).textContent.trim();
-    label.textContent = txt.slice(0, 40);
+    const visible = a.querySelector(root.dataset.lang === 'zh' ? '[data-zh]' : '[data-en]');
+    const intent = writeIntent(a.href, (visible || a).textContent.trim());
+    root.dataset.navDirection = intent.direction;
+    meter.querySelector('span').textContent = intent.label;
+    if (!reduced()) meter.dataset.on = '1';
+  }, true);
+
+  addEventListener('pageswap', e => {
+    if (reduced() || !e.viewTransition) return;
+    root.dataset.navigating = '1';
+  });
+
+  addEventListener('pagereveal', e => {
+    let intent = null;
+    try { intent = JSON.parse(sessionStorage.getItem('site:navigation') || 'null'); } catch {}
+    if (intent) {
+      root.dataset.navDirection = intent.direction;
+      meter.querySelector('span').textContent = intent.label;
+    }
+    root.dataset.navigating = '0';
+    meter.dataset.on = '0';
+    if (e.viewTransition) e.viewTransition.finished.finally(() => {
+      document.querySelectorAll('[style*="view-transition-name"]').forEach(el => {
+        if (!el.dataset.vt) el.style.viewTransitionName = '';
+      });
+    });
+  });
+
+  /* Only the object that was actually aimed at receives a transition name. */
+  document.addEventListener('pointerdown', e => {
+    const a = e.target.closest('a[href]');
+    const image = a?.querySelector('img[data-vt]');
+    if (!image || reduced()) return;
+    const r = image.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return;
+    document.querySelectorAll('img[data-vt]').forEach(x => { x.style.viewTransitionName = x === image ? x.dataset.vt : ''; });
   }, true);
 })();
 
