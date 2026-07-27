@@ -7,9 +7,10 @@
 <meta name="description" content="Chi-Wei Lee (Arthur) — NeuroAI researcher. Predictive coding, associative memory, and Bayesian inference in brains and machines.">
 <meta name="author" content="Chi-Wei Lee">
 <link rel="canonical" href="https://arthur031221.github.io/">
+<meta name="view-transition" content="same-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chi-Wei Lee — NeuroAI">
-<meta property="og:description" content="Predictive coding, associative memory, and Bayesian inference in brains and machines.">
+<meta property="og:description" content="Chi-Wei Lee (Arthur) — NeuroAI researcher. Predictive coding, associative memory, and Bayesian inference in brains and machines.">
 <meta property="og:url" content="https://arthur031221.github.io/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='%234FE0A0' stroke-width='2.5'/><circle cx='16' cy='16' r='3.5' fill='%234FE0A0'/></svg>">
 
@@ -382,6 +383,43 @@ footer{border-top:1px solid var(--rule);padding-block:2.5rem;color:var(--dim)}
 .lb-close{position:absolute;top:1.2rem;right:1.2rem;cursor:pointer}
 .lb-cap{text-align:center;max-width:60ch}
 
+
+/* ══════════════════════════════════════════════════════════════════════
+   MULTI-PAGE CHASSIS
+   ══════════════════════════════════════════════════════════════════════ */
+@view-transition{navigation:auto}
+:root[data-motion="reduced"]{view-transition-name:none}
+
+.page-head{padding-block:clamp(7rem,16vh,11rem) 0}
+.page-head h1{font-size:var(--step-3);color:var(--ink-hi);margin:.5rem 0 1rem}
+.page-lead{font-size:var(--step-1);color:var(--ink-2);max-width:52ch}
+
+.more{margin-top:2.2rem}
+.more a{
+  font-family:var(--mono);font-size:var(--step--1);letter-spacing:.08em;
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid color-mix(in oklab,var(--accent) 40%,transparent);
+  padding-bottom:3px;transition:border-color .25s var(--ease)
+}
+.more a:hover{border-color:var(--accent)}
+
+.threads-lg .thread{padding-block:2.8rem}
+.threads-lg .thread h3{font-size:var(--step-2)}
+
+.pager{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+  padding-block:3rem 5rem;border-top:1px solid var(--rule);margin-top:2rem;
+}
+.pager-link{
+  display:grid;gap:.3rem;text-decoration:none;padding:1.1rem 1.2rem;
+  border:1px solid var(--rule);border-radius:4px;
+  transition:border-color .3s var(--ease),background-color .3s var(--ease),transform .3s var(--ease);
+}
+.pager-link[data-dir="next"]{text-align:right}
+.pager-link:hover{border-color:var(--rule-hi);background:var(--surface);transform:translateY(-2px)}
+.pager-t{font-size:var(--step-1);color:var(--ink-hi)}
+:root[data-motion="reduced"] .pager-link:hover{transform:none}
+
 </style>
 </head>
 
@@ -419,6 +457,7 @@ footer{border-top:1px solid var(--rule);padding-block:2.5rem;color:var(--dim)}
    3. run canvas figures that degrade to nothing if anything fails
    ══════════════════════════════════════════════════════════════════════ */
 const DATA = JSON.parse(document.getElementById('content').textContent);
+const PAGE = 'index';
 const root = document.documentElement;
 const reduced = () => root.dataset.motion === 'reduced';
 
@@ -460,31 +499,81 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 const observeAll = () => document.querySelectorAll('.rise:not(.in)').forEach(el => io.observe(el));
 
 /* ══════════════════════════════════════════════════════════════════════
-   SECTIONS
-   Every block is framed like a figure in a paper: a numbered header, a
-   hairline rule, monospace labels carrying units. Colour appears only
-   where it encodes something.
+   PAGE RENDERERS
+   One function per page. build_site.py picks the one it needs and inlines
+   it, so every page ships as a self-contained static file with no client
+   -side routing and no fetch-on-load.
    ══════════════════════════════════════════════════════════════════════ */
 
-const NAV = [
-  { id: 'work',    en: 'Research',     zh: '研究' },
-  { id: 'papers',  en: 'Publications', zh: '論文' },
-  { id: 'record',  en: 'Record',       zh: '歷程' },
-  { id: 'honours', en: 'Honours',      zh: '榮譽' },
-  { id: 'contact', en: 'Contact',      zh: '聯絡' },
+const PAGES = [
+  { id: 'index',        href: './',                  en: 'Home',         zh: '首頁' },
+  { id: 'research',     href: 'research.html',       en: 'Research',     zh: '研究' },
+  { id: 'publications', href: 'publications.html',   en: 'Publications', zh: '論文' },
+  { id: 'record',       href: 'record.html',         en: 'Record',       zh: '歷程' },
+  { id: 'about',        href: 'about.html',          en: 'About',        zh: '關於' },
 ];
 
-document.getElementById('nav').innerHTML = NAV.map(n =>
-  `<a href="#${n.id}" data-nav="${n.id}"><span data-en>${n.en}</span><span data-zh>${n.zh}</span></a>`
+document.getElementById('nav').innerHTML = PAGES.map(p =>
+  `<a href="${p.href}"${p.id === PAGE ? ' class="on" aria-current="page"' : ''}
+      ><span data-en>${p.en}</span><span data-zh>${p.zh}</span></a>`
 ).join('');
 
-const secHead = (n, t) => `
+const secHead = (n, t, sub) => `
   <div class="sec-head">
     <span class="sec-n">${n}</span>
     <h2 class="sec-t">${bi(t)}</h2>
+  </div>
+  ${sub ? `<p class="lead rise">${bi(sub)}</p>` : ''}`;
+
+/** Next/previous footer that previews where you are going. */
+const pager = (id) => {
+  const i = PAGES.findIndex(p => p.id === id);
+  const prev = PAGES[i - 1], next = PAGES[i + 1];
+  const cell = (p, dir) => !p ? '<span></span>' : `
+    <a class="pager-link" href="${p.href}" data-dir="${dir}">
+      <span class="label">${dir === 'next' ? bi({ en: 'Next', zh: '下一頁' }) : bi({ en: 'Previous', zh: '上一頁' })}</span>
+      <span class="pager-t"><span data-en>${p.en}</span><span data-zh>${p.zh}</span></span>
+    </a>`;
+  return `<nav class="pager wrap" aria-label="Pagination">${cell(prev, 'prev')}${cell(next, 'next')}</nav>`;
+};
+
+/* ── shared blocks ──────────────────────────────────────────────────── */
+const galleryHTML = (photos) => !photos?.length ? '' : `
+  <div class="gal">
+    ${photos.map((ph, i) => `
+      <figure class="shot" data-i="${i}" style="--thumb:url('${esc(ph.src)}.thumb.webp')">
+        <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}" loading="lazy" decoding="async"
+             onload="this.parentElement.dataset.loaded='1'">
+        <figcaption class="label">${bi(ph.cap)}</figcaption>
+      </figure>`).join('')}
   </div>`;
 
-/* ── HERO ───────────────────────────────────────────────────────────── */
+const paperItem = p => `
+  <li class="paper rise" data-status="${p.status}">
+    <div class="paper-year mono">${esc(p.year)}</div>
+    <div class="paper-main">
+      <h3 class="paper-title">${esc(p.title)}</h3>
+      <p class="paper-authors mono">${esc(p.authors)}</p>
+      <p class="paper-venue">
+        <span class="badge" data-status="${p.status}">${bi(p.badge)}</span>
+        <em>${esc(p.venue)}</em>
+        ${p.doi ? `<a class="doi mono" href="${esc(p.doi)}" rel="noopener">link ↗</a>` : ''}
+      </p>
+      ${(p.note?.en || p.note?.zh) ? `<p class="paper-note">${bi(p.note)}</p>` : ''}
+    </div>
+  </li>`;
+
+const awardItem = a => `
+  <article class="award rise${a.hero ? ' award-hero' : ''}">
+    <div class="award-year mono">${esc(a.year)}</div>
+    <div>
+      <h3>${bi(a.title)}</h3>
+      <p class="label">${bi(a.org)}</p>
+      <p class="award-note">${bi(a.note)}</p>
+    </div>
+  </article>`;
+
+/* ── HERO (home only) ───────────────────────────────────────────────── */
 const heroHTML = () => `
 <section id="hero" class="hero">
   <canvas id="field" aria-hidden="true"></canvas>
@@ -504,135 +593,135 @@ const heroHTML = () => `
   <div class="hero-readout mono" id="readout" aria-hidden="true"></div>
 </section>`;
 
-/* ── ABOUT + RESEARCH THREADS ───────────────────────────────────────── */
-const workHTML = () => `
-<section id="work" class="sec wrap">
-  ${secHead('01', { en: 'What I work on', zh: '我在做什麼' })}
-  <p class="lead rise">${bi(DATA.about.lead)}</p>
-  <div class="about-grid">
-    <div class="about-body rise">
-      ${['en', 'zh'].map(l =>
-        DATA.about.body[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')
-      ).join('')}
-    </div>
-    <dl class="facts rise">
-      ${DATA.about.facts.map(f => `
-        <div class="fact">
-          <dt class="label">${bi(f.k)}</dt>
-          <dd>${bi(f.v)}</dd>
-        </div>`).join('')}
-    </dl>
-  </div>
+/* ── the pages ──────────────────────────────────────────────────────── */
+const RENDER = {
 
-  <div class="threads">
-    ${DATA.threads.map((t, i) => `
-      <article class="thread rise" data-thread="${t.id}">
-        <div class="thread-n mono">${String(i + 1).padStart(2, '0')}</div>
-        <div class="thread-body">
-          <p class="label">${bi(t.tag)}</p>
-          <h3>${bi(t.title)}</h3>
-          <p class="thread-text">${bi(t.body)}</p>
-        </div>
-      </article>`).join('')}
-  </div>
-</section>`;
+  index: () => heroHTML() + `
+    <section class="sec wrap">
+      ${secHead('01', { en: 'What I work on', zh: '我在做什麼' }, DATA.about.lead)}
+      <div class="threads">
+        ${DATA.threads.map((t, i) => `
+          <article class="thread rise">
+            <div class="thread-n mono">${String(i + 1).padStart(2, '0')}</div>
+            <div class="thread-body">
+              <p class="label">${bi(t.tag)}</p>
+              <h3>${bi(t.title)}</h3>
+              <p class="thread-text">${bi(t.body)}</p>
+            </div>
+          </article>`).join('')}
+      </div>
+      <p class="more rise"><a href="research.html">${bi({ en: 'The research in full', zh: '完整研究內容' })} →</a></p>
+    </section>
 
-/* ── PUBLICATIONS ───────────────────────────────────────────────────── */
-const papersHTML = () => `
-<section id="papers" class="sec wrap">
-  ${secHead('02', { en: 'Publications & manuscripts', zh: '論文與手稿' })}
-  <ol class="papers">
-    ${DATA.publications.map(p => `
-      <li class="paper rise" data-status="${p.status}">
-        <div class="paper-year mono">${esc(p.year)}</div>
-        <div class="paper-main">
-          <h3 class="paper-title">${esc(p.title)}</h3>
-          <p class="paper-authors mono">${esc(p.authors)}</p>
-          <p class="paper-venue">
-            <span class="badge" data-status="${p.status}">${bi(p.badge)}</span>
-            <em>${esc(p.venue)}</em>
-            ${p.doi ? `<a class="doi mono" href="${esc(p.doi)}" rel="noopener">link ↗</a>` : ''}
-          </p>
-          ${(p.note?.en || p.note?.zh) ? `<p class="paper-note">${bi(p.note)}</p>` : ''}
-        </div>
-      </li>`).join('')}
-  </ol>
-</section>`;
+    <section class="sec wrap">
+      ${secHead('02', { en: 'Selected work', zh: '代表著作' })}
+      <ol class="papers">${DATA.publications.slice(0, 3).map(paperItem).join('')}</ol>
+      <p class="more rise"><a href="publications.html">${bi({ en: 'All publications', zh: '全部論文' })} →</a></p>
+    </section>
 
-/* ── RECORD (long-form reflections) ─────────────────────────────────── */
-const galleryHTML = (photos) => !photos?.length ? '' : `
-  <div class="gal">
-    ${photos.map((ph, i) => `
-      <figure class="shot" data-i="${i}" style="--thumb:url('${esc(ph.src)}.thumb.webp')">
-        <img src="${esc(ph.src)}.webp" alt="${esc(ph.cap.en)}" loading="lazy" decoding="async"
-             onload="this.parentElement.dataset.loaded='1'">
-        <figcaption class="label">${bi(ph.cap)}</figcaption>
-      </figure>`).join('')}
-  </div>`;
+    <section class="sec wrap">
+      ${secHead('03', { en: 'Honours', zh: '榮譽' })}
+      <div class="awards">${DATA.awards.slice(0, 2).map(awardItem).join('')}</div>
+      <p class="more rise"><a href="about.html">${bi({ en: 'Everything else', zh: '其他' })} →</a></p>
+    </section>`,
 
-const longreadHTML = (key, lr) => `
-  <article class="lr rise" id="lr-${key}">
-    <header class="lr-head">
-      <h3>${bi(lr.title)}</h3>
-      <p class="label">${esc(lr.place)} · ${esc(lr.date)}</p>
+  research: () => `
+    <header class="page-head wrap">
+      <p class="label">${bi({ en: 'Section 01', zh: '第 01 節' })}</p>
+      <h1>${bi({ en: 'Research', zh: '研究' })}</h1>
+      <p class="page-lead">${bi(DATA.about.lead)}</p>
     </header>
-    ${galleryHTML(lr.photos)}
-    <div class="lr-body" data-open="0">
-      ${['en', 'zh'].map(l =>
-        lr[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')
-      ).join('')}
-    </div>
-    <button class="lr-more sw" type="button" data-for="lr-${key}">
-      <span data-en>Read the whole thing</span><span data-zh>讀完整篇</span>
-    </button>
-  </article>`;
+    <section class="sec wrap">
+      <div class="threads threads-lg">
+        ${DATA.threads.map((t, i) => `
+          <article class="thread rise">
+            <div class="thread-n mono">${String(i + 1).padStart(2, '0')}</div>
+            <div class="thread-body">
+              <p class="label">${bi(t.tag)}</p>
+              <h3>${bi(t.title)}</h3>
+              <p class="thread-text">${bi(t.body)}</p>
+            </div>
+          </article>`).join('')}
+      </div>
+    </section>`,
 
-const recordHTML = () => `
-<section id="record" class="sec wrap">
-  ${secHead('03', { en: 'The record', zh: '歷程' })}
-  <p class="lead rise">${bi({
-    en: 'Two of these I wrote down properly at the time, because they changed what I wanted to do.',
-    zh: '其中兩段我當時認真寫了下來,因為它們改變了我想做的事。',
-  })}</p>
-  ${Object.entries(DATA.longreads).map(([k, lr]) => longreadHTML(k, lr)).join('')}
-</section>`;
+  publications: () => `
+    <header class="page-head wrap">
+      <p class="label">${bi({ en: 'Section 02', zh: '第 02 節' })}</p>
+      <h1>${bi({ en: 'Publications', zh: '論文與手稿' })}</h1>
+      <p class="page-lead">${bi({
+        en: 'Two manuscripts are under review; every status below is stated as it actually stands.',
+        zh: '兩篇手稿審查中;以下每一項的狀態都照實標示。',
+      })}</p>
+    </header>
+    <section class="sec wrap">
+      <ol class="papers">${DATA.publications.map(paperItem).join('')}</ol>
+    </section>`,
 
-/* ── HONOURS ────────────────────────────────────────────────────────── */
-const honoursHTML = () => `
-<section id="honours" class="sec wrap">
-  ${secHead('04', { en: 'Honours', zh: '榮譽' })}
-  <div class="awards">
-    ${DATA.awards.map(a => `
-      <article class="award rise${a.hero ? ' award-hero' : ''}">
-        <div class="award-year mono">${esc(a.year)}</div>
-        <div>
-          <h3>${bi(a.title)}</h3>
-          <p class="label">${bi(a.org)}</p>
-          <p class="award-note">${bi(a.note)}</p>
+  record: () => `
+    <header class="page-head wrap">
+      <p class="label">${bi({ en: 'Section 03', zh: '第 03 節' })}</p>
+      <h1>${bi({ en: 'The record', zh: '歷程' })}</h1>
+      <p class="page-lead">${bi({
+        en: 'Two of these I wrote down properly at the time, because they changed what I wanted to do.',
+        zh: '其中兩段我當時認真寫了下來,因為它們改變了我想做的事。',
+      })}</p>
+    </header>
+    <section class="sec wrap">
+      ${Object.entries(DATA.longreads).map(([k, lr]) => `
+        <article class="lr rise" id="lr-${k}">
+          <header class="lr-head">
+            <h3>${bi(lr.title)}</h3>
+            <p class="label">${esc(lr.place)} · ${esc(lr.date)}</p>
+          </header>
+          ${galleryHTML(lr.photos)}
+          <div class="lr-body" data-open="0">
+            ${['en', 'zh'].map(l => lr[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')).join('')}
+          </div>
+          <button class="lr-more sw" type="button" data-for="lr-${k}">
+            <span data-en>Read the whole thing</span><span data-zh>讀完整篇</span>
+          </button>
+        </article>`).join('')}
+    </section>`,
+
+  about: () => `
+    <header class="page-head wrap">
+      <p class="label">${bi({ en: 'Section 04', zh: '第 04 節' })}</p>
+      <h1>${bi({ en: 'About', zh: '關於' })}</h1>
+      <p class="page-lead">${bi(DATA.about.lead)}</p>
+    </header>
+    <section class="sec wrap">
+      <div class="about-grid">
+        <div class="about-body rise">
+          ${['en', 'zh'].map(l => DATA.about.body[l].map(p => `<p data-${l}>${esc(p)}</p>`).join('')).join('')}
         </div>
-      </article>`).join('')}
-  </div>
-</section>`;
+        <dl class="facts rise">
+          ${DATA.about.facts.map(f => `
+            <div class="fact"><dt class="label">${bi(f.k)}</dt><dd>${bi(f.v)}</dd></div>`).join('')}
+        </dl>
+      </div>
+    </section>
+    <section class="sec wrap">
+      ${secHead('', { en: 'Honours', zh: '榮譽' })}
+      <div class="awards">${DATA.awards.map(awardItem).join('')}</div>
+    </section>
+    <section class="sec wrap" id="contact">
+      ${secHead('', { en: 'Contact', zh: '聯絡' })}
+      <div class="contact rise">
+        <p class="contact-line">${bi({
+          en: 'I am looking for PhD positions in NeuroAI for 2027 entry, and I am glad to talk about any of the above.',
+          zh: '我正在尋找 2027 年入學的 NeuroAI 博士班機會,也很樂意聊聊上面任何一項研究。',
+        })}</p>
+        <div class="contact-links mono">
+          <a href="mailto:${esc(DATA.meta.email)}">${esc(DATA.meta.email)}</a>
+          <a href="${esc(DATA.meta.github)}" rel="me noopener">github.com/Arthur031221</a>
+          <a href="${esc(DATA.meta.cv)}"><span data-en>Curriculum Vitae (PDF)</span><span data-zh>履歷 (PDF)</span></a>
+        </div>
+      </div>
+    </section>`,
+};
 
-/* ── CONTACT ────────────────────────────────────────────────────────── */
-const contactHTML = () => `
-<section id="contact" class="sec wrap">
-  ${secHead('05', { en: 'Contact', zh: '聯絡' })}
-  <div class="contact rise">
-    <p class="contact-line">${bi({
-      en: 'I am looking for PhD positions in NeuroAI for 2027 entry, and I am glad to talk about any of the above.',
-      zh: '我正在尋找 2027 年入學的 NeuroAI 博士班機會,也很樂意聊聊上面任何一項研究。',
-    })}</p>
-    <div class="contact-links mono">
-      <a href="mailto:${esc(DATA.meta.email)}">${esc(DATA.meta.email)}</a>
-      <a href="${esc(DATA.meta.github)}" rel="me noopener">github.com/Arthur031221</a>
-      <a href="${esc(DATA.meta.cv)}"><span data-en>Curriculum Vitae (PDF)</span><span data-zh>履歷 (PDF)</span></a>
-    </div>
-  </div>
-</section>`;
-
-document.getElementById('main').innerHTML =
-  heroHTML() + workHTML() + papersHTML() + recordHTML() + honoursHTML() + contactHTML();
+document.getElementById('main').innerHTML = (RENDER[PAGE] || RENDER.index)() + pager(PAGE);
 
 /* ── long-read expand ───────────────────────────────────────────────── */
 document.querySelectorAll('.lr-more').forEach(btn => {
@@ -644,40 +733,28 @@ document.querySelectorAll('.lr-more').forEach(btn => {
   });
 });
 
-/* ── nav scroll spy ─────────────────────────────────────────────────── */
-const spy = new IntersectionObserver(es => es.forEach(e => {
-  if (!e.isIntersecting) return;
-  document.querySelectorAll('[data-nav]').forEach(a =>
-    a.classList.toggle('on', a.dataset.nav === e.target.id));
-}), { rootMargin: '-45% 0px -50% 0px' });
-NAV.forEach(n => { const el = document.getElementById(n.id); if (el) spy.observe(el); });
-
-
-/* ── lightbox: click a photo to see it whole ────────────────────────── */
+/* ── lightbox ───────────────────────────────────────────────────────── */
 (() => {
+  if (!document.querySelector('.shot')) return;
   const box = document.createElement('div');
-  box.className = 'lightbox';
-  box.hidden = true;
+  box.className = 'lightbox'; box.hidden = true;
   box.innerHTML = '<button class="lb-close sw" aria-label="Close">ESC</button><img alt=""><p class="label lb-cap"></p>';
   document.body.appendChild(box);
   const img = box.querySelector('img'), cap = box.querySelector('.lb-cap');
-
-  const open = fig => {
-    const src = fig.querySelector('img');
-    img.src = src.src; img.alt = src.alt;
-    cap.textContent = src.alt;
-    box.hidden = false;
-    requestAnimationFrame(() => box.dataset.on = '1');
-    document.body.style.overflow = 'hidden';
-  };
   const close = () => {
-    box.dataset.on = '0';
-    document.body.style.overflow = '';
+    box.dataset.on = '0'; document.body.style.overflow = '';
     setTimeout(() => { box.hidden = true; img.src = ''; }, 280);
   };
   document.addEventListener('click', e => {
     const fig = e.target.closest('.shot');
-    if (fig) { open(fig); return; }
+    if (fig) {
+      const src = fig.querySelector('img');
+      img.src = src.src; img.alt = src.alt; cap.textContent = src.alt;
+      box.hidden = false;
+      requestAnimationFrame(() => box.dataset.on = '1');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
     if (e.target.closest('.lightbox')) close();
   });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) close(); });
