@@ -837,14 +837,14 @@ button:active,.sw:active,a.pager-link:active,.shot:active{transform:scale(.97)}
 .substrate{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:0;animation:sub-in 1.8s var(--e-out-strong) .3s forwards;
-  /* Behind content but above the page colour, so the trails read as depth
-     rather than as a texture printed on the background. */
-  mix-blend-mode:screen;
+  /* Bubbles are drawn rather than accumulated, so they need no blend mode —
+     screen washed the membranes out to flat discs. */
+  mix-blend-mode:normal;
 }
-:root[data-theme="light"] .substrate{mix-blend-mode:multiply;opacity:0}
+:root[data-theme="light"] .substrate{mix-blend-mode:normal;opacity:0}
 :root[data-theme="light"] .substrate{animation:sub-in-light 1.8s var(--e-out-strong) .3s forwards}
-@keyframes sub-in{to{opacity:.55}}
-@keyframes sub-in-light{to{opacity:.30}}
+@keyframes sub-in{to{opacity:.85}}
+@keyframes sub-in-light{to{opacity:.75}}
 body>*:not(.substrate){position:relative;z-index:1}
 .top{z-index:60}
 
@@ -1867,13 +1867,13 @@ mountNoiseDial();
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   THE SUBSTRATE
-   A single full-page canvas living behind every page, on every page. It is
-   not a background image — it is a continuous field that the whole site
-   sits inside, and it changes character as you move through the document.
+   THE SUBSTRATE — bubbles
+   One full-viewport canvas behind every page. Bubbles rise, wobble on a
+   noise field, and are pushed out of the way by the pointer. They read as
+   volume rather than as a texture printed on the background.
 
-   One rAF loop for the entire site. It sleeps when the tab is hidden and
-   throttles hard when the pointer and scroll are both idle.
+   One rAF loop for the whole site: throttled hard when nothing is moving,
+   suspended when the tab is hidden.
    ══════════════════════════════════════════════════════════════════════ */
 (() => {
   if (root.dataset.motion === 'reduced') return;
@@ -1886,120 +1886,122 @@ mountNoiseDial();
   if (!ctx) { cvs.remove(); return; }
 
   const css = v => getComputedStyle(root).getPropertyValue(v).trim();
-  const lerp = (a, b, t) => a + (b - a) * t;
 
   let W = 0, H = 0, dpr = 1;
-  let scroll = 0, scrollV = 0, lastY = scrollY;
-  let px = -1e4, py = -1e4, pvx = 0, pvy = 0;
-  let idle = 0, raf = 0;
+  let scrollV = 0, lastY = scrollY;
+  let px = -1e4, py = -1e4;
+  let idle = 0, raf = 0, t = 0;
 
-  /* ── the field: curl-ish noise, cheap and smooth ──────────────────── */
-  const S = 0.0016;
-  function hash(x, y) {
-    const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
-    return n - Math.floor(n);
-  }
-  function vnoise(x, y) {
-    const xi = Math.floor(x), yi = Math.floor(y);
-    const xf = x - xi, yf = y - yi;
-    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
-    return lerp(lerp(hash(xi, yi), hash(xi + 1, yi), u),
-                lerp(hash(xi, yi + 1), hash(xi + 1, yi + 1), u), v);
-  }
-  function angleAt(x, y, t) {
-    const n = vnoise(x * S + t * 0.06, y * S - t * 0.04);
-    const m = vnoise(x * S * 2.3 - t * 0.03, y * S * 2.3 + t * 0.05);
-    return (n * 2.6 + m * 1.7 + scroll * 2.2) * Math.PI;
-  }
+  /* ── bubbles ──────────────────────────────────────────────────────── */
+  let B = [];
+  const count = () => (innerWidth < 760 ? 26 : Math.min(70, Math.round(innerWidth * innerHeight / 26000)));
 
-  /* ── particles ────────────────────────────────────────────────────── */
-  let P = [];
-  const count = () => {
-    const a = innerWidth * innerHeight;
-    if (innerWidth < 760) return 90;
-    return Math.min(320, Math.round(a / 5200));
-  };
-  const seed = n => {
-    P = Array.from({ length: n }, () => ({
-      x: Math.random() * innerWidth, y: Math.random() * innerHeight,
-      px: 0, py: 0, life: Math.random() * 260,
-    }));
-    P.forEach(p => { p.px = p.x; p.py = p.y; });
-  };
+  function make(seeded) {
+    // A spread of sizes is what stops it reading as a particle system: a few
+    // large slow ones carry the volume, the small fast ones carry the life.
+    const big = Math.random() < 0.22;
+    const r = big ? 26 + Math.random() * 52 : 4 + Math.random() * 16;
+    return {
+      x: Math.random() * W,
+      y: seeded ? Math.random() * H : H + r + Math.random() * 90,
+      r,
+      // buoyancy: bigger bubbles rise faster, as they do
+      vy: -(0.10 + r * 0.0072) * (0.75 + Math.random() * 0.5),
+      vx: 0,
+      phase: Math.random() * Math.PI * 2,
+      wob: 0.4 + Math.random() * 0.9,
+      alpha: big ? 0.16 + Math.random() * 0.14 : 0.22 + Math.random() * 0.26,
+    };
+  }
+  const seed = () => { B = Array.from({ length: count() }, () => make(true)); };
 
   function resize() {
     dpr = Math.min(devicePixelRatio || 1, 2);
     W = innerWidth; H = innerHeight;
     cvs.width = W * dpr; cvs.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    seed(count());
+    seed();
   }
 
-  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const accent = css('--accent') || '#4FE0A0';
+    const light = root.dataset.theme === 'light';
+
+    for (const b of B) {
+      ctx.globalAlpha = b.alpha;
+
+      if (light) {
+        // publication register: an ink outline, no glow
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = b.r > 24 ? 1.3 : 1;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.stroke();
+        // a second inner arc gives the outline some body on paper
+        ctx.globalAlpha = b.alpha * 0.4;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 0.82, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke();
+      } else {
+        // instrument register: a soft membrane with a rim and a highlight,
+        // which is what actually makes a circle read as a bubble
+        const g = ctx.createRadialGradient(b.x, b.y, b.r * 0.15, b.x, b.y, b.r);
+        g.addColorStop(0, 'transparent');
+        g.addColorStop(0.72, 'transparent');
+        g.addColorStop(0.93, accent);
+        g.addColorStop(1, 'transparent');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.fill();
+
+        ctx.globalAlpha = b.alpha * 0.55;
+        ctx.fillStyle = accent;
+        ctx.beginPath();
+        ctx.arc(b.x - b.r * 0.33, b.y - b.r * 0.36, Math.max(0.8, b.r * 0.11), 0, 7);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function step() {
+    t += 0.006;
+    for (const b of B) {
+      b.phase += 0.012 * b.wob;
+      // wobble sideways, and drift with the scroll
+      b.vx = Math.sin(b.phase + b.y * 0.004) * 0.42 * b.wob;
+      b.x += b.vx;
+      b.y += b.vy - scrollV * 0.05;
+
+      // the pointer shoulders them aside
+      const dx = b.x - px, dy = b.y - py;
+      const d2 = dx * dx + dy * dy;
+      const reach = (b.r + 110) ** 2;
+      if (d2 < reach && d2 > 0.01) {
+        const d = Math.sqrt(d2);
+        const f = (1 - d2 / reach) * 3.2;
+        b.x += (dx / d) * f;
+        b.y += (dy / d) * f;
+      }
+
+      if (b.y + b.r < -30 || b.x < -140 || b.x > W + 140) Object.assign(b, make(false));
+    }
+    scrollV *= 0.90;
+  }
+
   function frame() {
     raf = requestAnimationFrame(frame);
-    // throttle to a crawl when nothing is happening, so reading costs nothing
     idle++;
-    const busy = Math.abs(scrollV) > 0.4 || Math.abs(pvx) + Math.abs(pvy) > 0.4;
-    if (busy) idle = 0;
-    if (idle > 90 && (idle & 3)) return;
-
-    t += 0.0055 + Math.min(0.02, Math.abs(scrollV) * 0.0012);
-
-    // fade rather than clear: the trails are the whole point
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.fillStyle = 'rgba(0,0,0,0.055)';
-    ctx.fillRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'source-over';
-
-    const accent = css('--accent') || '#4FE0A0';
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 0.7;
-    ctx.globalAlpha = 0.30 + Math.min(0.45, Math.abs(scrollV) * 0.02);
-    ctx.beginPath();
-
-    const speed = 0.85 + Math.min(3.4, Math.abs(scrollV) * 0.16);
-    for (const p of P) {
-      p.px = p.x; p.py = p.y;
-      const a = angleAt(p.x, p.y, t);
-      p.x += Math.cos(a) * speed;
-      p.y += Math.sin(a) * speed - scrollV * 0.09;
-
-      // the pointer pushes the field aside
-      const dx = p.x - px, dy = p.y - py;
-      const d2 = dx * dx + dy * dy;
-      if (d2 < 26000) {
-        const f = (1 - d2 / 26000) * 2.6;
-        p.x += (dx / (Math.sqrt(d2) + 1)) * f;
-        p.y += (dy / (Math.sqrt(d2) + 1)) * f;
-      }
-
-      if (++p.life > 340 || p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40) {
-        p.x = Math.random() * W; p.y = Math.random() * H;
-        p.px = p.x; p.py = p.y; p.life = 0;
-        continue;
-      }
-      ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y);
-    }
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-
-    scrollV *= 0.90; pvx *= 0.86; pvy *= 0.86;
+    if (Math.abs(scrollV) > 0.4) idle = 0;
+    if (idle > 140 && (idle & 1)) return;   // half rate once everything settles
+    step(); draw();
   }
 
   addEventListener('scroll', () => {
     const y = scrollY;
     scrollV = y - lastY; lastY = y;
     const max = Math.max(1, document.body.scrollHeight - innerHeight);
-    scroll = y / max;
-    root.style.setProperty('--sp', scroll.toFixed(4));
+    root.style.setProperty('--sp', (y / max).toFixed(4));
   }, { passive: true });
 
-  addEventListener('pointermove', e => {
-    pvx = e.clientX - px; pvy = e.clientY - py;
-    px = e.clientX; py = e.clientY;
-  }, { passive: true });
+  addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; idle = 0; }, { passive: true });
+  addEventListener('pointerleave', () => { px = py = -1e4; }, { passive: true });
 
   let rt;
   addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
