@@ -764,13 +764,74 @@ button:active,.sw:active,a.pager-link:active,.shot:active{transform:scale(.97)}
 .lb-n{font-size:var(--step--1);color:var(--dim);letter-spacing:.1em}
 .lb-x{position:fixed;top:1.2rem;right:1.2rem;cursor:pointer}
 
+
+/* ── research figures ────────────────────────────────────────────────── */
+.fig{margin:1.6rem 0 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.fig-plate{position:relative;aspect-ratio:16/7;background:var(--surface)}
+.fig-plate canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* I11 · torch lens — the same figure, rendered in the other register */
+.fig-lens{
+  position:absolute;inset:0;pointer-events:none;opacity:0;
+  /* backdrop-filter genuinely inverts what is behind, which reads as the other
+     register; mix-blend-mode:difference against --bg just cancels to black. */
+  backdrop-filter:invert(1) hue-rotate(180deg);
+  -webkit-mask-image:radial-gradient(circle 88px at var(--lx,-999px) var(--ly,-999px),#000 0 62%,transparent 78%);
+  mask-image:radial-gradient(circle 88px at var(--lx,-999px) var(--ly,-999px),#000 0 62%,transparent 78%);
+  transition:opacity var(--d-fade) linear;
+}
+.fig-plate[data-lens="1"] .fig-lens{opacity:.9}
+.fig figcaption{display:grid;gap:.3rem;padding:.75rem .85rem;border-top:1px solid var(--rule)}
+.fig-cap{font-size:var(--step--1);color:var(--ink-2);max-width:70ch}
+.fig-read{font-size:.62rem;letter-spacing:.08em;color:var(--accent)}
+
+/* ── I16 · sticky stacking cards ─────────────────────────────────────── */
+@media(min-width:821px){
+  .stackable{position:sticky;top:calc(4.5rem + var(--k)*.55rem);background:var(--bg)}
+}
+:root[data-motion="reduced"] .stackable{position:static}
+
+/* ── I17 · place-name preview ────────────────────────────────────────── */
+.peek{
+  border-bottom:1px dashed var(--rule-hi);cursor:help;
+  transition:color var(--d-small) var(--e-house),border-color var(--d-small) var(--e-house);
+}
+.peek:hover,.peek:focus-visible{color:var(--accent);border-color:var(--accent)}
+.peek-box{
+  position:absolute;z-index:120;width:200px;pointer-events:none;
+  border:1px solid var(--rule-hi);background:var(--surface);padding:3px;
+  opacity:0;transform:translateY(-4px);
+  transition:opacity var(--d-fade) linear,transform var(--d-small) var(--e-out-strong);
+}
+.peek-box[data-on="1"]{opacity:1;transform:none}
+.peek-box img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;
+  filter:saturate(var(--ph-sat)) contrast(var(--ph-con)) brightness(var(--ph-bri))}
+
+/* ── I20 · border segment nearest the pointer ────────────────────────── */
+.contact-sheet{position:relative}
+.contact-sheet::before{
+  content:'';position:absolute;inset:-1px;pointer-events:none;z-index:2;
+  border:1px solid var(--accent);opacity:0;
+  -webkit-mask-image:radial-gradient(circle 190px at var(--gx,-999px) var(--gy,-999px),#000 0 40%,transparent 70%);
+  mask-image:radial-gradient(circle 190px at var(--gx,-999px) var(--gy,-999px),#000 0 40%,transparent 70%);
+  transition:opacity var(--d-fade) linear;
+}
+.contact-sheet[data-glow="1"]::before{opacity:.85}
+
+/* ── 404 ─────────────────────────────────────────────────────────────── */
+.nf{min-height:70svh;display:grid;align-content:center;gap:1rem}
+.nf-h{font-size:var(--step-3);color:var(--ink-hi)}
+.nf-links{display:flex;flex-wrap:wrap;gap:1.2rem;margin-top:1.5rem}
+.nf-links a{color:var(--accent);text-decoration:none;
+  border-bottom:1px solid color-mix(in oklab,var(--accent) 40%,transparent);padding-bottom:3px}
+.nf-links a:hover{border-color:var(--accent)}
+
 </style>
 </head>
 
 <body>
 
 <header class="top" id="top">
-  <a class="brand" href="#hero">C·W·<b>LEE</b></a>
+  <a class="brand" href="./">C·W·<b>LEE</b></a>
   <nav class="nav" id="nav" aria-label="Sections"></nav>
   <div class="switches">
     <button class="sw" id="lang-btn" type="button" aria-label="Switch language / 切換語言">
@@ -1106,6 +1167,19 @@ const RENDER = {
 
   'field-nsf': () => essayPage('nsf'),
   'field-igem': () => essayPage('igem'),
+
+  '404': () => `
+    <section class="sec wrap nf">
+      <p class="label">error 404</p>
+      <h1 class="nf-h">${bi({ en: 'No such page', zh: '沒有這一頁' })}</h1>
+      <p class="page-lead">${bi({
+        en: 'The retrieval converged on nothing. Try one of these instead.',
+        zh: '檢索沒有收斂到任何東西。試試下面幾頁。',
+      })}</p>
+      <div class="nf-links mono">
+        ${PAGES.map(x => `<a href="${x.href}"><span data-en>${x.en}</span><span data-zh>${x.zh}</span></a>`).join('')}
+      </div>
+    </section>`,
 
   about: () => `
     <header class="page-head wrap">
@@ -1549,6 +1623,301 @@ mountNoiseDial();
     if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
   });
+})();
+
+
+/* ── I16 · sticky stacking thread cards (home only) ──────────────────── */
+(() => {
+  if (PAGE !== 'index') return;
+  document.querySelectorAll('.threads .thread').forEach((el, i) => {
+    el.style.setProperty('--k', i);
+    el.classList.add('stackable');
+  });
+})();
+
+/* ── I17 · hover preview on place names in the essays ────────────────── */
+(() => {
+  const body = document.getElementById('essay-body');
+  if (!body) return;
+  const PLACES = {
+    'Philadelphia': 'img/NSF0', '費城': 'img/NSF0',
+    'Paris': 'img/igem0', '巴黎': 'img/igem0',
+    'AAAI': 'img/NSF2',
+  };
+  // Wrap the first occurrence of each place in each paragraph, text nodes only,
+  // so no existing markup is disturbed.
+  body.querySelectorAll('p').forEach(p => {
+    let html = p.innerHTML;
+    Object.keys(PLACES).forEach(k => {
+      if (!html.includes(k) || html.includes('data-preview')) return;
+      html = html.replace(k, `<span class="peek" data-preview="${PLACES[k]}">${k}</span>`);
+    });
+    p.innerHTML = html;
+  });
+
+  const peeks = body.querySelectorAll('.peek');
+  if (!peeks.length) return;
+  const box = document.createElement('div');
+  box.className = 'peek-box';
+  box.innerHTML = '<img alt="">';
+  document.body.appendChild(box);
+  const img = box.querySelector('img');
+  const fine = matchMedia('(hover: hover)').matches;
+
+  const show = (el) => {
+    img.src = el.dataset.preview + '.webp';
+    const r = el.getBoundingClientRect();
+    box.style.left = Math.min(innerWidth - 220, r.left) + 'px';
+    box.style.top = (r.bottom + scrollY + 10) + 'px';
+    box.dataset.on = '1';
+  };
+  peeks.forEach(el => {
+    if (fine) {
+      el.addEventListener('pointerenter', () => show(el));
+      el.addEventListener('pointerleave', () => box.dataset.on = '0');
+    } else {
+      el.addEventListener('click', () => {
+        box.dataset.on === '1' ? (box.dataset.on = '0') : show(el);
+      });
+    }
+    el.tabIndex = 0;
+    el.addEventListener('focus', () => show(el));
+    el.addEventListener('blur', () => box.dataset.on = '0');
+  });
+})();
+
+/* ── I20 · only the border segment nearest the pointer lights ────────── */
+(() => {
+  const sheet = document.querySelector('.contact-sheet');
+  if (!sheet || !matchMedia('(hover: hover)').matches) return;
+  sheet.addEventListener('pointermove', e => {
+    const r = sheet.getBoundingClientRect();
+    sheet.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+    sheet.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+    sheet.dataset.glow = '1';
+  }, { passive: true });
+  sheet.addEventListener('pointerleave', () => sheet.dataset.glow = '0');
+})();
+
+/* ── easter eggs ─────────────────────────────────────────────────────────
+   Three, all of which a committee member could stumble on without the site
+   looking unserious. Rejected: konami codes, achievement systems, physics
+   toys, "do not press" buttons — every one of them says student project.
+   ──────────────────────────────────────────────────────────────────────── */
+(() => {
+  // 1. A message for whoever opens devtools, which on this site is the point.
+  const css = 'color:#4FE0A0;font-family:ui-monospace,monospace';
+  console.log('%cChi-Wei Lee — NeuroAI', css + ';font-size:14px');
+  console.log('%cNo framework, no bundler, no runtime dependencies.\n' +
+    'The hero runs a Hopfield retrieval of the name from bit-flip noise, then\n' +
+    'releases it into a Langevin sampler. Both are the papers, running live.\n' +
+    'Source: github.com/Arthur031221/Arthur031221.github.io', css);
+
+  // 2. Hold "h" to hold the hero at its noisiest — the state everything starts from.
+  let held = false;
+  addEventListener('keydown', e => {
+    if (composing(e) || typing(e.target) || e.key.toLowerCase() !== 'h' || held) return;
+    held = true;
+    if (window.__retrieve) window.__retrieve(0.5);
+  });
+  addEventListener('keyup', e => {
+    if (e.key.toLowerCase() === 'h') held = false;
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   RESEARCH FIGURES
+   Two live figures on the research page, each attached to the thread it
+   illustrates. Both are the real thing, not an animation of the idea:
+   the energy landscape is evaluated, the walker actually descends it.
+   ══════════════════════════════════════════════════════════════════════ */
+(() => {
+  if (PAGE !== 'research') return;
+
+  const cssv = v => getComputedStyle(root).getPropertyValue(v).trim();
+  const reduced = () => root.dataset.motion === 'reduced';
+
+  /* A 1-D slice through a multimodal energy, so a descent is legible as a
+     path on a curve rather than a cloud of dots. */
+  const WELLS = [
+    { x: -0.66, d: 0.85, w: 0.16 },
+    { x: -0.18, d: 1.00, w: 0.13 },
+    { x:  0.34, d: 0.72, w: 0.15 },
+    { x:  0.78, d: 0.92, w: 0.11 },
+  ];
+  const U = x => {
+    let u = 0.55 * x * x;                       // confining term
+    for (const w of WELLS) u -= w.d * Math.exp(-((x - w.x) ** 2) / (2 * w.w * w.w));
+    return u;
+  };
+  const dU = x => {
+    let g = 1.10 * x;
+    for (const w of WELLS) {
+      const e = w.d * Math.exp(-((x - w.x) ** 2) / (2 * w.w * w.w));
+      g += e * (x - w.x) / (w.w * w.w);
+    }
+    return g;
+  };
+
+  function mountFigure(host, mode) {
+    const fig = document.createElement('figure');
+    fig.className = 'fig';
+    fig.innerHTML = `
+      <div class="fig-plate">
+        <canvas></canvas>
+        <span class="fig-lens" aria-hidden="true"></span>
+      </div>
+      <figcaption>
+        <span class="fig-cap"></span>
+        <span class="fig-read mono"></span>
+      </figcaption>`;
+    host.appendChild(fig);
+
+    const cvs = fig.querySelector('canvas');
+    const ctx = cvs.getContext('2d');
+    const capEl = fig.querySelector('.fig-cap');
+    const readEl = fig.querySelector('.fig-read');
+    if (!ctx) return;
+
+    let W = 0, H = 0, t = 0;
+    const drops = [];                       // I9 · walkers the reader has dropped
+
+    const toX = x => (x + 1.15) / 2.3 * W;
+    const toY = u => {
+      const lo = -1.25, hi = 0.85;
+      return H - 26 - ((u - lo) / (hi - lo)) * (H - 52);
+    };
+
+    function resize() {
+      const r = cvs.getBoundingClientRect();
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      W = Math.max(1, Math.round(r.width));
+      H = Math.max(1, Math.round(r.height));
+      cvs.width = W * dpr; cvs.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const ink = cssv('--rule-hi') || '#2C3444';
+      const accent = cssv('--accent') || '#4FE0A0';
+      const dim = cssv('--dim') || '#6B7684';
+
+      // graticule
+      ctx.strokeStyle = ink; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 1; i < 8; i++) { const x = W * i / 8; ctx.moveTo(x, 8); ctx.lineTo(x, H - 8); }
+      for (let j = 1; j < 4; j++) { const y = H * j / 4; ctx.moveTo(8, y); ctx.lineTo(W - 8, y); }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // the energy curve
+      ctx.strokeStyle = dim; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      for (let px = 0; px <= W; px++) {
+        const x = (px / W) * 2.3 - 1.15;
+        const y = toY(U(x));
+        px ? ctx.lineTo(px, y) : ctx.moveTo(px, y);
+      }
+      ctx.stroke();
+
+      if (mode === 'descent') {
+        // I3 · the time axis IS the scroll position
+        const n = 26;
+        for (let k = 0; k < n; k++) {
+          const phase = Math.min(1, Math.max(0, t * 1.35 - k / n * 0.35));
+          let x = -1.05 + (k / (n - 1)) * 2.1;
+          for (let s = 0; s < Math.round(phase * 220); s++) x -= 0.0022 * dU(x);
+          ctx.fillStyle = accent;
+          ctx.globalAlpha = 0.35 + 0.5 * phase;
+          ctx.beginPath(); ctx.arc(toX(x), toY(U(x)) - 3, 2.4, 0, 7); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        readEl.textContent = `t = ${t.toFixed(2)} · ${Math.round(t * 220)} steps · η = 2.2e-3`;
+      } else {
+        // I9 · basins — every drop is integrated, not faked
+        WELLS.forEach(w => {
+          ctx.strokeStyle = ink; ctx.globalAlpha = .8; ctx.setLineDash([2, 3]);
+          ctx.beginPath(); ctx.moveTo(toX(w.x), toY(U(w.x))); ctx.lineTo(toX(w.x), H - 10); ctx.stroke();
+          ctx.setLineDash([]); ctx.globalAlpha = 1;
+        });
+        drops.forEach(d => {
+          ctx.strokeStyle = accent; ctx.globalAlpha = .55; ctx.lineWidth = 1;
+          ctx.beginPath();
+          d.path.forEach((x, i) => { const px = toX(x), py = toY(U(x)) - 3; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+          ctx.stroke();
+          ctx.globalAlpha = 1; ctx.fillStyle = accent;
+          const x = d.path[d.path.length - 1];
+          ctx.beginPath(); ctx.arc(toX(x), toY(U(x)) - 3, 3.2, 0, 7); ctx.fill();
+        });
+        const en = root.dataset.lang === 'en';
+        readEl.textContent = drops.length
+          ? `${drops.length} ${en ? 'walkers' : '個粒子'} · ${en ? 'basins reached' : '到達吸引域'} ${
+              new Set(drops.map(d => d.basin)).size}/${WELLS.length}`
+          : (en ? 'click the curve to drop a walker' : '點擊曲線放入一個粒子');
+      }
+    }
+
+    function label() {
+      const en = root.dataset.lang === 'en';
+      capEl.textContent = mode === 'descent'
+        ? (en ? 'Fig. 2 — gradient descent on a multimodal energy. Scroll is the time axis; every walker ends at the nearest minimum, which is exactly the failure the Langevin term repairs.'
+              : '圖 2 —— 多峰能量上的梯度下降。捲動即時間軸;每個粒子都停在最近的極小值,而這正是 Langevin 項要修復的問題。')
+        : (en ? 'Fig. 1 — the energy landscape and its basins. Click anywhere to drop a walker and watch which minimum claims it.'
+              : '圖 1 —— 能量地景與其吸引域。點任意位置放入一個粒子,看它被哪個極小值收走。');
+    }
+
+    if (mode === 'basins') {
+      cvs.addEventListener('click', e => {
+        const r = cvs.getBoundingClientRect();
+        let x = ((e.clientX - r.left) / r.width) * 2.3 - 1.15;
+        const path = [x];
+        for (let s = 0; s < 500; s++) { x -= 0.0022 * dU(x); if (s % 8 === 0) path.push(x); }
+        path.push(x);
+        let basin = 0, best = 1e9;
+        WELLS.forEach((w, i) => { const d = Math.abs(w.x - x); if (d < best) { best = d; basin = i; } });
+        drops.push({ path: reduced() ? [path[0], x] : path, basin });
+        if (drops.length > 14) drops.shift();
+        draw();
+      });
+    } else {
+      const io = new IntersectionObserver(() => {}, {});
+      const onScroll = () => {
+        const r = fig.getBoundingClientRect();
+        const span = innerHeight + r.height;
+        t = Math.min(1, Math.max(0, (innerHeight - r.top) / span));
+        draw();
+      };
+      if (reduced()) { t = 1; }
+      else addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      io.observe(fig);
+    }
+
+    addEventListener('themechange', () => { label(); draw(); });
+    addEventListener('langchange', () => { label(); draw(); });
+    addEventListener('resize', resize, { passive: true });
+    label(); resize();
+
+    /* I11 · torch lens — a disc that reveals the other theme's rendering of
+       the same figure. Pointer-only; on touch it does not exist. */
+    if (matchMedia('(hover: hover)').matches && !reduced()) {
+      const plate = fig.querySelector('.fig-plate');
+      plate.addEventListener('pointermove', e => {
+        const r = plate.getBoundingClientRect();
+        plate.style.setProperty('--lx', (e.clientX - r.left) + 'px');
+        plate.style.setProperty('--ly', (e.clientY - r.top) + 'px');
+        plate.dataset.lens = '1';
+      });
+      plate.addEventListener('pointerleave', () => { plate.dataset.lens = '0'; });
+    }
+  }
+
+  const bodies = document.querySelectorAll('.threads-lg .thread-body');
+  if (bodies[0]) mountFigure(bodies[0], 'basins');
+  if (bodies[1]) mountFigure(bodies[1], 'descent');
 })();
 
 
