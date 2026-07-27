@@ -990,29 +990,29 @@ body::before{
 
 /* Editorial chassis: sections feel composed, not stacked cards. */
 .wrap{width:min(100% - max(var(--gut)*2,5.5vw),var(--maxw))}
-.sec{padding-block:clamp(6rem,13vh,11rem);content-visibility:auto;contain-intrinsic-size:auto 820px}
+.sec{padding-block:clamp(4rem,8vh,7rem);content-visibility:auto;contain-intrinsic-size:auto 640px}
 .sec::before{
-  content:attr(data-section);position:absolute;inset-block-start:3.2rem;inset-inline-start:-.15em;
-  font:600 clamp(4rem,10vw,10rem)/.8 var(--mono);letter-spacing:-.08em;
+  content:attr(data-section);position:absolute;inset-block-start:2.2rem;inset-inline-start:-.12em;
+  font:600 clamp(3.2rem,7vw,7.4rem)/.8 var(--mono);letter-spacing:-.07em;
   color:color-mix(in oklab,var(--ink) 4%,transparent);pointer-events:none;
 }
-.sec-head{margin-bottom:clamp(2.5rem,5vw,5.5rem)}
+.sec-head{margin-bottom:clamp(1.6rem,3vw,3.2rem)}
 .sec-head::after{background:var(--quiet-rule)}
-.sec-t{font-size:clamp(2rem,4.8vw,5.8rem);letter-spacing:-.055em;max-inline-size:15ch}
-.page-head{padding-block:clamp(11rem,23vh,18rem) clamp(5rem,10vh,9rem)}
-.page-head h1{font-size:clamp(4.2rem,15vw,14rem);letter-spacing:-.075em;line-height:.75;max-inline-size:none}
-.page-lead{max-inline-size:44ch;margin-block-start:4rem;margin-inline-start:min(17vw,12rem);font-size:var(--step-1)}
+.sec-t{font-size:clamp(1.8rem,3.6vw,4.3rem);letter-spacing:-.045em;max-inline-size:18ch}
+.page-head{padding-block:clamp(8rem,15vh,12rem) clamp(3rem,6vh,5rem)}
+.page-head h1{font-size:clamp(3.6rem,10vw,9.5rem);letter-spacing:-.065em;line-height:.82;max-inline-size:none}
+.page-lead{max-inline-size:48ch;margin-block-start:2.2rem;margin-inline-start:min(11vw,8rem);font-size:clamp(1rem,1.4vw,1.25rem)}
 
 /* Home cover. The simulation, type, and portrait occupy one measured plate. */
-.hero{min-height:100svh;height:auto;padding-block:7rem 5rem;display:grid;grid-template-columns:repeat(12,1fr);align-items:center}
+.hero{min-height:92svh;height:auto;padding-block:6rem 3.5rem;display:grid;grid-template-columns:repeat(12,1fr);align-items:center}
 .hero-in{position:relative;grid-column:2/9;width:auto;margin:0;z-index:4;align-self:center}
 .hero-eyebrow{margin-bottom:1.4rem}
-.hero-name{font-size:clamp(4.9rem,11.8vw,12.8rem);line-height:.72;letter-spacing:-.078em;max-inline-size:7ch}
+.hero-name{font-size:clamp(4.3rem,9.2vw,9.8rem);line-height:.78;letter-spacing:-.068em;max-inline-size:8ch}
 .hero-name.cloaked{color:color-mix(in oklab,var(--ink-hi) 16%,transparent)}
-:root[data-lang="zh"] .hero-name{font-size:clamp(5.8rem,13vw,13.5rem);letter-spacing:-.12em;line-height:.8}
-.hero-tag{font-size:clamp(1.2rem,2.2vw,2.1rem);max-inline-size:34ch;margin-top:3rem}
-.hero-meta{margin-top:2.8rem}
-.hero-portrait{grid-column:9/13;position:relative;inset:auto;width:min(100%,400px);align-self:center;justify-self:end;z-index:5}
+:root[data-lang="zh"] .hero-name{font-size:clamp(5rem,10.2vw,10.5rem);letter-spacing:-.105em;line-height:.84}
+.hero-tag{font-size:clamp(1.05rem,1.6vw,1.55rem);max-inline-size:38ch;margin-top:2rem}
+.hero-meta{margin-top:1.8rem}
+.hero-portrait{grid-column:9/13;position:relative;inset:auto;width:min(100%,340px);align-self:center;justify-self:end;z-index:5}
 .hero-portrait img{opacity:1;transform:none;transition:filter var(--d-large) var(--e-house)}
 .hero-portrait::before,.ph::before,.paper-acq::before{
   content:"";position:absolute;inset:-9px;pointer-events:none;
@@ -1036,7 +1036,7 @@ body::before{
 .phase-lab{
   position:relative;
   grid-column:2/13;align-self:end;z-index:8;display:grid;grid-template-columns:minmax(0,1fr) minmax(20ch,34ch);
-  gap:1rem;align-items:center;border-top:1px solid var(--rule-hi);padding:1rem var(--gut) 0;margin-top:2rem;
+  gap:.8rem;align-items:center;border-top:1px solid var(--rule-hi);padding:.75rem var(--gut) 0;margin-top:1rem;
   font-size:.72rem;color:var(--dim);
 }
 .phase-tabs{display:flex;gap:1px;background:var(--rule);border:1px solid var(--rule)}
@@ -1100,9 +1100,9 @@ body::before{
 @keyframes v3-scan{0%{opacity:0;left:0}8%,82%{opacity:.9}100%{opacity:0;left:100%}}
 
 /* V32 research incidence. */
-.relation-map{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(4rem,10vh,9rem) auto;padding-block:3rem;border-block:1px solid var(--rule)}
-.relation-map h2,.career-raster h2{font-size:clamp(2rem,5vw,5rem);margin-block-start:.5rem}
-.relation-map svg{width:100%;height:auto;margin-block:2rem;overflow:visible}
+.relation-map{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(3rem,6vh,5.5rem) auto;padding-block:2.25rem;border-block:1px solid var(--rule)}
+.relation-map h2,.career-raster h2{font-size:clamp(1.8rem,3.8vw,4rem);margin-block-start:.35rem}
+.relation-map svg{width:100%;height:auto;margin-block:1.4rem;overflow:visible}
 .rel-edges path{fill:none;stroke:var(--rule-hi);stroke-width:1.3;stroke-dasharray:8 5;vector-effect:non-scaling-stroke}
 .rel-node{cursor:default;outline:none}
 .rel-node circle{fill:var(--bg);stroke:var(--accent);stroke-width:2}
@@ -1124,26 +1124,27 @@ body::before{
 @keyframes v3-edge{to{stroke-dashoffset:0}}
 
 /* Publication evidence bench. */
-.paper-filter{position:sticky;top:3.5rem;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.65rem;border:1px solid var(--rule);background:var(--bg);margin-bottom:2rem}
+.paper-filter{position:sticky;top:3.5rem;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.55rem;border:1px solid var(--rule);background:var(--bg);margin-bottom:1.25rem}
 .paper-filter [role="group"]{display:flex;gap:1px;flex-wrap:wrap}.paper-filter output{padding-inline:1rem;color:var(--accent)}
 .paper[hidden]{display:none!important}
-.paper-tools{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.paper-tools{display:flex;align-items:flex-start;gap:.7rem;flex-wrap:wrap;margin-top:.75rem}
 .paper-tools button,.contact-utils button,.essay-tools button{border:1px solid var(--rule);background:transparent}
 .evidence{font-size:.78rem;max-inline-size:44ch}.evidence summary{cursor:pointer;color:var(--ink-2);padding:.55rem .7rem;border:1px solid var(--rule)}
 .evidence p{padding:.8rem;border-inline-start:1px solid var(--rule)}
-.paper-acq{position:relative;margin:0 0 1.5rem;border:1px solid var(--rule);background:var(--bg)}
+.paper-acq{position:relative;margin:0 0 1rem;border:1px solid var(--rule);background:var(--bg)}
+.paper-acq{max-inline-size:920px}
 .paper-acq canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
 .paper-acq figcaption{padding:.5rem .7rem;margin:0;border-top:1px solid var(--rule);font:500 .62rem/1.4 var(--mono);color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
 .sr-live{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 /* V38 — paragraph focus is contrast management, not paragraph motion. */
-.essay-tools{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;border-bottom:1px solid var(--rule);padding-bottom:1rem}
+.essay-tools{display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:1.25rem;border-bottom:1px solid var(--rule);padding-bottom:.75rem}
 .essay-body[data-focus="1"] p{opacity:.22;transition:opacity var(--d-small) linear}
 .essay-body[data-focus="1"] p.current{opacity:1}
 .essay-index{color:var(--accent);font-size:.72rem}
 
 /* V39 career raster. */
-.career-raster{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(4rem,10vh,9rem) auto;padding-block:4rem;border-block:1px solid var(--rule)}
+.career-raster{width:min(100% - var(--gut)*2,var(--maxw));margin:clamp(3rem,6vh,5.5rem) auto;padding-block:2.5rem;border-block:1px solid var(--rule)}
 .career-raster svg{width:100%;height:auto;margin-top:2.5rem;overflow:visible}
 .career-raster svg path{stroke:var(--rule-hi);fill:none;vector-effect:non-scaling-stroke}
 .career-raster svg text{fill:var(--dim);font:500 13px var(--mono);text-anchor:middle}
@@ -1157,6 +1158,29 @@ body::before{
 
 .contact-utils{display:flex;gap:.8rem;align-items:center;margin-top:1.25rem;color:var(--dim);font-size:.72rem}
 .taipei-time{font-variant-numeric:tabular-nums}
+
+/* Compact editorial rhythm: preserve hierarchy and touch targets while
+   removing portfolio-scale voids between factual blocks. */
+.threads{margin-top:2rem}
+.page-head+.sec{padding-block-start:2.25rem}
+.page-head+.sec>.threads:first-child{margin-top:0}
+.thread{padding-block:1.55rem}
+.threads-lg .thread{padding-block:1.9rem}
+.threads-lg .thread h3{font-size:clamp(1.35rem,2.2vw,1.85rem)}
+.paper{padding-block:1.45rem}
+.award{padding-block:1.35rem}
+.paper-title,.thread h3,.award h3{margin-bottom:.35rem}
+.paper-authors{margin-bottom:.45rem}
+.paper-note{margin-top:.55rem}
+.about-body p{margin-bottom:.85rem}
+.facts{gap:.8rem}
+.contact-line{margin-bottom:1.25rem}
+.pager{padding-block:2rem 3rem;margin-top:1rem}
+.essay-head{padding-block:2rem 0}
+.essay-head h1{font-size:clamp(2.4rem,6vw,5.8rem);line-height:.9}
+.essay-grid{gap:clamp(1.25rem,3vw,2.5rem);padding-block:2rem 2.75rem}
+.essay-body p{margin-bottom:1.15rem;line-height:1.72}
+.essay-plate{padding-block:1.25rem}
 
 /* A19 — aperture around real photography; no image parallax. */
 @media(prefers-reduced-motion:no-preference){
@@ -1182,17 +1206,20 @@ dialog.lb:not([open]){display:none!important}
   .atlas-rail{inset:auto 0 5.35rem 0;width:auto;height:28px;flex-direction:row;border:0;border-top:1px solid var(--quiet-rule);background:var(--bg);overflow-x:auto;justify-content:flex-start}
   .atlas-rail a{min-width:48px;min-height:28px}.rail-name{display:none}.rail-tick{width:5px}.atlas-rail a.on .rail-tick{width:12px}
   .atlas-hud{display:none}
-  .hero{display:block;padding-block:8rem 0;min-height:100svh}
+  .hero{display:block;padding-block:6.25rem 0;min-height:auto}
   .hero-in{width:min(100% - var(--gut)*2,var(--maxw));margin-inline:auto}
-  .hero-name{font-size:clamp(4.5rem,20vw,8rem);max-inline-size:none;line-height:.8}
-  .hero-tag{font-size:clamp(1.3rem,6.2vw,2rem)}
-  .hero-portrait{width:min(76vw,370px);margin:5rem 0 0 auto}
-  .phase-lab{display:block;margin-top:2rem;padding:1rem var(--gut)}
+  .hero-name{font-size:clamp(4rem,16vw,6.5rem);max-inline-size:none;line-height:.84}
+  :root[data-lang="zh"] .hero-name{font-size:clamp(4.2rem,17vw,6.8rem);line-height:.88}
+  .hero-tag{font-size:clamp(1.1rem,4.8vw,1.6rem);margin-top:1.6rem}
+  .hero-meta{margin-top:1.4rem}
+  .hero-portrait{width:min(68vw,320px);margin:3rem 0 0 auto}
+  .phase-lab{display:block;margin-top:1rem;padding:.75rem var(--gut)}
   .phase-tabs{display:grid;grid-template-columns:repeat(4,1fr)}
   .phase-tabs button{padding:.7rem .25rem;font-size:.62rem}.phase-probe{display:block;text-align:start;margin-top:.7rem;min-height:2.8em}
   .hero-readout{display:none}
-  .page-head h1{font-size:clamp(4rem,20vw,8rem);line-height:.82}
-  .page-lead{margin-inline-start:0}
+  .page-head{padding-block:7rem 2.75rem}
+  .page-head h1{font-size:clamp(3.4rem,15vw,6.3rem);line-height:.86}
+  .page-lead{margin-inline-start:0;margin-block-start:1.6rem}
   .paper-filter{top:3.65rem;align-items:flex-start}.paper-filter [role="group"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));flex:1}
   .relation-map svg{min-width:760px}.relation-map{overflow-x:auto}
   .career-raster svg{min-width:720px}.career-raster{overflow-x:auto}
@@ -1200,11 +1227,14 @@ dialog.lb:not([open]){display:none!important}
 }
 
 @media(max-width:520px){
-  .hero-name{font-size:clamp(4rem,19vw,6.8rem)}
+  .hero-name{font-size:clamp(3.65rem,15vw,5.5rem)}
+  :root[data-lang="zh"] .hero-name{font-size:clamp(3.9rem,16vw,5.8rem)}
   .hero-meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.9rem 1.2rem;width:100%}
   .hero-meta>span:first-child{grid-column:1/-1}.hero-meta a{min-width:0}
   .phase-tabs{grid-template-columns:repeat(2,1fr)}
-  .sec{padding-block:5.5rem}.sec-t{font-size:clamp(2rem,12vw,3.7rem)}
+  .sec{padding-block:3.75rem}.sec-t{font-size:clamp(1.8rem,9vw,3rem)}
+  .sec-head{margin-bottom:1.45rem}
+  .thread,.threads-lg .thread,.paper,.award{padding-block:1.2rem}
   .contact-utils{align-items:flex-start;flex-direction:column}
 }
 
