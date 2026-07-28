@@ -159,6 +159,30 @@ def section(sid, lam, title, body, rail=None, note=None):
             f'</div>{body}</section>')
 
 
+ART_DIR = os.path.join(ROOT, "img", "art")
+
+def art(name, alt, cls="wide", sizes="100vw", loading="lazy"):
+    """A full-bleed artwork slot. Emits nothing until img/art/<name>.webp
+    exists — generate the pieces (see CODEX_ART_BRIEF.md), rebuild, and
+    the page makes room for them."""
+    path = os.path.join(ART_DIR, name + ".webp")
+    if not os.path.exists(path):
+        return ""
+    dim = webp_size(path)
+    wh = f' width="{dim[0]}" height="{dim[1]}"' if dim else ""
+    return (f'<figure class="plate artwork {cls} err">'
+            f'<img src="img/art/{e(name)}.webp"{wh} alt="{e(alt.get("en", ""))}" '
+            f'{attr_bi("alt", alt)} loading="{loading}" decoding="async">'
+            f'</figure>')
+
+
+def cartouche(label_zh, seal="李"):
+    """浮世繪 title cartouche: one vertical label block per page, with the
+    seal below it — the way a print signs itself."""
+    return (f'<aside class="cartouche" aria-hidden="true">'
+            f'<span>{e(label_zh)}</span><b>{e(seal)}</b></aside>')
+
+
 def opening(o):
     """The first sentence. The index hooks; the research page argues.
 
@@ -179,12 +203,13 @@ def p_index():
     o = []
     o.append(f'''
 <div class="hero">
+  {cartouche("預測誤差")}
   <div class="band err">
     <span class="live">● <span class="en">RECORDING</span><span class="zh">錄製中</span></span>
     <span>·</span><span>{bi(M["location"])}</span>
     <span>·</span><span><span class="en">SINGLE UNIT · PE//1</span><span class="zh">單一單元 · PE//1</span></span>
   </div>
-  <h1 class="err"><span class="en" data-pe>{e(M["name"]["en"])}</span><span class="zh" data-pe>{e(M["name"]["zh"])}</span></h1>
+  <h1 class="err"><span class="en" data-pe>{e(M["name"]["en"])}</span><span class="zh">{e(M["name"]["zh"])}</span></h1>
   <p class="lede err">{bi(M["tagline"])}</p>
   <p class="sub err">{bi(M["role"])} · {bi(C["about"]["facts"][0]["v"])}</p>
   <div class="acts err">
@@ -193,6 +218,8 @@ def p_index():
     <button class="act" type="button" data-act="mail" data-mail="{e(M["email"])}"><span class="en">Copy email</span><span class="zh">複製信箱</span></button>
   </div>
 </div>''')
+
+    o.append(art("home-ink", {"en": "Ink dispersing in water", "zh": "墨在水中暈開"}, loading="eager"))
 
     # threads
     units = []
@@ -319,8 +346,9 @@ FIGS = {
 def p_research():
     o = [f'''
 <div class="masthead">
+  {cartouche("研究")}
   <div class="band err"><span class="en">SECTION 02 · FOUR THREADS</span><span class="zh">第 02 節 · 四條線</span></div>
-  <h1 class="err"><span class="en" data-pe>RESEARCH</span><span class="zh" data-pe>研究</span></h1>
+  <h1 class="err"><span class="en">RESEARCH</span><span class="zh">研究</span></h1>
   <p class="lede err"><span class="en">Every figure below runs. None of them is a picture of a result — each one computes, live, in your browser, and prints what it actually measured. Where a number comes from a paper instead, it says so.</span><span class="zh">底下每一張圖都在運算。它們不是結果的圖片——每一張都在你的瀏覽器裡即時計算，並印出它真正量到的值。若某個數字來自論文而非現場計算，圖上會註明。</span></p>
 </div>''']
 
@@ -417,10 +445,12 @@ def p_publications():
 </p>'''
     return f'''
 <div class="masthead">
+  {cartouche("論文")}
   <div class="band err"><span class="en">SECTION 03 · THE RECORD</span><span class="zh">第 03 節 · 紀錄</span></div>
-  <h1 class="err"><span class="en" data-pe>PAPERS</span><span class="zh" data-pe>論文</span></h1>
+  <h1 class="err"><span class="en">PAPERS</span><span class="zh">論文</span></h1>
   <p class="lede err"><span class="en">Five entries. Two are co-first-author manuscripts under review, one is an accepted TAAI poster, one is published, and one is a 150-author community benchmark I contributed to.</span><span class="zh">五筆。其中兩篇是共同第一作者、審查中的手稿，一篇是已接受的 TAAI 海報，一篇已發表，另一篇是我參與的 150 人社群基準論文。</span></p>
 </div>
+{art("papers", {"en": "Ink artwork", "zh": "墨圖"})}
 {section("list", "L4", {"en": "Entries", "zh": "條目"}, body, rail="PAPERS")}'''
 
 
@@ -455,10 +485,12 @@ def p_field():
 
     return f'''
 <div class="masthead">
+  {cartouche("現場")}
   <div class="band err"><span class="en">SECTION 04 · AWAY FROM THE DESK</span><span class="zh">第 04 節 · 離開桌前</span></div>
-  <h1 class="err"><span class="en" data-pe>FIELD</span><span class="zh" data-pe>現場</span></h1>
+  <h1 class="err"><span class="en">FIELD</span><span class="zh">現場</span></h1>
   <p class="lede err"><span class="en">Two trips that changed what I work on, written out in full rather than summarised into a line on a CV.</span><span class="zh">兩趟改變了我研究方向的旅程，完整寫出來，而不是壓縮成履歷上的一行。</span></p>
 </div>
+{art("field", {"en": "Ink artwork", "zh": "墨圖"})}
 {section("trips", "L5a", {"en": "The two of them", "zh": "這兩趟"}, f'<div class="grid c2">{"".join(cards)}</div>', rail="TRIPS")}
 {section("sheet", "L5b", {"en": "Contact sheet", "zh": "印樣"},
          f'<div class="strip err">{"".join(sheet)}</div>'
@@ -496,8 +528,9 @@ def p_essay(key):
 
     return f'''
 <div class="masthead">
+  {cartouche(t["title"]["zh"][:6])}
   <div class="band err">{e(t["place"])} · {e(t["date"])}</div>
-  <h1 class="err"><span class="en" data-pe>{e(t["title"]["en"])}</span><span class="zh" data-pe>{e(t["title"]["zh"])}</span></h1>
+  <h1 class="err"><span class="en">{e(t["title"]["en"])}</span><span class="zh">{e(t["title"]["zh"])}</span></h1>
 </div>
 <div class="err" style="margin-bottom:var(--s7)">{plate(hero, cls="wide", sizes="100vw", loading="eager")}</div>
 <article class="sec settle reading" id="essay" data-rail="ESSAY">
@@ -558,10 +591,12 @@ def p_record():
 
     return f'''{raster}
 <div class="masthead">
+  {cartouche("紀錄")}
   <div class="band err"><span class="en">SECTION 05 · THE RECORD</span><span class="zh">第 05 節 · 紀錄</span></div>
-  <h1 class="err"><span class="en" data-pe>RECORD</span><span class="zh" data-pe>紀錄</span></h1>
+  <h1 class="err"><span class="en">RECORD</span><span class="zh">紀錄</span></h1>
   <p class="lede err"><span class="en">Every honour with its citation, the field work, and all of it on one axis. The papers are plotted here but written out on <a href="publications.html">papers</a> — nothing on this site is set out twice.</span><span class="zh">每一項獎項連同事由、現場工作，以及把這一切放上同一條軸。論文在這裡以刻度呈現，內容則寫在<a href="publications.html">論文</a>頁——這個網站不把同一件事寫兩次。</span></p>
 </div>
+{art("record", {"en": "Ink artwork", "zh": "墨圖"})}
 {section("raster", "L4", {"en": "The whole record as a spike train", "zh": "把整份紀錄畫成尖峰序列"},
          '<div class="fig err" data-fig="career"><div class="fh">'
          '<span class="t"><span class="en">Papers above the axis, awards below, field on it</span>'
@@ -593,8 +628,9 @@ def p_about():
 
     return f'''
 <div class="masthead">
+  {cartouche("關於")}
   <div class="band err"><span class="en">SECTION 06 · WHO IS RECORDING</span><span class="zh">第 06 節 · 誰在記錄</span></div>
-  <h1 class="err"><span class="en" data-pe>ABOUT</span><span class="zh" data-pe>關於</span></h1>
+  <h1 class="err"><span class="en">ABOUT</span><span class="zh">關於</span></h1>
   <p class="lede err">{bi(C["about"]["lead"])}</p>
 </div>
 {section("bio", "L2/3", {"en": "In his own words", "zh": "他自己的說法"},
@@ -638,8 +674,9 @@ def p_404():
         f'<h3>{bi(lab)}</h3></a>' for pid, lab, ch in PAGES)
     return f'''
 <div class="masthead">
+  {cartouche("迷途")}
   <div class="band err"><span class="en">ERROR · UNRESOLVED RESIDUAL</span><span class="zh">錯誤 · 未解殘差</span></div>
-  <h1 class="err"><span class="en" data-pe>SIGNAL LOST</span><span class="zh" data-pe>訊號中斷</span></h1>
+  <h1 class="err"><span class="en">SIGNAL LOST</span><span class="zh">訊號中斷</span></h1>
   <p class="lede err"><span class="en">The prediction was made and nothing came back to cancel it. This route does not exist — pick a channel below.</span><span class="zh">預測發出去了，卻沒有任何東西回來抵消它。這條路由不存在——請從下面選一個頻道。</span></p>
 </div>
 {section("recover", "L1", {"en": "Recover", "zh": "回復"}, f'<div class="grid c3" style="background:transparent;border:0;gap:var(--s3)">{links}</div>', rail="RECOVER")}'''

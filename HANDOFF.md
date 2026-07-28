@@ -3,7 +3,7 @@
 Written so another agent, or a future session, can extend this site without
 re-deriving the decisions. Read this before touching anything.
 
-**Status (2026-07-29, ink revision):** this document is the current contract. It replaces the
+**Status (2026-07-29, ink-in-water revision):** this document is the current contract. It replaces the
 V2/V3 "probabilistic instrumentarium" handoff; that design and its external
 `CV` build workspace are gone. Everything needed to build the site is now in
 this repository.
@@ -101,67 +101,54 @@ modality toggle is a real temperature schedule.
 
 ---
 
-## 4. The substrate — 水墨, simulated
+## 4. The substrate — 墨入水, simulated
 
-`substrate.js` is not a procedural picture of an ink wash. It is a wash: a
-two-field fluid ping-ponged between two framebuffers, where every mark got
-there by the route ink takes on paper.
+`substrate.js` advects a dye field through a divergence-free curl-noise flow
+(Bridson) with one extra force: ink is denser than water, so it sinks. Drops
+are the ONLY source — one falls into a margin every 25–60 s, a click or `S`
+lets one go. Each drop drives its own descending jet for ~2 s; the billow,
+lobes and tendrils come from that jet colliding with the ambient curl, not
+from any drawn shape. Fresh ink (R) ages into haze (G); haze lags the flow
+and diffuses — crisp over soft is what reads as water rather than smoke.
 
-State, packed into one RGBA texture at ~340 px wide (the wash is smooth; it
-does not need the screen's resolution):
+Register: aizuri-e, 藍摺絵. Fixed = Prussian-deepened ink `--ink-drop` on
+pale water under a `--bokashi` band; vivo = deep indigo water, pale luminous
+ink. The seal keeps the only red.
 
-| channel | is |
-|---|---|
-| R | suspended pigment, still in the water |
-| G | water |
-| B | pigment that has settled — what you actually see |
-| A | how much the sheet can still take (積墨: a second wash over a first lays down differently and leaves its overlap edge) |
+Hard-won constraints — keep all of them:
 
-**Every ink behaviour here is a consequence, not an effect.** Do not "add" any
-of them as a separate term; if one looks wrong, the physics above it is wrong.
+- **UNSIGNED_BYTE state textures, always.** Half-float targets pass the
+  completeness probe on some drivers and then silently render nothing.
+- **Dithered decay.** At 8 bits a multiplicative fade rounds back to itself
+  and freckles of ink hang forever; the decay subtracts a hashed quantum.
+- **Array uniforms are fetched as `name[0]`** with a plain-name fallback.
+- **The loop checks `isContextLost()` every ~48 frames** — a context can die
+  before the lost-event listener exists, after which every GL call no-ops
+  while JS keeps running. One rebuild attempt, then the Canvas2D still sheet.
+- Velocity stays ≤ ~1 sim texel per step; larger steps let linear sampling
+  eat the filaments. A 0.055 unsharp term keeps edges crisp; more speckles.
+- The reading column damps to 5 % (fixed) / 13 % (vivo), and `.shell::before`
+  lays a near-solid `--sheet` panel under the whole column — the readability
+  fix is the panel, not dimming the painting.
 
-- **暈染** — water diffuses, faster along the paper fibre than across it
-  (`fibre()` gives per-texel anisotropy), and drags pigment with it.
-- **邊緣濃聚 / pooled terminus** — evaporation is fastest where the wet patch
-  ends, so the flow velocity `-∇water` runs outward and strands pigment at the
-  rim. The dark edge is emergent. There is no code that draws a ring.
-- **水痕** — fresh water re-suspends pigment that had already dried and carries
-  it out to a hard cauliflower boundary.
-- **五墨** — the settled value is read back in discrete tones, 焦 濃 重 淡 清.
-- **飛白** — applied to thin strokes only. A loaded brush lays solid ink; a
-  starved one breaks into streaks along its travel.
+## 4b. Calm is enforced
 
-**The composition rule is 留白.** Ink enters from exactly two places: a drop
-(`PE.drop(x, y, r, amount)`, also fired by a click, by `S`, and on an ambient
-timer into the margins), and the residual — the sheet gets wet where
-prediction and evidence fail to cancel. The empty paper is not restraint. It
-is the part of the world the model already predicted.
+Figures are **still by default**. `mount()` draws ~90 settled frames when a
+figure scrolls into view, then runs the loop only while the pointer is over
+it (fine pointers) or its ▶ toggle is on (coarse). Dragging a control always
+animates its consequence. The prediction-error glyph scramble exists on the
+index hero name only — mastheads are book titles. Do not add per-page
+ambient animation back; one moving thing at a time is the rule.
 
-Format: half-float where the driver will filter it, `UNSIGNED_BYTE` otherwise.
-Ink tolerates 8 bits; the diffusion just quantises harder. The framebuffer is
-probed for completeness before use, and the whole thing falls back to a
-Canvas2D wash that follows the same rules without the fluid.
+## 4c. Image-first: art slots
 
-Cost control, all of it load-bearing on phones:
-
-- the residual source is the expensive half of a step and sits behind
-  `if (uInject > 0.03)` — a coherent branch on a uniform, so it is skipped
-  outright while the reader is inside a block of copy;
-- `fbm` is three octaves. The sign of the residual is decided by its low
-  frequencies and five octaves buys detail nobody sees;
-- one simulation step per frame after the first ~60 frames, which run two.
-
-Two rules keep it readable, and both are load-bearing:
-
-- `colm` damps the wash to 13 % across the width the copy occupies. A scroll
-  keeps its painting in the margins.
-- `PE.targetIntensity` drops to .26 whenever a `.reading` or `.prose` block is
-  centred, which also switches the source term off entirely.
-
-There is **no grain overlay layer**. A full-viewport element in a blend mode is
-an expensive composited layer on exactly the devices that can least afford one.
-The tooth, the 斑點 foxing and the 毛邊 deckle all belong to the sheet and are
-drawn in the render pass.
+`build.py → art(name, alt)` emits a full-bleed artwork plate only when
+`img/art/<name>.webp` exists. Slots wired: `home-ink` (index, eager),
+`research`, `papers`, `field`, `record`. `CODEX_ART_BRIEF.md` at the repo
+root is a complete generation brief (filenames, sizes, palette, composition
+rules) for producing the set; generate, drop in, rebuild — no code changes.
+The cartouche (`cartouche(zh)`) is the print's vertical title block, one per
+page, sealed.
 
 ## 4a. Typography
 

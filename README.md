@@ -14,16 +14,19 @@ The cortex does not transmit the signal. It transmits the residual between
 what it predicted and what arrived. The site is built on that rule, because
 it is also what the research is about.
 
-- The **substrate** behind every page is not a picture of an ink wash. It is
-  one: a two-field fluid running on the GPU, where water diffuses along the
-  paper's fibre, drags pigment with it, evaporates fastest at the rim of a wet
-  patch and strands the pigment there. The dark edge of every stroke is
-  emergent — no line of code draws a ring. Fresh water lifts what has already
-  dried and carries it out to a hard 水痕 boundary.
-- Ink enters from two places: a drop, which spreads and dries where it lands,
-  and the residual. Which gives the composition its rule, **留白** — where
-  prediction and evidence cancel, nothing is painted. The empty paper is the
-  part of the world the model already predicted.
+- The **substrate** is ink dropped into still water, simulated: a dye field
+  advected through a divergence-free curl-noise flow, with one extra force —
+  ink is denser than water, so it sinks. A drop billows, breaks into lobes,
+  stretches into tendrils and dissolves into haze, and all of it is
+  consequence, not effect. Drops are the only source; the still water is
+  留白, the part of the world the model already predicted. The register is
+  aizuri-e — Prussian blue on pale water by day, luminous ink in dark
+  indigo water at night, under a bokashi band.
+- **Figures are still by default** and run only while you engage them. One
+  moving thing at a time.
+- **Images first.** Every page has artwork slots that activate the moment
+  the pieces exist in `img/art/` — `CODEX_ART_BRIEF.md` is the complete
+  generation brief.
 - **Two families of type.** Spectral and 明體 for headings and the essays,
   Martian Mono for every label, readout and axis. The painting is old and the
   instrument is not.

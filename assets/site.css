@@ -71,11 +71,13 @@
 /* ── dark: 2P IN VIVO — live two-photon recording ── */
 :root,:root[data-mode="vivo"]{
   color-scheme:dark;
-  --void:#05070d; --bg1:#0a0e18; --bg2:#131a2b; --bg3:#1b2338;
+  --void:#060b16; --bg1:#0b1120; --bg2:#141c30; --bg3:#1c263c;
   --ink:#e8ebf2; --ink-dim:#a6b0c6; --muted:#6f7c95;
   --sig:#2ff0bd; --pre:#ff4d9d; --inh:#8b6cff; --hot:#f4fffb;
-  --ink-wash:#3d4c70;
-  --mount:#02040a;      /* the wash reads as a rubbing: light on dark */
+  --ink-drop:#b9cde9;      /* moonlit ink, luminous in dark water */
+  --ink-haze:#3a5680;
+  --bokashi:#132644;
+  --sheet:linear-gradient(90deg,transparent,rgba(5,8,16,.74) 7%,rgba(5,8,16,.74) 93%,transparent);      /* the wash reads as a rubbing: light on dark */
   --seal:#cf3b30;          /* 朱砂 — the one colour that encodes nothing */
   --seal-ink:#0d0a09;
   --line:rgba(150,168,204,.15);
@@ -105,8 +107,10 @@
   --pre:#9a2f42;           /* 胭脂 */
   --inh:#4f3a86;           /* 石青 */
   --hot:#0d0f13;
-  --ink-wash:#1a1d24;      /* 墨 */
-  --mount:#cbbfa6;         /* the silk the sheet is mounted on */
+  --ink-drop:#152a42;      /* sumi deepened with Prussian blue */
+  --ink-haze:#57748f;
+  --bokashi:#2e567e;       /* the Hokusai band */
+  --sheet:linear-gradient(90deg,transparent,rgba(244,240,229,.92) 7%,rgba(244,240,229,.92) 93%,transparent);
   --seal:#b8352b;
   --seal-ink:#f7f2e6;
   --line:rgba(40,36,28,.22);
@@ -180,6 +184,13 @@ html{scrollbar-width:none}
 .rig i:nth-child(2){top:-1px;right:-1px;border-top-width:2px;border-right-width:2px}
 .rig i:nth-child(3){bottom:-1px;left:-1px;border-bottom-width:2px;border-left-width:2px}
 .rig i:nth-child(4){bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+
+.shell::before{
+  content:"";position:absolute;z-index:-1;top:0;bottom:0;
+  left:calc(var(--depth-w) + var(--s6) * 0.4);right:calc(var(--raster-w) + var(--s6) * 0.4);
+  background:var(--sheet);
+}
+@media (max-width:1100px){.shell::before{left:calc(-1 * var(--s2));right:calc(-1 * var(--s2))}}
 
 /* ─── 5. channel bar (top) ─────────────────────────────────── */
 .bar{
@@ -264,6 +275,7 @@ html.drawer-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45
 
 /* ─── 7. page shell: depth axis · content · raster rail ────── */
 .shell{
+  position:relative;
   max-width:var(--shell);margin:0 auto;
   padding:calc(var(--bar-h) + var(--frame) + var(--s7)) var(--s5) calc(var(--hud-h) + var(--s8));
   display:grid;grid-template-columns:var(--depth-w) minmax(0,1fr) var(--raster-w);
@@ -354,14 +366,11 @@ html[lang="zh-Hant"] .sec-h h2{letter-spacing:.06em;font-weight:600}
 /* ─── 9. the reveal: error → zero ──────────────────────────────
    A block enters at high residual (offset, blurred, dim) and the
    error decays. Not a fade-up: the transform is the residual.     */
-.err{opacity:0;transform:translateY(20px);
-  transition:opacity var(--d4) var(--ease),transform var(--d4) var(--ease)}
+.err{opacity:0;transform:translateY(10px);
+  transition:opacity var(--d3) var(--ease),transform var(--d3) var(--ease)}
 .settled .err,html.no-js .err{opacity:1;transform:none}
-.settled .err:nth-child(2){transition-delay:70ms}
-.settled .err:nth-child(3){transition-delay:140ms}
-.settled .err:nth-child(4){transition-delay:210ms}
-.settled .err:nth-child(5){transition-delay:280ms}
-.settled .err:nth-child(6){transition-delay:350ms}
+.settled .err:nth-child(2){transition-delay:60ms}
+.settled .err:nth-child(3){transition-delay:120ms}
 
 /* prediction-error type: display text only, never body copy */
 .pe{display:inline-block}
@@ -476,6 +485,30 @@ html[lang="zh-Hant"] .hero h1{letter-spacing:.06em;font-weight:600;line-height:1
 html[lang="zh-Hant"] .masthead h1{letter-spacing:.05em;font-weight:600;line-height:1.2}
 .masthead .lede{max-width:56ch;color:var(--ink-dim);font-family:var(--f-serif);font-size:1.25rem;line-height:1.66}
 
+/* ─── 13b. cartouche — the print's title block ─────────────── */
+.masthead,.hero{position:relative}
+.cartouche{
+  position:absolute;top:4px;right:0;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:14px 9px 10px;border:1px solid var(--line-2);
+  background:var(--panel);backdrop-filter:blur(3px);
+}
+.cartouche span{
+  writing-mode:vertical-rl;font-family:var(--f-serif);font-size:15px;
+  letter-spacing:.34em;color:var(--ink);line-height:1;
+}
+.cartouche b{
+  width:20px;height:20px;display:grid;place-items:center;flex:none;
+  background:var(--seal);color:var(--seal-ink);border-radius:2px;
+  font-family:var(--f-body);font-size:12px;font-weight:700;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),inset -2px 1px 3px rgba(0,0,0,.22);
+}
+@media (max-width:760px){.cartouche{display:none}}
+
+/* artwork plates are the image-first layer: quiet frame, full width */
+.plate.artwork{margin:var(--s6) 0;border-color:var(--line)}
+.plate.artwork img{width:100%;height:auto}
+
 /* ─── 14. ledger (publications, record) ────────────────────── */
 .ledger{border-top:1px solid var(--line-2)}
 .row{
@@ -578,6 +611,15 @@ html[lang="zh-Hant"] .prose{line-height:1.95;font-size:1.125rem}
 }
 .fig .fh .t{color:var(--ink)}
 .fig .fh .out{margin-left:auto;color:var(--sig);font-variant-numeric:tabular-nums}
+.fig .fh .run{font-size:10px;color:var(--muted);border:1px solid var(--line-2);padding:2px 8px;margin-left:var(--s3)}
+.fig .fh .run.on{color:var(--sig);border-color:var(--sig-line)}
+@media (pointer:fine){.fig .fh .run{display:none}}
+/* an idle figure says so, quietly, so stillness reads as intent */
+@media (pointer:fine){
+  .fig::after{content:"";position:absolute;right:10px;bottom:10px;width:5px;height:5px;
+    border-radius:50%;background:var(--muted);opacity:.4;transition:background var(--d2) var(--ease),opacity var(--d2) var(--ease)}
+  .fig:hover::after{background:var(--sig);opacity:.9}
+}
 .fig canvas{width:100%;display:block}
 .fig .fc{padding:var(--s3) var(--s4);border-top:1px solid var(--line);
   font-size:var(--t-sm);color:var(--muted);line-height:1.6}

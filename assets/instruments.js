@@ -32,18 +32,60 @@
   }
   var G = function () { return PE.colors(); };
 
-  /* mount: run only while visible, and only one loop entry */
+  /* mount: STILL BY DEFAULT.
+     A page of figures that all animate at once is exhausting to look at,
+     and none of the motion carries information until the reader engages.
+     So a figure draws one settled frame when it scrolls into view, and
+     runs only while the pointer is over it or a control is being used.
+     On coarse pointers there is no hover, so a small ▶ affordance toggles
+     it instead. Reduced motion never loops at all. */
   var uid = 0;
   function mount(el, id, frame, onSize) {
-    var key = id + '-' + (++uid), on = false;
+    var key = id + '-' + (++uid), visible = false, engaged = false, coarseOn = false;
+
+    function still() {
+      /* advance the model far enough to be worth looking at, then hold */
+      var n = 90;
+      while (n--) frame(16.7);
+    }
+    function update() {
+      var run = visible && !PE.reduced && (engaged || coarseOn);
+      if (run && !PE.loop.has(key)) PE.loop.add(key, frame);
+      if (!run) PE.loop.remove(key);
+    }
+
     var io = new IntersectionObserver(function (es) {
       var vis = es[0].isIntersecting;
-      if (vis === on) return;
-      on = vis;
-      if (vis) { if (!PE.reduced) PE.loop.add(key, frame); else frame(16.7); }
-      else PE.loop.remove(key);
-    }, { rootMargin: '120px' });
+      if (vis === visible) return;
+      visible = vis;
+      if (vis) still();
+      update();
+    }, { rootMargin: '80px' });
     io.observe(el);
+
+    if (PE.fine) {
+      el.addEventListener('pointerenter', function () { engaged = true; update(); });
+      el.addEventListener('pointerleave', function () { engaged = false; update(); });
+    } else {
+      /* touch: an explicit, tiny play toggle in the figure header */
+      var fh = el.querySelector('.fh');
+      if (fh) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'run';
+        b.setAttribute('aria-label', 'Run figure');
+        b.textContent = '▶';
+        b.addEventListener('click', function () {
+          coarseOn = !coarseOn;
+          b.textContent = coarseOn ? '❚❚' : '▶';
+          b.classList.toggle('on', coarseOn);
+          update();
+        });
+        fh.appendChild(b);
+      }
+    }
+    /* dragging a control always animates its consequence */
+    el.addEventListener('input', function () { still(); });
+
     var re = PE.debounce(function () { if (onSize) onSize(); frame(16.7); }, 200);
     addEventListener('resize', re, { passive: true });
     PE.on('modechange', function () { setTimeout(function () { frame(16.7); }, 40); });
