@@ -847,52 +847,121 @@
     if (!el) return;
     var events = JSON.parse(el.textContent);
     var cv = fig.querySelector('canvas'), outEl = fig.querySelector('[data-out]');
-    var ctx, W, H, y0 = 2026, y1 = 2023, scan = 0;
+    var ctx, W, H, y0 = 9999, y1 = -9999, scan = 0, hot = -1, place = [];
     events.forEach(function (e2) { y0 = Math.min(y0, e2.year); y1 = Math.max(y1, e2.year); });
-    function size() { var w = cv.clientWidth; if (!w) return false; W = w; H = Math.max(180, Math.min(240, w * 0.30)); ctx = fit(cv, H); return !!ctx; }
+
+    /* same year, same kind: fan them out around the year, not off to one side */
+    function layout() {
+      var pad = 42, w = W - pad * 2, span = Math.max(1, y1 - y0), group = {};
+      events.forEach(function (e2, i) {
+        var k = e2.year + '|' + e2.kind;
+        (group[k] || (group[k] = [])).push(i);
+      });
+      place = new Array(events.length);
+      Object.keys(group).forEach(function (k) {
+        var ids = group[k], n = ids.length;
+        ids.forEach(function (i, j) {
+          var yr = events[i].year;
+          place[i] = pad + ((yr - y0) / span) * w + (j - (n - 1) / 2) * 9;
+        });
+      });
+    }
+    function size() {
+      var w = cv.clientWidth; if (!w) return false;
+      W = w; H = Math.max(210, Math.min(280, w * 0.30));
+      ctx = fit(cv, H); if (!ctx) return false;
+      layout(); return true;
+    }
+
     function frame(dt) {
       if (!ctx && !size()) return;
-      var c = G();
+      var c = G(), L = PE.lang() === 'zh';
       scan = Math.min(1, scan + (dt || 16.7) / 1600);
       ctx.clearRect(0, 0, W, H);
-      var pad = 26, w = W - pad * 2, mid = H / 2;
-      ctx.strokeStyle = rgb(c.muted, 0.4); ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad, mid); ctx.lineTo(pad + w, mid); ctx.stroke();
+      var pad = 42, w = W - pad * 2, mid = H * 0.50, arm = 38;
+
+      /* the axis, and the years on it */
+      ctx.strokeStyle = rgb(c.muted, 0.42); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad - 12, mid); ctx.lineTo(pad + w + 12, mid); ctx.stroke();
       ctx.font = '600 9px "Martian Mono",monospace';
+      ctx.textAlign = 'center';
       var span = Math.max(1, y1 - y0);
       for (var yy = y0; yy <= y1; yy++) {
         var x = pad + ((yy - y0) / span) * w;
-        ctx.strokeStyle = rgb(c.muted, 0.25);
-        ctx.beginPath(); ctx.moveTo(x, mid - 4); ctx.lineTo(x, mid + 4); ctx.stroke();
+        ctx.strokeStyle = rgb(c.muted, 0.22);
+        ctx.beginPath(); ctx.moveTo(x, mid - 3); ctx.lineTo(x, mid + 3); ctx.stroke();
         ctx.fillStyle = rgb(c.muted, 0.85);
-        ctx.textAlign = 'center';
-        ctx.fillText(String(yy), x, H - 8);
+        ctx.fillText(String(yy), x, H - 7);
       }
       ctx.textAlign = 'left';
-      var byYear = {};
-      events.forEach(function (e2) {
-        var key = e2.year + '|' + e2.kind;
-        byYear[key] = (byYear[key] || 0) + 1;
-        var x = pad + ((e2.year - y0) / span) * w + (byYear[key] - 1) * 5 - 4;
-        if ((x - pad) / w > scan) return;
+
+      events.forEach(function (e2, i) {
+        var x = place[i];
+        if (x == null || (x - pad) / w > scan) return;
+        var lit = hot < 0 || hot === i;
+        if (e2.kind === 'trip') {
+          /* field work is neither a paper nor an award — it sits on the axis,
+             because it is what the other two came out of */
+          ctx.fillStyle = rgb(c.inh, lit ? 0.95 : 0.20);
+          ctx.beginPath();
+          ctx.moveTo(x, mid - 6); ctx.lineTo(x + 6, mid); ctx.lineTo(x, mid + 6); ctx.lineTo(x - 6, mid);
+          ctx.closePath(); ctx.fill();
+          return;
+        }
         var up = e2.kind === 'paper';
-        var col = up ? c.sig : c.pre;
-        ctx.strokeStyle = rgb(col, 0.92); ctx.lineWidth = 2;
+        ctx.strokeStyle = rgb(up ? c.sig : c.pre, lit ? 0.95 : 0.18);
+        ctx.lineWidth = (lit && hot >= 0) ? 3 : 2;
         ctx.beginPath();
-        ctx.moveTo(x, mid); ctx.lineTo(x, up ? mid - 34 : mid + 34);
+        ctx.moveTo(x, mid + (up ? -4 : 4));
+        ctx.lineTo(x, up ? mid - arm : mid + arm);
         ctx.stroke();
       });
+
       if (scan < 1) {
         var sx = pad + scan * w;
-        ctx.strokeStyle = rgb(c.ink, 0.35); ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(sx, 10); ctx.lineTo(sx, H - 20); ctx.stroke();
+        ctx.strokeStyle = rgb(c.ink, 0.30); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(sx, 22); ctx.lineTo(sx, H - 22); ctx.stroke();
       }
-      ctx.fillStyle = rgb(c.sig, 0.9);
-      ctx.fillText(PE.lang() === 'zh' ? '↑ 論文' : '↑ PAPERS', pad, 16);
-      ctx.fillStyle = rgb(c.pre, 0.9);
-      ctx.fillText(PE.lang() === 'zh' ? '↓ 獎項' : '↓ AWARDS', pad, H - 24);
-      if (outEl) outEl.textContent = events.length + (PE.lang() === 'zh' ? ' 個事件 · ' : ' events · ') + y0 + '–' + y1;
+
+      /* one legend row, so nothing collides with the plot */
+      ctx.font = '600 9px "Martian Mono",monospace';
+      var lx = pad - 12;
+      ctx.fillStyle = rgb(c.sig, 0.92); ctx.fillText(L ? '↑ 論文' : '↑ PAPERS', lx, 14);
+      lx += L ? 46 : 66;
+      ctx.fillStyle = rgb(c.inh, 0.92); ctx.fillText(L ? '◆ 現場' : '◆ FIELD', lx, 14);
+      lx += L ? 46 : 58;
+      ctx.fillStyle = rgb(c.pre, 0.92); ctx.fillText(L ? '↓ 獎項' : '↓ AWARDS', lx, 14);
+
+      if (outEl && hot < 0) {
+        outEl.textContent = events.length + (L ? ' 個事件 · ' : ' events · ') + y0 + '–' + y1;
+      }
     }
+
+    /* the ticks answer for themselves */
+    function hit(mx, my) {
+      var best = -1, bd = 14;
+      for (var i = 0; i < place.length; i++) {
+        if (place[i] == null) continue;
+        var d = Math.abs(mx - place[i]);
+        if (d < bd) { bd = d; best = i; }
+      }
+      return best;
+    }
+    cv.addEventListener('pointermove', function (ev) {
+      var r = cv.getBoundingClientRect();
+      var i = hit(ev.clientX - r.left, ev.clientY - r.top);
+      if (i === hot) return;
+      hot = i;
+      if (outEl) {
+        outEl.textContent = i >= 0
+          ? events[i].year + ' · ' + PE.t(events[i].label)
+          : events.length + (PE.lang() === 'zh' ? ' 個事件 · ' : ' events · ') + y0 + '–' + y1;
+      }
+      frame(0);
+    });
+    cv.addEventListener('pointerleave', function () { hot = -1; frame(0); });
+    cv.style.cursor = 'crosshair';
+
     size();
     mount(fig, 'career', frame, function () { size(); scan = 0; });
   }

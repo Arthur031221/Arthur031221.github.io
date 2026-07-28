@@ -153,21 +153,11 @@
     S.pulse = Math.min(1.6, S.pulse + (amp || 1));
   };
 
-  /* ── 10. film grain (generated once, tiled) ─────────────── */
-  (function grain() {
-    var el = document.getElementById('grain');
-    if (!el) return;
-    var n = 140, c = document.createElement('canvas');
-    c.width = c.height = n;
-    var g = c.getContext('2d'), img = g.createImageData(n, n), d = img.data, rnd = PE.rng(0x51ce);
-    for (var i = 0; i < d.length; i += 4) {
-      var v = 128 + (rnd() - 0.5) * 66;
-      d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255;
-    }
-    g.putImageData(img, 0, 0);
-    el.style.backgroundImage = 'url(' + c.toDataURL() + ')';
-    el.style.backgroundSize = n + 'px ' + n + 'px';
-  })();
+  /* ── 10. paper ────────────────────────────────────────────────
+     There is no grain layer. A full-viewport element in a blend mode
+     is an expensive composited layer on exactly the devices that can
+     least afford one, and the sheet's tooth belongs to the sheet: the
+     substrate shader carries it, ink and empty paper alike. */
 
   /* ── 11. boot: baseline acquisition ─────────────────────── */
   function boot() {
@@ -492,46 +482,10 @@
     });
   }
 
-  /* ── 18. electrode cursor ───────────────────────────────── */
-  function cursor() {
-    if (!PE.fine || PE.reduced) return;
-    var el = document.getElementById('cursor');
-    if (!el) return;
-    root.classList.add('electrode');
-    var tip = el.querySelector('.tip'), rf = el.querySelector('.rf'), rd = el.querySelector('.rd');
-    var x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y;
-    addEventListener('pointermove', function (e) { x = e.clientX; y = e.clientY; }, { passive: true });
-    addEventListener('pointerdown', function () { PE.stimulate(0.9); el.classList.add('down'); });
-    addEventListener('pointerup', function () { el.classList.remove('down'); });
-    var HOT = 'a,button,[role="button"],input,summary,.plate,.tick,.unit,label';
-    document.addEventListener('pointerover', function (e) {
-      var t = e.target.closest && e.target.closest(HOT);
-      el.classList.toggle('hot', !!t);
-      if (t && rd) {
-        var label = t.getAttribute('data-rf');
-        if (!label) {
-          if (t.matches('a')) label = PE.t({ en: 'follow', zh: '前往' });
-          else if (t.matches('.plate')) label = PE.t({ en: 'expand', zh: '放大' });
-          else if (t.matches('button,[role="button"],.tick')) label = PE.t({ en: 'act', zh: '執行' });
-          else label = '';
-        }
-        rd.textContent = label;
-      }
-    });
-    PE.loop.add('cursor', function (dt) {
-      var k = Math.min(1, dt / 60);
-      rx += (x - rx) * (0.24 * k * 4);
-      ry += (y - ry) * (0.24 * k * 4);
-      tip.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
-      rf.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
-      if (rd) rd.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
-    });
-    /* keep the CSS transforms centred */
-    tip.style.left = rf.style.left = '0'; tip.style.top = rf.style.top = '0';
-    tip.style.marginLeft = '-2.5px'; tip.style.marginTop = '-2.5px';
-    rf.style.marginLeft = '-17px'; rf.style.marginTop = '-17px';
-    if (rd) { rd.style.left = '0'; rd.style.top = '0'; }
-  }
+  /* ── 18. cursor ───────────────────────────────────────────────
+     Removed. Hiding the system cursor and drawing a follower that
+     lags behind it is what makes a page feel unsteady; the reader's
+     own pointer is more precise than anything drawn for them. */
 
   /* ── 19. receptive field on units ───────────────────────── */
   function receptive() {
@@ -748,7 +702,7 @@
 
   /* ── 25. go ─────────────────────────────────────────────── */
   function init() {
-    chrome(); observe(); depthAxis(); rail(); hud(); cursor(); receptive();
+    chrome(); observe(); depthAxis(); rail(); hud(); receptive();
     consolePanel(); lightbox(); plates(); filters(); boot();
     /* the first screen resolves without waiting for the observer */
     var first = document.querySelector('.hero, .masthead');

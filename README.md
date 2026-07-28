@@ -14,19 +14,28 @@ The cortex does not transmit the signal. It transmits the residual between
 what it predicted and what arrived. The site is built on that rule, because
 it is also what the research is about.
 
-- The **substrate** behind every page is a cortical counterflow field.
-  Prediction descends from L1, evidence ascends from L6, and what is drawn is
-  the surface where the two exactly cancel — a phase map of the residual,
-  quantised through an 8×8 Bayer matrix at sensor resolution.
-- The two colour registers are **two imaging modalities, not an inversion**:
-  `in vivo` is a live two-photon recording and it moves; `fixed` is a stained
-  histology plate and it does not. The toggle runs a real temperature schedule
+- The **substrate** behind every page is a cortical counterflow field painted
+  as an ink wash. Prediction descends from L1, evidence ascends from L6, and
+  the ink is their residual — which gives the composition its rule, 留白:
+  where prediction and evidence cancel, nothing is painted. The empty paper is
+  the part of the world the model already predicted. The wash follows how ink
+  behaves on 宣紙 — 邊緣濃聚, 五墨, 飛白, 水痕, 破墨 — and the sheet carries its
+  own tooth rather than a grain layer laid over it.
+- The two registers are **two sheets, not an inversion**: `in vivo` inverts the
+  paper the way a rubbing (拓本) inverts carved stone — the sheet is night and
+  the ink is luminous, and it moves. `fixed` is ink on dry 宣紙 and it does not,
+  because a dry sheet has stopped. The toggle runs a real temperature schedule
   on the hero sampler — quenching one way, heating the other.
-- **Chroma is semantic.** Magenta is top-down prediction, teal is bottom-up
-  evidence, violet is inhibition. Frames, rules and labels stay achromatic.
+- **Chroma is semantic.** 胭脂 carmine is top-down prediction, 花青 indigo is
+  bottom-up evidence, 石青 violet is inhibition. Frames, rules and labels stay
+  achromatic. 朱砂 vermilion is used once, for the seal.
 - Scroll depth is **cortical depth**: the left axis names the lamina you are
   in, and the right rail is a spike raster that records each section as it
   fires, not a scrollbar.
+- **Nothing appears more than twice.** Every fact belongs to one page, which
+  writes it out in full; elsewhere it may appear once more only in short. The
+  record plots the papers without naming them; about counts the honours and
+  links to the record that owns them.
 
 ## Routes
 
@@ -37,8 +46,8 @@ it is also what the research is about.
 | `publications.html` | Five entries with status stated as it actually stands, and a filter |
 | `field.html` | Two trips, a contact sheet, a lightbox |
 | `field-nsf.html`, `field-igem.html` | The two long-form essays, in full, in both languages |
-| `record.html` | The public record, and the whole of it drawn as a spike train |
-| `about.html` | Bio, facts, honours, contact |
+| `record.html` | Every honour with its citation, the field work, and all of it on one axis |
+| `about.html` | Biography, facts, contact |
 | `404.html` | An unresolved residual, and a way back |
 
 ## Build
@@ -59,6 +68,7 @@ string. `src/shell.html` is the page shell; `src/build.py` composes the routes.
 - Every user-visible string exists in English and Traditional Chinese, and both
   are in the HTML. Parity is checked at build review time.
 - One animation owner site-wide (`PE.loop`); nothing starts a second rAF chain.
+- No custom cursor and no blended full-screen overlay layer.
 - Everything pauses when the tab is hidden or the element is off-screen.
 - `prefers-reduced-motion` gets a designed static state, never a blank hole.
 - Content settles by scroll sweep with a hard 4-second fallback, so no effect
