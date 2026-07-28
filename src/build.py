@@ -735,6 +735,36 @@ def jsonld(pid):
             + json.dumps(data, ensure_ascii=False) + "</script>")
 
 
+def asset_hash(rel):
+    """Short content hash, so a changed asset gets a changed URL.
+
+    GitHub Pages serves everything with max-age=600 and no versioning;
+    without this, every visitor who has been here before sees up to ten
+    minutes of the previous design stitched onto the new HTML."""
+    import hashlib
+    try:
+        with open(os.path.join(ROOT, rel), "rb") as fh:
+            return hashlib.md5(fh.read()).hexdigest()[:8]
+    except OSError:
+        return "0"
+
+
+VERSIONED = [
+    "assets/site.css",
+    "assets/runtime.js",
+    "assets/substrate.js",
+    "assets/instruments.js",
+    "assets/fonts/MartianMono-normal-100-800-latin.woff2",
+    "assets/fonts/InstrumentSans-normal-400-700-latin.woff2",
+]
+
+
+def stamp(page):
+    for rel in VERSIONED:
+        page = page.replace(f'"{rel}"', f'"{rel}?v={asset_hash(rel)}"')
+    return page
+
+
 def build(live):
     written = []
     for pid in list(RENDER):
@@ -747,6 +777,7 @@ def build(live):
         page = page.replace("{{depth}}", depth_html())
         page = page.replace("{{jsonld}}", jsonld(pid))
         page = page.replace("{{main}}", RENDER[pid]())
+        page = stamp(page)
         name = (pid if live else "_" + pid) + ".html"
         with open(os.path.join(ROOT, name), "w", encoding="utf-8") as fh:
             fh.write(page)
