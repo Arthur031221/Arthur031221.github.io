@@ -151,6 +151,7 @@
   /* stimulate: inject a current pulse into the substrate */
   PE.stimulate = function (amp) {
     S.pulse = Math.min(1.6, S.pulse + (amp || 1));
+    PE.emit('pulse', amp || 1);
   };
 
   /* ── 10. paper ────────────────────────────────────────────────
