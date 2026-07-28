@@ -3,7 +3,7 @@
 Written so another agent, or a future session, can extend this site without
 re-deriving the decisions. Read this before touching anything.
 
-**Status (2026-07-29):** this document is the current contract. It replaces the
+**Status (2026-07-29, ink revision):** this document is the current contract. It replaces the
 V2/V3 "probabilistic instrumentarium" handoff; that design and its external
 `CV` build workspace are gone. Everything needed to build the site is now in
 this repository.
@@ -19,9 +19,9 @@ this repository.
 | `src/build.py` | Composes nine routes. One renderer function per page in `RENDER`. |
 | `assets/site.css` | The whole design system, in 30 numbered sections. |
 | `assets/runtime.js` | Loop broker, event bus, shared state, seeded RNG, modality and language, settling, rail, depth axis, HUD, console, lightbox, filters. |
-| `assets/substrate.js` | The 水墨 wash of the counterflow field. WebGL, with a Canvas2D wash that follows the same rules. |
+| `assets/substrate.js` | The 水墨 fluid: two-field ping-pong simulation in WebGL, with a Canvas2D wash that follows the same rules without the fluid. |
 | `assets/instruments.js` | The hero and the five figures. |
-| `assets/fonts/` | Martian Mono and Instrument Sans, self-hosted, Latin subsets only. |
+| `assets/fonts/` | Spectral, Martian Mono and Instrument Sans, self-hosted, Latin subsets only. |
 | `img/` | Photographs. `X.webp` is the full frame, `X-400/800/1200.webp` are derivatives for the srcset, `X.thumb.webp` is a 24 px placeholder — **not** a source. |
 
 Root `*.html` is generated. Do not hand-edit it.
@@ -101,59 +101,94 @@ modality toggle is a real temperature schedule.
 
 ---
 
-## 4. The substrate — 水墨
+## 4. The substrate — 水墨, simulated
 
-`substrate.js` advects two FBM fields through six laminae in opposite
-directions and paints their residual as an ink wash.
+`substrate.js` is not a procedural picture of an ink wash. It is a wash: a
+two-field fluid ping-ponged between two framebuffers, where every mark got
+there by the route ink takes on paper.
 
-**The composition rule is 留白.** Where prediction and evidence cancel,
-nothing is painted. The empty paper is not restraint and it is not styling —
-it is the part of the world the model already predicted. Ink appears only
-where the prediction failed. This is why the threshold is high
-(`smoothstep(0.46, 1.12, |resid|)`) and why most of the sheet is bare. If you
-lower that threshold you do not get "more atmosphere", you get a claim that
-the model predicts nothing.
+State, packed into one RGBA texture at ~340 px wide (the wash is smooth; it
+does not need the screen's resolution):
 
-The wash follows how ink actually behaves on 宣紙, and each of these is a
-named line in the shader:
-
-| | what it does |
+| channel | is |
 |---|---|
-| 邊緣濃聚 | pigment migrates outward as the water leaves, so a wash is darker at its rim than at its centre |
-| 五墨 | value resolves into discrete tones rather than a smooth ramp |
-| 飛白 | a starved brush breaks into streaks — applied to thin strokes only, since a loaded brush lays solid ink |
-| 宣紙纖維 | ink feathers along the fibre, not across it, in a slowly turning stroke space |
-| 水痕 | damp meeting wet leaves a hard-edged backrun |
-| 破墨 | dark ink dropped into a wet wash bleeds at the join |
-| tooth | the sheet is fibrous everywhere, including where no ink landed |
+| R | suspended pigment, still in the water |
+| G | water |
+| B | pigment that has settled — what you actually see |
+| A | how much the sheet can still take (積墨: a second wash over a first lays down differently and leaves its overlap edge) |
 
-`in vivo` inverts the sheet — the paper is night and the ink is luminous,
-which is what a rubbing (拓本) does to a carved stone. `fixed` is ink on
-paper the ordinary way round, and its clock is stopped because a dry sheet
-does not move.
+**Every ink behaviour here is a consequence, not an effect.** Do not "add" any
+of them as a separate term; if one looks wrong, the physics above it is wrong.
 
-There is **no grain overlay layer**. A full-viewport element in a blend mode
-is an expensive composited layer on exactly the devices that can least afford
-one, and the tooth belongs to the sheet. Do not add one back.
+- **暈染** — water diffuses, faster along the paper fibre than across it
+  (`fibre()` gives per-texel anisotropy), and drags pigment with it.
+- **邊緣濃聚 / pooled terminus** — evaporation is fastest where the wet patch
+  ends, so the flow velocity `-∇water` runs outward and strands pigment at the
+  rim. The dark edge is emergent. There is no code that draws a ring.
+- **水痕** — fresh water re-suspends pigment that had already dried and carries
+  it out to a hard cauliflower boundary.
+- **五墨** — the settled value is read back in discrete tones, 焦 濃 重 淡 清.
+- **飛白** — applied to thin strokes only. A loaded brush lays solid ink; a
+  starved one breaks into streaks along its travel.
+
+**The composition rule is 留白.** Ink enters from exactly two places: a drop
+(`PE.drop(x, y, r, amount)`, also fired by a click, by `S`, and on an ambient
+timer into the margins), and the residual — the sheet gets wet where
+prediction and evidence fail to cancel. The empty paper is not restraint. It
+is the part of the world the model already predicted.
+
+Format: half-float where the driver will filter it, `UNSIGNED_BYTE` otherwise.
+Ink tolerates 8 bits; the diffusion just quantises harder. The framebuffer is
+probed for completeness before use, and the whole thing falls back to a
+Canvas2D wash that follows the same rules without the fluid.
+
+Cost control, all of it load-bearing on phones:
+
+- the residual source is the expensive half of a step and sits behind
+  `if (uInject > 0.03)` — a coherent branch on a uniform, so it is skipped
+  outright while the reader is inside a block of copy;
+- `fbm` is three octaves. The sign of the residual is decided by its low
+  frequencies and five octaves buys detail nobody sees;
+- one simulation step per frame after the first ~60 frames, which run two.
 
 Two rules keep it readable, and both are load-bearing:
 
-- `colm` damps amplitude to 17 % across the whole width the copy occupies —
-  not a narrow strip at the centre. A scroll keeps its painting in the
-  margins.
+- `colm` damps the wash to 13 % across the width the copy occupies. A scroll
+  keeps its painting in the margins.
 - `PE.targetIntensity` drops to .26 whenever a `.reading` or `.prose` block is
-  centred in the viewport.
+  centred, which also switches the source term off entirely.
 
-If you raise the gain, raise it in the margins, never in the column.
+There is **no grain overlay layer**. A full-viewport element in a blend mode is
+an expensive composited layer on exactly the devices that can least afford one.
+The tooth, the 斑點 foxing and the 毛邊 deckle all belong to the sheet and are
+drawn in the render pass.
+
+## 4a. Typography
+
+Two families, and the split is the whole idea: **the painting is old and the
+instrument is not.**
+
+- `--f-display` / `--f-serif` — Spectral for Latin, 明體 for Chinese
+  (`Noto Serif TC` → `Source Han Serif TC` → `Songti TC` → `PMingLiU`). All
+  headings, the hero, and the essays.
+- `--f-mono` — Martian Mono. Every label, readout, chip, axis and piece of
+  chrome. Nothing that belongs to the instrument is ever set in the book face.
+- `--f-body` — Instrument Sans, for UI prose that is neither.
+
+Self-hosted, Latin subsets only. Do not add a CJK webfont: the full 明體 is
+several megabytes and every target platform already ships one.
 
 ## 5. The ten structural departures
 
 Each of these replaces a convention rather than decorating it. Removing one is
 a design decision, not a cleanup.
 
-1. Cortical counterflow substrate — the residual painted as an ink wash.
+1. A simulated 水墨 substrate — the residual is ink, and 留白 is what the
+   model got right.
 2. Prediction-error typography — display type only, resolved on an error
    schedule, never body copy.
+   The front page carries no instrument at all: the name is the hero, and
+   nothing is drawn in front of it.
 3. Cortical depth axis (left) — scroll position reads as L1…L6.
 4. Raster-plot rail (right) — replaces the scrollbar; each fired section leaves
    a spike.
@@ -176,7 +211,7 @@ else it may appear once more, in short.
 
 | page | owns | may reference |
 |---|---|---|
-| `index` | the hero and the pitch | thread first sentences, three papers without their citations, two honours, the trips as dates and places |
+| `index` | the name, and the pitch | thread first sentences, three papers without their citations, two honours, the trips as dates and places |
 | `research` | the four threads in full, and the instruments | — |
 | `publications` | every paper with its authors, venue, status and citation | — |
 | `field` | the trip cards and every photograph | — |

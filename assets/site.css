@@ -26,9 +26,21 @@
 @font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/InstrumentSans-normal-400-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Instrument Sans';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/InstrumentSans-italic-400-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
+@font-face{font-family:'Spectral';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/Spectral-normal-300-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Spectral';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/Spectral-normal-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Spectral';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/Spectral-normal-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Spectral';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/Spectral-italic-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Spectral';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/Spectral-normal-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Spectral';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/Spectral-normal-800-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Spectral';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/Spectral-normal-800-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
 /* ─── 1. tokens ────────────────────────────────────────────── */
 :root{
-  --f-display:'Martian Mono','Noto Sans TC','PingFang TC','Microsoft JhengHei',ui-monospace,monospace;
+  /* headings and long-form reading are set in a book face — Latin in
+     Spectral, Chinese in 明體. Everything that belongs to the instrument
+     (labels, data, chrome) stays in the monospace. */
+  --f-display:'Spectral','Noto Serif TC','Source Han Serif TC','Songti TC','PMingLiU',Georgia,serif;
+  --f-serif:var(--f-display);
   --f-body:'Instrument Sans','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
   --f-mono:'Martian Mono',ui-monospace,'SF Mono',Menlo,monospace;
 
@@ -62,7 +74,8 @@
   --void:#05070d; --bg1:#0a0e18; --bg2:#131a2b; --bg3:#1b2338;
   --ink:#e8ebf2; --ink-dim:#a6b0c6; --muted:#6f7c95;
   --sig:#2ff0bd; --pre:#ff4d9d; --inh:#8b6cff; --hot:#f4fffb;
-  --ink-wash:#3d4c70;      /* the wash reads as a rubbing: light on dark */
+  --ink-wash:#3d4c70;
+  --mount:#02040a;      /* the wash reads as a rubbing: light on dark */
   --seal:#cf3b30;          /* 朱砂 — the one colour that encodes nothing */
   --seal-ink:#0d0a09;
   --line:rgba(150,168,204,.15);
@@ -86,13 +99,14 @@
 /* ── light: FIXED SECTION — stained histology plate ── */
 :root[data-mode="fixed"]{
   color-scheme:light;
-  --void:#ece7dc; --bg1:#f5f2e9; --bg2:#ded7c8; --bg3:#cdc4b2;
+  --void:#ebe4d5; --bg1:#f4f0e5; --bg2:#dcd4c2; --bg3:#cbc1ac;
   --ink:#171a20; --ink-dim:#3c4048; --muted:#5c6169;
   --sig:#1e5f77;           /* 花青 */
   --pre:#9a2f42;           /* 胭脂 */
   --inh:#4f3a86;           /* 石青 */
   --hot:#0d0f13;
   --ink-wash:#1a1d24;      /* 墨 */
+  --mount:#cbbfa6;         /* the silk the sheet is mounted on */
   --seal:#b8352b;
   --seal-ink:#f7f2e6;
   --line:rgba(40,36,28,.22);
@@ -159,7 +173,8 @@ html{scrollbar-width:none}
 
 
 /* ─── 4. the rig: frame + fiducials ────────────────────────── */
-.rig{position:fixed;inset:var(--frame);z-index:40;pointer-events:none;border:1px solid var(--line)}
+.rig{position:fixed;inset:var(--frame);z-index:40;pointer-events:none;border:1px solid var(--line-2);
+  box-shadow:inset 0 0 0 3px transparent,inset 0 0 0 4px var(--line)}
 .rig i{position:absolute;width:15px;height:15px;border:0 solid var(--line-3)}
 .rig i:nth-child(1){top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
 .rig i:nth-child(2){top:-1px;right:-1px;border-top-width:2px;border-right-width:2px}
@@ -261,6 +276,9 @@ html.drawer-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45
 }
 
 /* ── cortical depth axis (left, sticky) ── */
+.depth,.rail .head::after,.rail .tick .lb{
+  text-shadow:0 0 7px var(--void),0 0 3px var(--void),0 0 1px var(--void);
+}
 .depth{
   grid-column:1;position:sticky;top:calc(var(--bar-h) + var(--frame) + var(--s5));
   height:calc(100svh - var(--bar-h) - var(--hud-h) - var(--s8));
@@ -276,7 +294,7 @@ html.drawer-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45
 .depth .lay .t{grid-area:1/1;width:22px;height:1px;background:var(--line-2);
   transition:background var(--d2) var(--ease),transform var(--d2) var(--ease)}
 .depth .lay b{grid-area:1/2;font-weight:600;letter-spacing:.06em}
-.depth .lay .nm{grid-area:2/2;font-size:9px;letter-spacing:.05em;opacity:.62;overflow:hidden;text-overflow:ellipsis}
+.depth .lay .nm{grid-area:2/2;font-size:9px;letter-spacing:.05em;opacity:.78;overflow:hidden;text-overflow:ellipsis}
 .depth .lay.on{color:var(--sig)}
 .depth .lay.on .t{background:var(--sig);transform:scaleX(1.5);transform-origin:left;box-shadow:var(--glow-sig)}
 .depth .lay.on .nm{opacity:1}
@@ -326,10 +344,10 @@ html.drawer-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45
   background:var(--sig-wash);flex:none;
 }
 .sec-h h2{
-  font-family:var(--f-display);font-weight:700;font-size:var(--t-lg);
-  letter-spacing:-.01em;text-transform:uppercase;line-height:1.25;
+  font-family:var(--f-display);font-weight:600;font-size:var(--t-xl);
+  letter-spacing:.008em;line-height:1.2;
 }
-html[lang="zh-Hant"] .sec-h h2{letter-spacing:.12em;font-weight:600}
+html[lang="zh-Hant"] .sec-h h2{letter-spacing:.06em;font-weight:600}
 .sec-h .note{margin-left:auto;font-family:var(--f-mono);font-size:var(--t-2xs);
   letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 
@@ -371,9 +389,9 @@ html[lang="zh-Hant"] .sec-h h2{letter-spacing:.12em;font-weight:600}
   text-transform:uppercase;display:flex;gap:var(--s3);align-items:center;margin-bottom:var(--s4);
 }
 .unit .idx .n{color:var(--sig)}
-.unit h3{font-family:var(--f-display);font-size:var(--t-md);font-weight:600;
-  line-height:1.4;letter-spacing:-.01em;margin-bottom:var(--s3)}
-html[lang="zh-Hant"] .unit h3{letter-spacing:.04em}
+.unit h3{font-family:var(--f-display);font-size:var(--t-lg);font-weight:600;
+  line-height:1.34;letter-spacing:0;margin-bottom:var(--s3)}
+html[lang="zh-Hant"] .unit h3{letter-spacing:.03em;font-size:var(--t-md)}
 .unit p{color:var(--ink-dim);font-size:var(--t-sm);line-height:1.75}
 .unit .more{
   display:inline-flex;align-items:center;gap:7px;margin-top:var(--s4);
@@ -433,24 +451,18 @@ html[lang="zh-Hant"] .unit h3{letter-spacing:.04em}
   color:var(--muted);margin-bottom:var(--s5)}
 .hero .band .live{color:var(--sig)}
 
-.hero-stage{position:relative;margin:0 calc(-1 * var(--s3))}
-.hero-stage canvas{width:100%;height:clamp(220px,34svh,340px);display:block}
+/* the hero is the name. Nothing is drawn in front of it — the sheet
+   behind the page is the only image the front page needs. */
+.hero .sub{margin-top:var(--s4);font-family:var(--f-mono);font-size:var(--t-xs);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .hero h1{
   font-family:var(--f-display);font-size:var(--t-display);font-weight:800;
-  line-height:.92;letter-spacing:-.045em;text-transform:uppercase;
-  margin:var(--s5) 0 var(--s4);
+  line-height:1.0;letter-spacing:-.012em;
+  margin:var(--s4) 0 var(--s5);
 }
-html[lang="zh-Hant"] .hero h1{letter-spacing:.02em;font-weight:700;line-height:1.05}
-.hero .lede{max-width:52ch;color:var(--ink-dim);font-size:var(--t-md);line-height:1.6}
+html[lang="zh-Hant"] .hero h1{letter-spacing:.06em;font-weight:600;line-height:1.14}
+.hero .lede{max-width:46ch;color:var(--ink-dim);font-family:var(--f-serif);font-size:1.375rem;line-height:1.55}
 .hero .lede em{color:var(--ink);font-style:normal;border-bottom:1px solid var(--sig-line)}
-.hero .meters{
-  display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);margin-top:var(--s6);
-  padding-top:var(--s4);border-top:1px solid var(--line);
-  font-family:var(--f-mono);font-size:var(--t-2xs);letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);
-}
-.hero .meters b{color:var(--sig);font-weight:600;font-variant-numeric:tabular-nums}
-.hero .meters .m{display:flex;align-items:center;gap:7px}
 
 /* masthead for interior pages */
 .masthead{padding:var(--s5) 0 var(--s6)}
@@ -459,10 +471,10 @@ html[lang="zh-Hant"] .hero h1{letter-spacing:.02em;font-weight:700;line-height:1
   text-transform:uppercase;color:var(--sig);margin-bottom:var(--s4)}
 .masthead h1{
   font-family:var(--f-display);font-size:clamp(2.25rem,5.4vw,4.25rem);font-weight:800;
-  line-height:1;letter-spacing:-.035em;text-transform:uppercase;margin-bottom:var(--s5);
+  line-height:1.05;letter-spacing:-.012em;margin-bottom:var(--s5);
 }
-html[lang="zh-Hant"] .masthead h1{letter-spacing:.02em;font-weight:700;line-height:1.15}
-.masthead .lede{max-width:58ch;color:var(--ink-dim);font-size:var(--t-md);line-height:1.65}
+html[lang="zh-Hant"] .masthead h1{letter-spacing:.05em;font-weight:600;line-height:1.2}
+.masthead .lede{max-width:56ch;color:var(--ink-dim);font-family:var(--f-serif);font-size:1.25rem;line-height:1.66}
 
 /* ─── 14. ledger (publications, record) ────────────────────── */
 .ledger{border-top:1px solid var(--line-2)}
@@ -477,7 +489,7 @@ html[lang="zh-Hant"] .masthead h1{letter-spacing:.02em;font-weight:700;line-heig
 .row:hover::before{transform:scaleY(1)}
 .row .yr{font-family:var(--f-mono);font-size:var(--t-sm);color:var(--muted);
   letter-spacing:.08em;font-variant-numeric:tabular-nums;padding-top:2px}
-.row .bd h3{font-family:var(--f-body);font-size:var(--t-base);font-weight:600;
+.row .bd h3{font-family:var(--f-serif);font-size:1.125rem;font-weight:600;
   line-height:1.45;margin-bottom:7px;color:var(--ink)}
 .row .bd .who{font-size:var(--t-sm);color:var(--ink-dim);margin-bottom:5px}
 .row .bd .where{font-family:var(--f-mono);font-size:var(--t-2xs);letter-spacing:.1em;
@@ -508,12 +520,13 @@ a.row:hover::after{opacity:1;transform:none}
 .row[hidden]{display:none}
 
 /* ─── 15. prose ────────────────────────────────────────────── */
-.prose{max-width:var(--measure)}
+.prose{max-width:var(--measure);font-family:var(--f-serif);font-size:1.1875rem;line-height:1.78}
 #essay .prose{margin-inline:auto}
+html[lang="zh-Hant"] .prose{line-height:1.95;font-size:1.125rem}
 .prose p{margin:var(--s5) 0;color:var(--ink-dim)}
-.prose p.lead{color:var(--ink);font-size:var(--t-md);line-height:1.6}
-.prose h3{font-family:var(--f-display);font-size:var(--t-md);font-weight:700;
-  margin:var(--s7) 0 var(--s4);letter-spacing:-.01em}
+.prose p.lead{color:var(--ink);font-size:1.3125rem;line-height:1.62}
+.prose h3{font-family:var(--f-display);font-size:var(--t-lg);font-weight:600;
+  margin:var(--s7) 0 var(--s4);letter-spacing:0}
 .prose a{border-bottom:1px solid var(--sig-line)}
 .prose a:hover{background:var(--sig-wash)}
 .prose blockquote{border-left:2px solid var(--pre);padding-left:var(--s5);
@@ -677,8 +690,8 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border:0;background:v
   padding-top:var(--s5);border-top:1px solid var(--line)}
 .pager a{display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);
   font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.pager a b{font-family:var(--f-display);font-size:var(--t-md);font-weight:600;
-  letter-spacing:-.01em;color:var(--ink);text-transform:none;transition:color var(--d2) var(--ease)}
+.pager a b{font-family:var(--f-display);font-size:var(--t-lg);font-weight:600;
+  letter-spacing:0;color:var(--ink);text-transform:none;transition:color var(--d2) var(--ease)}
 .pager a:hover b{color:var(--sig)}
 .pager a.nx{text-align:right;margin-left:auto}
 
@@ -693,8 +706,8 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border:0;background:v
   display:none;flex-direction:column;justify-content:center;padding:var(--s7) var(--s5);gap:var(--s1)}
 html.drawer-open #drawer{display:flex}
 #drawer a{display:flex;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;
-  border-bottom:1px solid var(--line);font-family:var(--f-display);font-size:var(--t-lg);
-  font-weight:700;text-transform:uppercase;color:var(--ink);letter-spacing:-.02em}
+  border-bottom:1px solid var(--line);font-family:var(--f-display);font-size:var(--t-xl);
+  font-weight:600;color:var(--ink);letter-spacing:0}
 #drawer a .ch{font-family:var(--f-mono);font-size:var(--t-2xs);color:var(--muted);letter-spacing:.14em}
 #drawer a[aria-current=page]{color:var(--sig)}
 

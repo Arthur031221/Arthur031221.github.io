@@ -184,16 +184,9 @@ def p_index():
     <span>·</span><span>{bi(M["location"])}</span>
     <span>·</span><span><span class="en">SINGLE UNIT · PE//1</span><span class="zh">單一單元 · PE//1</span></span>
   </div>
-  <div class="hero-stage err"><canvas id="hero" aria-label="Live retrieval of the name from a corrupted lattice, then release into an eight-mode sampler"></canvas></div>
   <h1 class="err"><span class="en" data-pe>{e(M["name"]["en"])}</span><span class="zh" data-pe>{e(M["name"]["zh"])}</span></h1>
   <p class="lede err">{bi(M["tagline"])}</p>
-  <div class="meters err">
-    <span class="m"><span class="en">RETRIEVAL</span><span class="zh">回想</span> <b data-h="ret">—</b></span>
-    <span class="m"><span class="en">OVERLAP m</span><span class="zh">重疊度 m</span> <b data-h="m">—</b></span>
-    <span class="m"><span class="en">MODES</span><span class="zh">模態</span> <b data-h="modes">8</b></span>
-    <span class="m"><span class="en">TEMPERATURE T</span><span class="zh">溫度 T</span> <b data-h="temp">—</b></span>
-    <span class="m"><span class="en">STEP</span><span class="zh">步數</span> <b data-h="step">—</b></span>
-  </div>
+  <p class="sub err">{bi(M["role"])} · {bi(C["about"]["facts"][0]["v"])}</p>
   <div class="acts err">
     <a class="act p" href="research.html"><span class="en">Read the research</span><span class="zh">閱讀研究</span></a>
     <a class="act" href="Chi-Wei_Lee_CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>

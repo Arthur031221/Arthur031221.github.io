@@ -14,13 +14,19 @@ The cortex does not transmit the signal. It transmits the residual between
 what it predicted and what arrived. The site is built on that rule, because
 it is also what the research is about.
 
-- The **substrate** behind every page is a cortical counterflow field painted
-  as an ink wash. Prediction descends from L1, evidence ascends from L6, and
-  the ink is their residual — which gives the composition its rule, 留白:
-  where prediction and evidence cancel, nothing is painted. The empty paper is
-  the part of the world the model already predicted. The wash follows how ink
-  behaves on 宣紙 — 邊緣濃聚, 五墨, 飛白, 水痕, 破墨 — and the sheet carries its
-  own tooth rather than a grain layer laid over it.
+- The **substrate** behind every page is not a picture of an ink wash. It is
+  one: a two-field fluid running on the GPU, where water diffuses along the
+  paper's fibre, drags pigment with it, evaporates fastest at the rim of a wet
+  patch and strands the pigment there. The dark edge of every stroke is
+  emergent — no line of code draws a ring. Fresh water lifts what has already
+  dried and carries it out to a hard 水痕 boundary.
+- Ink enters from two places: a drop, which spreads and dries where it lands,
+  and the residual. Which gives the composition its rule, **留白** — where
+  prediction and evidence cancel, nothing is painted. The empty paper is the
+  part of the world the model already predicted.
+- **Two families of type.** Spectral and 明體 for headings and the essays,
+  Martian Mono for every label, readout and axis. The painting is old and the
+  instrument is not.
 - The two registers are **two sheets, not an inversion**: `in vivo` inverts the
   paper the way a rubbing (拓本) inverts carved stone — the sheet is night and
   the ink is luminous, and it moves. `fixed` is ink on dry 宣紙 and it does not,
@@ -41,7 +47,7 @@ it is also what the research is about.
 
 | file | what is on it |
 |---|---|
-| `index.html` | Hopfield retrieval of the name, released into an eight-mode Langevin sampler; threads, selected papers, honours, field |
+| `index.html` | The name, and nothing drawn in front of it; threads, selected papers, honours, field |
 | `research.html` | Four threads, four live instruments, and a relationship map whose edges are only the real ones |
 | `publications.html` | Five entries with status stated as it actually stands, and a filter |
 | `field.html` | Two trips, a contact sheet, a lightbox |
