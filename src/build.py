@@ -159,6 +159,17 @@ def section(sid, lam, title, body, rail=None, note=None):
             f'</div>{body}</section>')
 
 
+def opening(o):
+    """The first sentence. The index hooks; the research page argues.
+
+    Nothing on this site should be readable twice in full — a teaser
+    that reproduces its own destination is not a teaser."""
+    def cut(text, mark):
+        i = text.find(mark)
+        return text if i < 0 else text[:i + len(mark)].strip()
+    return {"en": cut(o["en"], ". "), "zh": cut(o["zh"], "。")}
+
+
 def status_class(status):
     return {"review": "p", "accepted": "s", "published": "s", "service": "i"}.get(status, "")
 
@@ -196,7 +207,7 @@ def p_index():
         units.append(f'''<article class="unit err">
   <div class="idx"><span class="n">{i+1:02d}</span>{bi(t["tag"])}</div>
   <h3>{bi(t["title"])}</h3>
-  <p>{bi(t["body"])}</p>
+  <p>{bi(opening(t["body"]))}</p>
   <a class="more" href="research.html#{e(t["id"])}"><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article>''')
     o.append(section("threads", "L2/3",
@@ -208,7 +219,7 @@ def p_index():
     # selected papers
     rows = []
     for p in C["publications"][:3]:
-        rows.append(pub_row(p))
+        rows.append(pub_row(p, note=False))
     o.append(section("papers", "L4",
                      {"en": "Selected papers", "zh": "選錄論文"},
                      f'<div class="ledger err">{"".join(rows)}</div>'
@@ -234,23 +245,23 @@ def p_index():
                      f'<span class="en">Every honour</span><span class="zh">完整獎項</span></a></div>',
                      rail="HONOURS"))
 
-    # field
+    # field — a pointer, not a second gallery. The photographs belong to
+    # `field` and to the essays; showing them a third time here would make
+    # the same two trips the loudest thing on a page that is not about them.
     lr = C["longreads"]
     trips = []
     for key, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")):
         t = lr[key]
-        hero = next((p for p in t["photos"] if p.get("role") == "hero"), t["photos"][0])
-        trips.append(f'''<a class="unit err" href="{href}" style="padding:0;display:block">
-  <div class="plate wide">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw")}<span class="iris" aria-hidden="true"></span></div>
-  <div style="padding:var(--s5)">
-    <div class="idx"><span class="n">{e(t["date"])}</span>{e(t["place"])}</div>
-    <h3>{bi(t["title"])}</h3>
-    <span class="more"><span class="en">Read it</span><span class="zh">讀下去</span></span>
-  </div>
+        trips.append(f'''<a class="row err" href="{href}">
+  <div class="yr">{e(t["date"])}</div>
+  <div class="bd"><h3>{e(t["place"])}</h3></div>
+  <div class="rt"><span class="chip i"><span class="en">READ THE ESSAY</span><span class="zh">讀長文</span></span></div>
 </a>''')
     o.append(section("field", "L5b",
                      {"en": "Two trips, told in full", "zh": "兩趟旅程，完整說完"},
-                     f'<div class="grid c2">{"".join(trips)}</div>',
+                     f'<div class="ledger">{"".join(trips)}</div>'
+                     f'<div class="acts err"><a class="act" href="field.html">'
+                     f'<span class="en">The photographs</span><span class="zh">看照片</span></a></div>',
                      rail="FIELD"))
 
     # contact
@@ -270,9 +281,9 @@ def p_index():
     return "".join(o)
 
 
-def pub_row(p):
+def pub_row(p, note=True):
+    n = (p.get("note") or {}) if note else {}
     note = ""
-    n = p.get("note") or {}
     if n.get("en") or n.get("zh"):
         note = f'<p class="note">{bi(n)}</p>'
     link = ""
@@ -438,10 +449,15 @@ def p_field():
   </div>
 </a>''')
 
+    # the two frames already enlarged as trip cards are not repeated here
+    shown = {next((ph for ph in lr[k]["photos"] if ph.get("role") == "hero"),
+                  lr[k]["photos"][0])["src"] for k in ("nsf", "igem")}
     sheet = []
     for key in ("nsf", "igem"):
-        for p in lr[key]["photos"]:
-            sheet.append(plate(p, sizes="(max-width:640px) 50vw, 200px", lightbox=True))
+        for ph in lr[key]["photos"]:
+            if ph["src"] in shown:
+                continue
+            sheet.append(plate(ph, sizes="(max-width:640px) 50vw, 200px", lightbox=True))
     sheet.append(plate(C["slider"], sizes="(max-width:640px) 50vw, 200px", lightbox=True))
 
     return f'''
@@ -455,8 +471,8 @@ def p_field():
          f'<div class="strip err">{"".join(sheet)}</div>'
          f'<p class="err" style="margin-top:var(--s4);font-family:var(--f-mono);font-size:var(--t-2xs);'
          f'letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">'
-         f'<span class="en">{len(sheet):02d} FRAMES · CLICK TO ENLARGE · ← → TO STEP</span>'
-         f'<span class="zh">{len(sheet):02d} 張 · 點擊放大 · ← → 切換</span></p>', rail="SHEET")}'''
+         f'<span class="en">{len(sheet):02d} REMAINING FRAMES · CLICK TO ENLARGE · ← → TO STEP</span>'
+         f'<span class="zh">其餘 {len(sheet):02d} 張 · 點擊放大 · ← → 切換</span></p>', rail="SHEET")}'''
 
 
 # ── pages: the two essays ───────────────────────────────────────────
@@ -500,70 +516,83 @@ def p_essay(key):
 <nav class="pager">
   <a href="field.html"><span><span class="en">← BACK</span><span class="zh">← 返回</span></span>
     <b><span class="en">Field</span><span class="zh">現場</span></b></a>
-  <a class="nx" href="{other}"><span><span class="en">THE OTHER ONE →</span><span class="zh">另一趟 →</span></span>
-    <b>{bi(other_t["title"])}</b></a>
+  <a class="nx" href="{other}"><span><span class="en">THE OTHER TRIP →</span><span class="zh">另一趟 →</span></span>
+    <b>{e(other_t["place"])}</b></a>
 </nav>'''
 
 
 # ── page: record ────────────────────────────────────────────────────
 def p_record():
-    lr = C["longreads"]
-    entries = []
-    for key, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")):
-        t = lr[key]
-        shots = "".join(plate(p, sizes="(max-width:640px) 50vw, 220px", lightbox=True) for p in t["photos"])
-        entries.append(f'''<article class="err" style="margin-bottom:var(--s8)">
-  <div class="row" style="grid-template-columns:minmax(0,1fr) auto;align-items:baseline">
-    <div class="bd">
-      <h3 style="font-family:var(--f-display);font-size:var(--t-md)">{bi(t["title"])}</h3>
-      <p class="where">{e(t["place"])} · {e(t["date"])}</p>
-    </div>
-    <div class="rt"><a class="chip s" href="{href}"><span class="en">READ →</span><span class="zh">閱讀 →</span></a></div>
-  </div>
-  <div class="strip" style="margin-top:var(--s4)">{shots}</div>
-</article>''')
+    """The complete dated record, and the only place the honours are set
+    out in full.
 
-    aw = "".join(f'''<article class="row">
+    Each page here has exactly one job. `about` says who he is, `papers`
+    lists the papers, the essays tell the trips — and this page holds the
+    record itself: every honour with its citation, the field work, and all
+    of it plotted on one axis. Nothing that is written out on another page
+    is written out again here, which is why the papers appear as ticks
+    above the axis and not as a second list."""
+    lr = C["longreads"]
+
+    events = []
+    for a in C["awards"]:
+        events.append({"year": int(a["year"]), "kind": "award", "label": a["title"]})
+    for pub in C["publications"]:
+        # the axis needs the date and the kind; the title is set on `papers`
+        # and on the front page, and this would be the third printing
+        events.append({"year": int(pub["year"]), "kind": "paper",
+                       "label": {"en": "Paper · " + pub["venue"], "zh": "論文 · " + pub["venue"]}})
+    for key in ("nsf", "igem"):
+        t = lr[key]
+        events.append({"year": int(t["date"][:4]), "kind": "trip",
+                       "label": {"en": t["place"], "zh": t["place"]}})
+    raster = ('<script type="application/json" id="fig-career">'
+              + json.dumps(events, ensure_ascii=False) + "</script>")
+
+    honours = "".join(f'''<article class="row">
   <div class="yr">{e(a["year"])}</div>
   <div class="bd"><h3>{bi(a["title"])}</h3><p class="where">{bi(a["org"])}</p><p class="note">{bi(a["note"])}</p></div>
-  <div class="rt">{'<span class="chip s"><span class="dot"></span>HERO</span>' if a.get("hero") else ''}</div>
-</article>''' for a in C["awards"])
+  <div class="rt">{'<span class="chip p"><span class="dot"></span><span class="en">HERO</span><span class="zh">代表</span></span>' if a.get("hero") else ''}</div>
+</article>''' for a in sorted(C["awards"], key=lambda x: -int(x["year"])))
 
-    # every tick on the career raster is a dated fact from the record above
-    events = [{"year": int(a["year"]), "kind": "award", "label": a["title"]} for a in C["awards"]]
-    events += [{"year": int(p["year"]), "kind": "paper", "label": {"en": p["title"], "zh": p["title"]},
-                "status": p["status"]} for p in C["publications"]]
-    raster_data = ('<script type="application/json" id="fig-career">'
-                   + json.dumps(events, ensure_ascii=False) + "</script>")
+    field = "".join(f'''<a class="row" href="{href}">
+  <div class="yr">{e(lr[k]["date"])}</div>
+  <div class="bd"><h3>{e(lr[k]["place"])}</h3><p class="where"><span class="en">Field notes</span><span class="zh">現場筆記</span></p></div>
+  <div class="rt"><span class="chip i"><span class="en">ESSAY</span><span class="zh">長文</span></span></div>
+</a>''' for k, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")))
 
-    return f'''{raster_data}
+    n_aw, n_pa, n_tr = len(C["awards"]), len(C["publications"]), 2
+
+    return f'''{raster}
 <div class="masthead">
-  <div class="band err"><span class="en">SECTION 05 · PUBLIC RECORD</span><span class="zh">第 05 節 · 公開紀錄</span></div>
+  <div class="band err"><span class="en">SECTION 05 · THE RECORD</span><span class="zh">第 05 節 · 紀錄</span></div>
   <h1 class="err"><span class="en" data-pe>RECORD</span><span class="zh" data-pe>紀錄</span></h1>
-  <p class="lede err"><span class="en">Dated entries and the photographs that go with them. Everything here is either a fact from the record or a frame from a camera.</span><span class="zh">有日期的條目，以及與之對應的照片。這裡的一切不是紀錄上的事實，就是相機拍下的一格。</span></p>
+  <p class="lede err"><span class="en">Every honour with its citation, the field work, and all of it on one axis. The papers are plotted here but written out on <a href="publications.html">papers</a> — nothing on this site is set out twice.</span><span class="zh">每一項獎項連同事由、現場工作，以及把這一切放上同一條軸。論文在這裡以刻度呈現，內容則寫在<a href="publications.html">論文</a>頁——這個網站不把同一件事寫兩次。</span></p>
 </div>
-{section("trips", "L5a", {"en": "Where I went", "zh": "去過哪裡"}, "".join(entries), rail="TRIPS")}
-{section("honours", "L5b", {"en": "What was awarded", "zh": "獲得什麼"}, f'<div class="ledger err">{aw}</div>', rail="HONOURS")}
-{section("raster", "L6", {"en": "The whole thing as a spike train", "zh": "把整份紀錄畫成尖峰序列"},
+{section("raster", "L4", {"en": "The whole record as a spike train", "zh": "把整份紀錄畫成尖峰序列"},
          '<div class="fig err" data-fig="career"><div class="fh">'
-         '<span class="t"><span class="en">Every dated event, on one axis</span><span class="zh">所有有日期的事件，畫在同一條軸上</span></span>'
+         '<span class="t"><span class="en">Papers above the axis, awards below, field on it</span>'
+         '<span class="zh">論文在軸上方，獎項在下方，現場在軸上</span></span>'
          '<span class="out" data-out>—</span></div><canvas></canvas>'
-         '<div class="fc"><span class="en">One tick per dated event from the record above — awards below the axis, papers above it. '
-         'Nothing is interpolated and nothing is smoothed.</span>'
-         '<span class="zh">上方紀錄中每個有日期的事件各一刻度——獎項在軸下，論文在軸上。沒有內插，也沒有平滑。</span></div></div>',
-         rail="RASTER")}'''
+         '<div class="fc"><span class="en">One tick per dated event. Nothing is interpolated and nothing is smoothed. '
+         'Four years is a short axis, and it is drawn short rather than stretched.</span>'
+         '<span class="zh">每個有日期的事件各一刻度。沒有內插、沒有平滑。四年是一條短軸，就照短的畫，不拉長。</span></div></div>',
+         rail="RASTER")}
+{section("honours", "L5a", {"en": "Honours", "zh": "獎項"},
+         f'<div class="ledger err">{honours}</div>', rail="HONOURS")}
+{section("field", "L5b", {"en": "Field work", "zh": "現場"},
+         f'<div class="ledger err">{field}</div>'
+         f'<p class="err" style="margin-top:var(--s5);font-family:var(--f-mono);font-size:var(--t-2xs);'
+         f'letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">'
+         f'<span class="en">{n_aw + n_pa + n_tr:02d} DATED EVENTS · {n_aw:02d} AWARDS · {n_pa:02d} PAPERS · {n_tr:02d} FIELD</span>'
+         f'<span class="zh">{n_aw + n_pa + n_tr:02d} 筆有日期的事件 · 獎項 {n_aw:02d} · 論文 {n_pa:02d} · 現場 {n_tr:02d}</span></p>',
+         rail="FIELD")}'''
 
 
 # ── page: about ─────────────────────────────────────────────────────
 def p_about():
     facts = "".join(f'''<article class="row" style="grid-template-columns:200px minmax(0,1fr)">
   <div class="yr">{bi(f["k"])}</div><div class="bd"><h3>{bi(f["v"])}</h3></div></article>''' for f in C["about"]["facts"])
-
-    aw = "".join(f'''<article class="row">
-  <div class="yr">{e(a["year"])}</div>
-  <div class="bd"><h3>{bi(a["title"])}</h3><p class="where">{bi(a["org"])}</p><p class="note">{bi(a["note"])}</p></div>
-  <div class="rt">{'<span class="chip s"><span class="dot"></span>HERO</span>' if a.get("hero") else ''}</div>
-</article>''' for a in C["awards"])
 
     port = C["portrait"]
     bio_en = "".join(f"<p>{e(p)}</p>" for p in C["about"]["body"]["en"]) if isinstance(C["about"]["body"]["en"], list) else f'<p>{e(C["about"]["body"]["en"])}</p>'
@@ -581,7 +610,14 @@ def p_about():
   <div class="err">{plate(port, cls="tall", sizes="(max-width:900px) 100vw, 420px", loading="eager")}</div>
 </div>''', rail="BIO")}
 {section("facts", "L4", {"en": "The short version", "zh": "簡短版本"}, f'<div class="ledger err">{facts}</div>', rail="FACTS")}
-{section("awards", "L5a", {"en": "Honours", "zh": "獎項"}, f'<div class="ledger err">{aw}</div>', rail="HONOURS")}
+{section("awards", "L5a", {"en": "Honours", "zh": "獎項"},
+         f'<p class="err" style="max-width:60ch;color:var(--ink-dim)">'
+         f'<span class="en">Five, between 2023 and 2026, each with what it was actually for. '
+         f'They are set out in full on the record, alongside the axis they sit on.</span>'
+         f'<span class="zh">五項，介於 2023 至 2026 年之間，每一項都附上實際的事由。'
+         f'完整內容寫在紀錄頁，與它們所在的那條軸放在一起。</span></p>'
+         f'<div class="acts"><a class="act p" href="record.html#honours">'
+         f'<span class="en">The honours in full</span><span class="zh">完整獎項</span></a></div>', rail="HONOURS")}
 {section("contact", "L6", {"en": "Reaching him", "zh": "聯絡方式"},
          f'''<div class="grid c3" style="background:transparent;border:0;gap:var(--s3)">
   <button class="card err" type="button" data-act="mail" data-mail="{e(M["email"])}" style="text-align:left">

@@ -62,6 +62,9 @@
   --void:#05070d; --bg1:#0a0e18; --bg2:#131a2b; --bg3:#1b2338;
   --ink:#e8ebf2; --ink-dim:#a6b0c6; --muted:#6f7c95;
   --sig:#2ff0bd; --pre:#ff4d9d; --inh:#8b6cff; --hot:#f4fffb;
+  --ink-wash:#3d4c70;      /* the wash reads as a rubbing: light on dark */
+  --seal:#cf3b30;          /* 朱砂 — the one colour that encodes nothing */
+  --seal-ink:#0d0a09;
   --line:rgba(150,168,204,.15);
   --line-2:rgba(150,168,204,.30);
   --line-3:rgba(150,168,204,.52);
@@ -77,32 +80,36 @@
   --glow-pre:0 0 16px rgba(255,77,157,.30);
   --lift:0 24px 60px -30px rgba(0,0,0,.85);
   --sel:rgba(47,240,189,.26);
-  --grain-blend:overlay; --grain-op:.17;
   --img-filter:saturate(.94) contrast(1.04) brightness(.97);
 }
 
 /* ── light: FIXED SECTION — stained histology plate ── */
 :root[data-mode="fixed"]{
   color-scheme:light;
-  --void:#e7eaf1; --bg1:#f8f9fc; --bg2:#dce1eb; --bg3:#cfd6e4;
-  --ink:#12141c; --ink-dim:#383d4b; --muted:#5f6672;
-  --sig:#0a6b73; --pre:#a3234f; --inh:#55338f; --hot:#0b0d12;
-  --line:rgba(30,36,54,.20);
-  --line-2:rgba(30,36,54,.36);
-  --line-3:rgba(30,36,54,.60);
-  --scrim:rgba(231,234,241,.86);
-  --panel:rgba(248,249,252,.78);
-  --panel-solid:#f8f9fc;
-  --sig-wash:rgba(10,107,115,.08);
-  --pre-wash:rgba(163,35,79,.08);
-  --inh-wash:rgba(85,51,143,.08);
-  --sig-line:rgba(10,107,115,.40);
-  --pre-line:rgba(163,35,79,.40);
+  --void:#ece7dc; --bg1:#f5f2e9; --bg2:#ded7c8; --bg3:#cdc4b2;
+  --ink:#171a20; --ink-dim:#3c4048; --muted:#5c6169;
+  --sig:#1e5f77;           /* 花青 */
+  --pre:#9a2f42;           /* 胭脂 */
+  --inh:#4f3a86;           /* 石青 */
+  --hot:#0d0f13;
+  --ink-wash:#1a1d24;      /* 墨 */
+  --seal:#b8352b;
+  --seal-ink:#f7f2e6;
+  --line:rgba(40,36,28,.22);
+  --line-2:rgba(40,36,28,.38);
+  --line-3:rgba(40,36,28,.62);
+  --scrim:rgba(236,231,220,.87);
+  --panel:rgba(245,242,233,.76);
+  --panel-solid:#f5f2e9;
+  --sig-wash:rgba(30,95,119,.09);
+  --pre-wash:rgba(154,47,66,.09);
+  --inh-wash:rgba(79,58,134,.09);
+  --sig-line:rgba(30,95,119,.42);
+  --pre-line:rgba(154,47,66,.42);
   --glow-sig:none; --glow-pre:none;
-  --lift:0 18px 40px -28px rgba(20,24,40,.45);
-  --sel:rgba(10,107,115,.22);
-  --grain-blend:multiply; --grain-op:.09;
-  --img-filter:saturate(.72) contrast(1.06) sepia(.06);
+  --lift:0 18px 40px -28px rgba(60,50,32,.42);
+  --sel:rgba(30,95,119,.24);
+  --img-filter:saturate(.62) contrast(1.05) sepia(.16);
 }
 
 /* ─── 2. base ──────────────────────────────────────────────── */
@@ -141,16 +148,15 @@ html[lang="zh-Hant"] body{line-height:1.9}
 html{scrollbar-width:none}
 
 /* ─── 3. z-strata (hard, never interleaved) ────────────────────
-   -3 substrate canvas · -2 vignette · -1 grain
-    0 content · 40 rig/bars · 60 overlays · 80 boot · 100 cursor  */
+   -3 substrate canvas · -2 vignette
+    0 content · 40 rig/bars · 60 overlays · 80 boot            */
 
 #substrate{position:fixed;inset:0;z-index:-3;width:100%;height:100%;pointer-events:none;
   opacity:0;transition:opacity 1.2s var(--ease)}
 #substrate.live{opacity:1}
 #vignette{position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:radial-gradient(115% 88% at 50% 40%,transparent 18%,var(--void) 92%)}
-#grain{position:fixed;inset:0;z-index:-1;pointer-events:none;
-  opacity:var(--grain-op);mix-blend-mode:var(--grain-blend)}
+  background:radial-gradient(125% 96% at 50% 42%,transparent 26%,var(--void) 98%)}
+
 
 /* ─── 4. the rig: frame + fiducials ────────────────────────── */
 .rig{position:fixed;inset:var(--frame);z-index:40;pointer-events:none;border:1px solid var(--line)}
@@ -169,14 +175,21 @@ html{scrollbar-width:none}
   font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.13em;text-transform:uppercase;
 }
 .bar .id{display:flex;align-items:center;gap:var(--s3);color:var(--ink);font-weight:600;white-space:nowrap}
-.bar .id .unit{
-  display:grid;place-items:center;width:26px;height:26px;flex:none;
-  border:1px solid var(--line-2);color:var(--sig);font-size:var(--t-2xs);letter-spacing:0;
-  position:relative;
+.bar .id .seal{
+  display:grid;place-items:center;width:27px;height:27px;flex:none;position:relative;
+  background:var(--seal);color:var(--seal-ink);
+  font-family:var(--f-body);font-size:16px;font-weight:700;line-height:1;letter-spacing:0;
+  text-indent:0;border-radius:2px;
+  /* a stamp is never evenly inked */
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset -3px 2px 5px rgba(0,0,0,.22);
+  transition:transform var(--d2) var(--ease),filter var(--d2) var(--ease);
 }
-.bar .id .unit::after{content:"";position:absolute;inset:-1px;border:1px solid var(--sig);
-  opacity:0;transition:opacity var(--d2) var(--ease)}
-.bar .id:hover .unit::after{opacity:1}
+.bar .id .seal::after{
+  content:"";position:absolute;inset:0;border-radius:2px;pointer-events:none;
+  background:radial-gradient(75% 60% at 30% 25%,transparent 40%,rgba(0,0,0,.22) 100%);
+  mix-blend-mode:multiply;
+}
+.bar .id:hover .seal{transform:rotate(-2.5deg) scale(1.04)}
 .bar .id b{font-weight:600}
 .bar .id .sep{color:var(--muted)}
 .bar .id .role{color:var(--muted);font-weight:400}
@@ -472,6 +485,12 @@ html[lang="zh-Hant"] .masthead h1{letter-spacing:.02em;font-weight:700;line-heig
 .row .bd .note{font-size:var(--t-sm);color:var(--muted);margin-top:var(--s3);
   padding-left:var(--s4);border-left:1px solid var(--line-2)}
 .row .rt{display:flex;flex-direction:column;align-items:flex-end;gap:var(--s2)}
+a.row{color:inherit}
+a.row .bd h3{transition:color var(--d2) var(--ease)}
+a.row:hover .bd h3{color:var(--sig)}
+a.row::after{content:"→";position:absolute;right:0;top:var(--s5);color:var(--muted);
+  opacity:0;transform:translateX(-6px);transition:opacity var(--d2) var(--ease),transform var(--d2) var(--ease)}
+a.row:hover::after{opacity:1;transform:none}
 @media (max-width:720px){
   .row{grid-template-columns:minmax(0,1fr);gap:var(--s3)}
   .row .rt{flex-direction:row;align-items:center}
@@ -663,23 +682,11 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border:0;background:v
 .pager a:hover b{color:var(--sig)}
 .pager a.nx{text-align:right;margin-left:auto}
 
-/* ─── 24. cursor: recording electrode ──────────────────────── */
-#cursor{position:fixed;top:0;left:0;z-index:100;pointer-events:none;display:none}
-@media (pointer:fine){
-  html.electrode #cursor{display:block}
-  html.electrode,html.electrode a,html.electrode button,html.electrode [role=button],
-  html.electrode input,html.electrode label{cursor:none}
-}
-#cursor .tip{position:absolute;width:5px;height:5px;background:var(--sig);
-  transform:translate(-50%,-50%);box-shadow:var(--glow-sig)}
-#cursor .rf{position:absolute;width:34px;height:34px;border:1px solid var(--line-3);
-  border-radius:50%;transform:translate(-50%,-50%);
-  transition:width var(--d2) var(--ease),height var(--d2) var(--ease),border-color var(--d2) var(--ease)}
-#cursor.hot .rf{width:52px;height:52px;border-color:var(--sig)}
-#cursor .rd{position:absolute;font-family:var(--f-mono);font-size:var(--t-2xs);
-  letter-spacing:.12em;text-transform:uppercase;color:var(--sig);white-space:nowrap;
-  transform:translate(22px,-26px);opacity:0;transition:opacity var(--d1) var(--ease)}
-#cursor.hot .rd{opacity:1}
+/* ─── 24. cursor ───────────────────────────────────────────────
+   The pointer is the reader's, not the site's. A lerped follower
+   ring drifts behind the real cursor and that lag is what makes a
+   page feel unsteady, so there is no custom cursor here at all. */
+#cursor{display:none}
 
 /* ─── 25. mobile drawer ────────────────────────────────────── */
 #drawer{position:fixed;inset:0;z-index:60;background:var(--scrim);backdrop-filter:blur(16px);
@@ -725,13 +732,13 @@ html.drawer-open #drawer{display:flex}
 }
 
 /* ─── 29. no-JS: everything readable, instruments dormant ──── */
-html.no-js #boot,html.no-js #cursor,html.no-js .rail,html.no-js #substrate{display:none}
+html.no-js #boot,html.no-js .rail,html.no-js #substrate{display:none}
 html.no-js .err{opacity:1;transform:none}
 html.no-js .plate .iris{display:none}
 
 /* ─── 30. print: the publication figure register ───────────── */
 @media print{
-  .bar,.hud,.rig,.rail,.depth,#substrate,#vignette,#grain,#cursor,#boot,.pager,#console{display:none!important}
+  .bar,.hud,.rig,.rail,.depth,#substrate,#vignette,#boot,.pager,#console{display:none!important}
   body{background:#fff;color:#000}
   .shell{display:block;padding:0;max-width:none}
   .plate .iris,.plate .cap{display:none}
