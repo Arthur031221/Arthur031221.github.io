@@ -128,10 +128,10 @@ def img(src, alt, cls="", sizes="100vw", loading="lazy", position=""):
             f'class="{e(cls)}">')
 
 
-def plate(photo, cls="", sizes="100vw", loading="lazy", lightbox=False):
+def plate(photo, cls="", sizes="100vw", loading="lazy", lightbox=False, group="page"):
     dim = webp_size(os.path.join(ROOT, photo["src"] + ".webp"))
     lb_dim = f' data-lb-width="{dim[0]}" data-lb-height="{dim[1]}"' if dim else ""
-    lb = (f' data-lb="{e(photo["src"])}.webp"{lb_dim} {attr_bi("cap", photo["cap"])}'
+    lb = (f' data-lb="{e(photo["src"])}.webp" data-lb-group="{e(group)}"{lb_dim} {attr_bi("cap", photo["cap"])}'
           if lightbox else "")
     slug = f'<span class="slug">{e(photo.get("slug",""))}</span>' if photo.get("slug") else ""
     lqip = f' style="background-image:url({e(photo["src"])}.thumb.webp)"'
@@ -142,6 +142,63 @@ def plate(photo, cls="", sizes="100vw", loading="lazy", lightbox=False):
             f'<figcaption class="cap">{bi(photo["cap"])}</figcaption>'
             f'<span class="iris" aria-hidden="true"></span>'
             f'</figure>')
+
+
+def medium(key):
+    """Resolve one centrally described photograph or documentary image."""
+    return C["media"][key] if isinstance(key, str) else key
+
+
+def memory_frame(key, cls="", sizes="100vw", loading="lazy", lightbox=False,
+                 group="moments", href=None, index=""):
+    """An event frame: photography carries the memory; metadata carries truth.
+
+    Natural photographs remain natural. Only explicitly marked atmosphere frames
+    receive the aizuri edge treatment, and documentary evidence is never cropped.
+    """
+    photo = medium(key)
+    src = photo["src"]
+    dim = webp_size(os.path.join(ROOT, src + ".webp"))
+    wh = f' data-lb-width="{dim[0]}" data-lb-height="{dim[1]}"' if dim else ""
+    ratio = f' style="--media-ratio:{dim[0]} / {dim[1]}"' if dim else ""
+    lb = (f' data-lb="{e(src)}.webp" data-lb-group="{e(group)}"{wh} '
+          f'{attr_bi("cap", photo["cap"])}' if lightbox else "")
+    treatment = photo.get("treatment", "natural")
+    event = photo.get("event", "")
+    slug = f'<span class="memory-slug">{e(photo["slug"])}</span>' if photo.get("slug") else ""
+    label = photo.get("label") or {
+        "en": "Event photograph" if photo.get("kind") not in ("life", "portrait") else "Field frame",
+        "zh": "現場影像" if photo.get("kind") not in ("life", "portrait") else "生活片段",
+    }
+    no = f'<span class="memory-no">{e(index)}</span>' if index else ""
+    pos = f'{photo.get("fx", "50%")} {photo.get("fy", "50%")} '
+    fig = (f'<figure class="memory-frame {e(cls)}" data-treatment="{e(treatment)}" '
+           f'data-event="{e(event)}"{ratio}{lb}>'
+           f'<div class="memory-media">'
+           f'{img(src, photo["cap"], sizes=sizes, loading=loading, position=pos.strip())}'
+           f'<span class="memory-ink" aria-hidden="true"></span>'
+           f'<span class="memory-register" aria-hidden="true"></span>'
+           f'</div>'
+           f'<figcaption>{no}<span class="memory-type">{bi(label)}</span>'
+           f'<span class="memory-caption">{bi(photo["cap"])}</span>{slug}</figcaption>'
+           f'</figure>')
+    target = href if href is not None else photo.get("href")
+    link_event = f' data-event="{e(event)}"' if event else ""
+    return f'<a class="memory-link {e(cls)}" href="{e(target)}"{link_event}>{fig}</a>' if target and not lightbox else fig
+
+
+def memory_river(keys, variant, pattern=None, links=True, lightbox=False, group=None):
+    pattern = pattern or ["wide", "standard", "inset", "standard", "portrait", "standard"]
+    frames = []
+    for i, key in enumerate(keys):
+        role = pattern[i % len(pattern)]
+        frames.append(memory_frame(
+            key, cls=f"memory-frame--{role}",
+            sizes="(max-width:760px) 100vw, 58vw" if role == "wide" else "(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw",
+            lightbox=lightbox, group=group or variant,
+            href=None if links else "", index=f"{i + 1:02d}"
+        ))
+    return f'<div class="memory-river memory-river--{e(variant)} err">{"".join(frames)}</div>'
 
 
 def section(sid, lam, title, body, rail=None, note=None):
@@ -157,7 +214,7 @@ def section(sid, lam, title, body, rail=None, note=None):
 
 ART_DIR = os.path.join(ROOT, "img", "art")
 
-def art(name, alt, cls="chapter-art", sizes="(max-width:720px) 100vw, 1120px", loading="lazy"):
+def art(name, alt, cls="chapter-art", sizes="(max-width:720px) 100vw, 1120px", loading="eager"):
     """Responsive chapter art with its native panoramic ratio preserved."""
     path = os.path.join(ART_DIR, name + ".webp")
     if not os.path.exists(path):
@@ -207,12 +264,21 @@ def p_index():
     <p class="sub err">{bi(M["role"])} · {bi(C["about"]["facts"][1]["v"])}</p>
     <div class="acts err">
       <a class="act p" href="research.html"><span class="en">Explore the research</span><span class="zh">閱讀研究</span></a>
-      <a class="act" href="Chi-Wei_Lee_CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>
+      <a class="act" href="CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>
       <button class="act" type="button" data-act="mail" data-mail="{e(M["email"])}"><span class="en">Copy email</span><span class="zh">複製信箱</span></button>
     </div>
   </div>
   {art("home-ink", {"en": "Indigo ink flowing into cortical contours", "zh": "靛藍墨流化為皮層般的線條"}, cls="hero-art", loading="eager")}
 </div>''')
+
+    # The visual biography: no gallery filler, only frames that resolve to a
+    # named event elsewhere in the record.
+    o.append(section(
+        "frames", "L1b", {"en": "A life in frames", "zh": "大學四年，六個畫面"},
+        memory_river(C["collections"]["home"], "home",
+                     pattern=["wide", "standard", "standard", "inset", "inset", "portrait"]),
+        rail="FRAMES", note={"en": "Six frames · 2023–2026", "zh": "六幀 · 2023–2026"}
+    ))
 
     # threads
     units = []
@@ -221,7 +287,7 @@ def p_index():
   <div class="idx"><span class="n">{i+1:02d}</span>{bi(t["tag"])}</div>
   <h3>{bi(t["title"])}</h3>
   <p>{bi(opening(t["body"]))}</p>
-  <a class="more" href="research.html#{e(t["id"])}"><span class="en">Open thread</span><span class="zh">展開</span></a>
+  <a class="more" href="research.html#{e(t["id"])}" aria-label="{e('Open thread: ' + t['title']['en'])}" {attr_bi('aria', {'en': 'Open thread: ' + t['title']['en'], 'zh': '展開研究主題：' + t['title']['zh']})}><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article>''')
     o.append(section("threads", "L2/3",
                      {"en": "Research directions", "zh": "研究方向"},
@@ -244,10 +310,18 @@ def p_index():
     for a in C["awards"]:
         if not a.get("hero"):
             continue
-        cards.append(f'''<article class="card err">
+        proof = ""
+        if a.get("media"):
+            proof = memory_frame(a["media"][0], cls="honour-teaser-frame",
+                                 sizes="(max-width:760px) 100vw, 50vw",
+                                 href=f'record.html#{a["id"]}')
+        cards.append(f'''<article class="card honour-teaser err">
+  {proof}
+  <div class="honour-teaser-copy">
   <div class="idx"><span class="n">{e(a["year"])}</span>{bi(a["org"])}</div>
   <h3>{bi(a["title"])}</h3>
   <p>{bi(a["note"])}</p>
+</div>
 </article>''')
     o.append(section("honours", "L5a",
                      {"en": "Selected honours", "zh": "代表獎項"},
@@ -324,16 +398,17 @@ def p_research():
 </div>
 {art("research", {"en": "Four indigo currents meeting around a clear centre", "zh": "四股靛藍墨流在留白中心交會"})}''']
 
-    ART_ALT = {
-        "pc":        {"en": "Two currents of ink meeting", "zh": "兩股墨流相會"},
-        "langevin":  {"en": "Ink circling a ring of wells", "zh": "墨繞著八個勢阱迴旋"},
-        "fmri":      {"en": "Threads of ink pulled into a loose lattice", "zh": "墨絲被拉成疏鬆的網格"},
-        "diffusion": {"en": "Ink drifting from crisp to diffuse", "zh": "墨由清晰漂向瀰散"},
-    }
+    o.append(section(
+        "evidence", "L1b", {"en": "Where the work happens", "zh": "研究發生的地方"},
+        memory_river(C["collections"]["research"], "research",
+                     pattern=["wide", "standard", "standard"], links=False,
+                     lightbox=True, group="research"),
+        rail="EVIDENCE", note={"en": "NTHU · Academia Sinica · UCLA", "zh": "清華 · 中研院 · UCLA"}
+    ))
+
     cards = []
     for i, t in enumerate(C["threads"]):
         cards.append(f'''<article class="unit thread-card err" id="{e(t["id"])}">
-  <div class="plate">{img("img/art/thread-" + t["id"], ART_ALT[t["id"]], sizes="(max-width:900px) 100vw, 50vw")}</div>
   <div class="tc-body">
     <div class="idx"><span class="n">{i+1:02d}</span>{bi(t["tag"])}</div>
     <h3>{bi(t["title"])}</h3>
@@ -377,9 +452,12 @@ def p_publications():
   <span class="zh">顯示 <b data-filter-count style="color:var(--sig)">{n:02d}</b> / {n:02d} 筆</span>
 </p>
 <p class="err publication-note">
-  <span class="en">Two manuscripts are in anonymous review; full author lists and target venues remain withheld until disclosure is permitted.</span>
-  <span class="zh">兩篇手稿正處於匿名審查；完整作者名單與投稿場域將於允許揭露後補上。</span>
+  <span class="en">The two co-first-author manuscripts are under review at NeurIPS 2026; author lists remain abbreviated here while review is active.</span>
+  <span class="zh">兩篇共同第一作者手稿正投稿 NeurIPS 2026 審查中；審查期間作者名單於此採簡寫。</span>
 </p>'''
+    proof = memory_river(C["collections"]["papers"], "papers",
+                         pattern=["wide", "standard"], links=False,
+                         lightbox=True, group="papers")
     return f'''
 <div class="masthead">
   {cartouche("論文")}
@@ -388,6 +466,8 @@ def p_publications():
   <p class="lede err"><span class="en">Five research outputs across predictive coding, Bayesian sampling, controllable generation, scientific imaging, and anomaly-detection benchmarks.</span><span class="zh">五項研究成果，涵蓋預測編碼、貝氏取樣、可控生成、科學影像與異常偵測基準。</span></p>
 </div>
 {art("papers", {"en": "Five quiet layers of indigo pigment settling on paper", "zh": "五層靛藍顏料沉積於紙上"})}
+{section("evidence", "L3", {"en": "Research in public", "zh": "研究，走到現場"}, proof,
+         rail="EVIDENCE", note={"en": "Workshop · research cohort", "zh": "Workshop · 研究實習"})}
 {section("list", "L4", {"en": "Entries", "zh": "條目"}, body, rail="PAPERS")}'''
 
 
@@ -405,28 +485,29 @@ def p_field():
         },
     }
     cards = []
-    for key, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")):
+    proof_sections = []
+    for order, (key, href) in enumerate((("nsf", "field-nsf.html"), ("igem", "field-igem.html"))):
         t = lr[key]
-        hero = next((p for p in t["photos"] if p.get("role") == "hero"), t["photos"][0])
-        cards.append(f'''<a class="unit err" href="{href}" style="padding:0;display:block">
-  <div class="plate wide">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="eager")}<span class="iris" aria-hidden="true"></span></div>
-  <div style="padding:var(--s5)">
+        keys = C["collections"][key]
+        hero = medium(keys[0])
+        cards.append(f'''<a class="unit trip-card err" href="{href}" data-event="{e(hero.get("event", ""))}">
+  <div class="trip-card-media">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="lazy", position=f'{hero.get("fx", "50%")} {hero.get("fy", "50%")}')}<span class="memory-ink" aria-hidden="true"></span></div>
+  <div class="trip-card-copy">
     <div class="idx"><span class="n">{e(t["date"])}</span>{e(t["place"])}</div>
     <h3>{bi(t["title"])}</h3>
     <p>{bi(trip_meta[key])}</p>
     <span class="more"><span class="en">Read it</span><span class="zh">讀下去</span></span>
   </div>
 </a>''')
-
-    # the two frames already enlarged as trip cards are not repeated here
-    shown = {next((ph for ph in lr[k]["photos"] if ph.get("role") == "hero"),
-                  lr[k]["photos"][0])["src"] for k in ("nsf", "igem")}
-    sheet = []
-    for key in ("nsf", "igem"):
-        for ph in lr[key]["photos"]:
-            if ph["src"] in shown:
-                continue
-            sheet.append(plate(ph, sizes="(max-width:640px) 50vw, 200px", lightbox=True))
+        title = ({"en": "Philadelphia & New York proof sheet", "zh": "費城與紐約印樣"} if key == "nsf" else
+                 {"en": "Paris proof sheet", "zh": "巴黎印樣"})
+        note = ({"en": "Team → talk → workshop → New York → Philadelphia", "zh": "團隊 → 發表 → workshop → 紐約 → 費城"} if key == "nsf" else
+                {"en": "Work → stage → gold → city", "zh": "製作 → 舞台 → 金牌 → 城市"})
+        river = memory_river(keys[1:], f"field-{key}",
+                             pattern=["standard", "wide", "inset", "wide", "portrait"],
+                             links=False, lightbox=True, group=key)
+        proof_sections.append(section(f"{key}-frames", "L5b", title, river,
+                                      rail=f"{key.upper()} FRAMES", note=note))
     return f'''
 <div class="masthead">
   {cartouche("現場")}
@@ -436,19 +517,22 @@ def p_field():
 </div>
 {art("field", {"en": "Two indigo paths crossing an imagined coastline", "zh": "兩條靛藍旅路跨過想像的海岸"})}
 {section("trips", "L5a", {"en": "Two journeys", "zh": "兩段現場"}, f'<div class="grid c2">{"".join(cards)}</div>', rail="TRIPS")}
-{section("sheet", "L5b", {"en": "Contact sheet", "zh": "印樣"},
-         f'<div class="strip err">{"".join(sheet)}</div>'
-         f'<p class="err" style="margin-top:var(--s4);font-family:var(--f-mono);font-size:var(--t-2xs);'
-         f'letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">'
-         f'<span class="en">{len(sheet):02d} REMAINING FRAMES · CLICK TO ENLARGE · ← → TO STEP</span>'
-         f'<span class="zh">其餘 {len(sheet):02d} 張 · 點擊放大 · ← → 切換</span></p>', rail="SHEET")}'''
+{"".join(proof_sections)}'''
 
 
 # ── pages: the two essays ───────────────────────────────────────────
 def p_essay(key):
     t = C["longreads"][key]
-    hero = next((p for p in t["photos"] if p.get("role") == "hero"), t["photos"][0])
-    rest = [p for p in t["photos"] if p is not hero]
+    photos = [medium(k) for k in C["collections"][key]]
+    hero, rest = photos[0], photos[1:]
+
+    def frame_role(ph):
+        dim = webp_size(os.path.join(ROOT, ph["src"] + ".webp"))
+        if dim and dim[0] / max(1, dim[1]) < .86:
+            return "portrait"
+        if dim and dim[0] / max(1, dim[1]) > 1.42:
+            return "wide"
+        return "standard"
 
     def flow(lang):
         paras = t[lang]
@@ -456,15 +540,18 @@ def p_essay(key):
         # place the remaining photographs proportionally through the essay
         slots = {}
         for i, ph in enumerate(rest):
-            slots[max(1, int(round(n * (i + 1) / (len(rest) + 1))))] = ph
+            at = max(1, min(n, int(round(n * (i + 1) / (len(rest) + 1)))))
+            slots.setdefault(at, []).append(ph)
         out = []
         for i, para in enumerate(paras):
             cls = ' class="lead"' if i == 0 else ""
             out.append(f"<p{cls}>{e(para)}</p>")
             if i + 1 in slots:
-                ph = slots[i + 1]
-                cls2 = "wide" if ph.get("role") == "bleed" else "tall" if ph.get("role") == "detail" else ""
-                out.append(plate(ph, cls=f"essay-plate {cls2}".strip(), sizes="(max-width:900px) 100vw, 720px"))
+                frames = "".join(memory_frame(
+                    ph, cls=f"essay-memory memory-frame--{frame_role(ph)}",
+                    sizes="(max-width:900px) 100vw, 720px", href=""
+                ) for ph in slots[i + 1])
+                out.append(f'<div class="essay-memory-pair">{frames}</div>')
         return "".join(out)
 
     other = "field-igem.html" if key == "nsf" else "field-nsf.html"
@@ -476,7 +563,7 @@ def p_essay(key):
   <div class="band err">{e(t["place"])} · {e(t["date"])}</div>
   <h1 class="err"><span class="en">{e(t["title"]["en"])}</span><span class="zh">{e(t["title"]["zh"])}</span></h1>
 </div>
-<div class="essay-hero" style="margin-bottom:var(--s7)">{plate(hero, cls="wide", sizes="100vw", loading="eager")}</div>
+<div class="essay-hero">{memory_frame(hero, cls="memory-frame--hero", sizes="(max-width:760px) 100vw, 1174px", loading="eager", href="")}</div>
 <article class="sec settle reading" id="essay" data-rail="ESSAY">
   <div class="prose err">
     <div class="en">{flow("en")}</div>
@@ -502,34 +589,54 @@ def p_record():
         "award": {"en": "Award", "zh": "獎項"},
     }
 
-    def chron_event(kind, href, title, detail):
+    def chron_event(kind, href, title, detail, media_key=None, event_id=""):
         title_html = (f'<span class="en" lang="en">{e(title)}</span>'
                       f'<span class="zh" lang="en">{e(title)}</span>') if isinstance(title, str) else bi(title)
         detail_html = (f'<span class="en" lang="en">{e(detail)}</span>'
                        f'<span class="zh" lang="en">{e(detail)}</span>') if isinstance(detail, str) else bi(detail)
+        thumb = ""
+        visual = " chron-event--visual" if media_key else ""
+        if media_key:
+            ph = medium(media_key)
+            pos = f'{ph.get("fx", "50%")} {ph.get("fy", "50%")} '
+            thumb = (f'<span class="chron-thumb" data-treatment="{e(ph.get("treatment", "natural"))}">'
+                     f'{img(ph["src"], ph["cap"], sizes="(max-width:760px) calc(100vw - 64px), (max-width:1100px) 40vw, 36vw", position=pos.strip())}'
+                     f'<span aria-hidden="true"></span></span>')
+        thumb_line = f"    {thumb}\n" if thumb else ""
         return f'''<li>
-  <a class="chron-event chron-event--{kind}" href="{e(href)}" data-kind="{kind}">
+  <a class="chron-event chron-event--{kind}{visual}" href="{e(href)}" data-kind="{kind}" data-event="{e(event_id)}">
+{thumb_line}    <span class="chron-copy">
     <span class="chron-kind">{bi(kind_labels[kind])}</span>
     <h4 class="chron-title">{title_html}</h4>
     <p class="chron-detail">{detail_html}</p>
+    </span>
   </a>
 </li>'''
 
     chronology = {year: [] for year in range(2023, 2027)}
+    paper_media = {
+        "MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation": "academia-sinica",
+        "Building Machine Learning Challenges for Anomaly Detection in Science": "nsf-talk",
+    }
     for pub in sorted(C["publications"], key=lambda p: (int(p["year"]), p["title"])):
         chronology[int(pub["year"])].append(
-            chron_event("paper", "publications.html", pub["title"], pub["venue"])
+            chron_event("paper", "publications.html", pub["title"], pub["venue"],
+                        paper_media.get(pub["title"]))
         )
     for key, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")):
         t = lr[key]
+        mk = C["collections"][key][0]
         chronology[int(t["date"][:4])].append(
             chron_event("field", href, t["title"],
                         {"en": f'{t["date"]} · {t["place"]}',
-                         "zh": f'{t["date"]} · {t["place"]}'})
+                         "zh": f'{t["date"]} · {t["place"]}'}, mk,
+                        medium(mk).get("event", ""))
         )
     for award in sorted(C["awards"], key=lambda a: (int(a["year"]), a["title"]["en"])):
+        mk = (award.get("media") or award.get("evidence") or [None])[0]
         chronology[int(award["year"])].append(
-            chron_event("award", "#honours", award["title"], award["org"])
+            chron_event("award", f'#{award["id"]}', award["title"], award["org"],
+                        mk, award["id"])
         )
 
     chron_years = "".join(f'''<li class="chron-year" data-year="{year}" data-count="{len(chronology[year])}">
@@ -546,14 +653,29 @@ def p_record():
         if a.get("hero"):
             actions.append('<span class="chip p"><span class="dot"></span><span class="en">FEATURED</span><span class="zh">精選</span></span>')
         if a.get("url"):
-            actions.append(f'<a class="chip s" href="{e(a["url"])}" rel="noopener"><span class="en">OFFICIAL ↗</span><span class="zh">官方紀錄 ↗</span></a>')
+            label = {"en": "Official record: " + a["title"]["en"],
+                     "zh": "官方紀錄：" + a["title"]["zh"]}
+            actions.append(f'<a class="chip s" href="{e(a["url"])}" rel="noopener" aria-label="{e(label["en"])}" {attr_bi("aria", label)}><span class="en">OFFICIAL ↗</span><span class="zh">官方紀錄 ↗</span></a>')
         return "".join(actions)
 
-    honours = "".join(f'''<article class="row">
-  <div class="yr">{e(a["year"])}</div>
-  <div class="bd"><h3>{bi(a["title"])}</h3><p class="where">{bi(a["org"])}</p><p class="note">{bi(a["note"])}</p></div>
-  <div class="rt">{honour_actions(a)}</div>
-</article>''' for a in sorted(C["awards"], key=lambda x: -int(x["year"])))
+    honours = []
+    for i, a in enumerate(sorted(C["awards"], key=lambda x: -int(x["year"]))):
+        keys = (a.get("media") or []) + (a.get("evidence") or [])
+        proofs = "".join(memory_frame(
+            key, cls="proof-frame", sizes="(max-width:760px) 100vw, 42vw",
+            lightbox=True, group=a["id"], href="", index=f"{j + 1:02d}"
+        ) for j, key in enumerate(keys))
+        honours.append(f'''<article class="honour-dossier err" id="{e(a["id"])}" data-event="{e(a["id"])}">
+  <div class="honour-copy">
+    <div class="idx"><span class="n">{i + 1:02d}</span><span>{e(a["year"])}</span></div>
+    <h3>{bi(a["title"])}</h3>
+    <p class="where">{bi(a["org"])}</p>
+    <p class="honour-note">{bi(a["note"])}</p>
+    <div class="honour-actions">{honour_actions(a)}</div>
+  </div>
+  <div class="honour-proof honour-proof--{len(keys)}">{proofs}</div>
+</article>''')
+    honours = "".join(honours)
 
     field = "".join(f'''<a class="row" href="{href}">
   <div class="yr">{e(lr[k]["date"])}</div>
@@ -570,9 +692,11 @@ def p_record():
   <p class="lede err"><span class="en">{n_aw + n_pa + n_tr} entries · 2023–2026 · {n_pa} papers · {n_aw} honours · {n_tr} field notes.</span><span class="zh">{n_aw + n_pa + n_tr} 筆紀錄 · 2023–2026 · {n_pa} 篇論文 · {n_aw} 項獎項 · {n_tr} 篇現場筆記。</span></p>
 </div>
 {art("record", {"en": "A four-terrace indigo river carrying twelve milestones", "zh": "承載十二個里程碑的四段靛藍河階"})}
-{section("chronology", "L4", {"en": "Chronology", "zh": "年表"}, chron, rail="CHRONOLOGY")}
+{section("chronology", "L4", {"en": "Twelve frames of the record", "zh": "十二幀紀錄"}, chron,
+         rail="CHRONOLOGY", note={"en": "Grouped by public outcome", "zh": "依成果公開年份分組"})}
 {section("honours", "L5a", {"en": "Honours", "zh": "獎項"},
-         f'<div class="ledger err">{honours}</div>', rail="HONOURS")}
+         f'<div class="honour-dossiers">{honours}</div>', rail="HONOURS",
+         note={"en": "Certificate when one exists; no stand-ins", "zh": "有證書才放證書，不以其他文件代替"})}
 {section("field", "L5b", {"en": "Field work", "zh": "現場"},
          f'<div class="ledger err">{field}</div>'
          f'<p class="err" style="margin-top:var(--s5);font-family:var(--f-mono);font-size:var(--t-2xs);'
@@ -603,6 +727,11 @@ def p_about():
   <div class="reading err"><div class="prose"><div class="en">{bio_en}</div><div class="zh">{bio_zh}</div></div></div>
   <div class="err">{plate(port, cls="tall", sizes="(max-width:900px) 100vw, 420px", loading="eager")}</div>
 </div>''', rail="BIO")}
+{section("four-years", "L3b", {"en": "Four years, beyond the CV", "zh": "履歷之外的四年"},
+         memory_river(C["collections"]["about"], "about",
+                      pattern=["portrait", "standard", "wide", "wide", "portrait"],
+                      links=False, lightbox=True, group="about"),
+         rail="FOUR YEARS", note={"en": "Paris · water · Hsinchu · graduation · UCLA", "zh": "巴黎 · 水下 · 新竹 · 畢業 · UCLA"})}
 {section("facts", "L4", {"en": "Profile", "zh": "簡歷"},
          f'<div class="ledger err">{facts}</div>'
          f'<div class="acts"><a class="act" href="record.html#honours">'
@@ -621,7 +750,7 @@ def p_about():
   </a>
   <a class="card err" href="{e(M["cv"])}">
     <div class="idx"><span class="n">03</span><span class="en">CURRICULUM VITAE</span><span class="zh">履歷</span></div>
-    <h3 style="font-size:var(--t-sm)">Chi-Wei_Lee_CV.pdf</h3>
+    <h3 style="font-size:var(--t-sm)">CV.pdf</h3>
     <span class="more"><span class="en">Download</span><span class="zh">下載</span></span>
   </a>
 </div>''', rail="CONTACT")}'''
@@ -704,8 +833,7 @@ VERSIONED = [
     "assets/site.css",
     "assets/runtime.js",
     "assets/substrate.js",
-    "assets/fonts/MartianMono-normal-100-800-latin.woff2",
-    "assets/fonts/InstrumentSans-normal-400-700-latin.woff2",
+    "assets/bubbles.js",
 ]
 
 

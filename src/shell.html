@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
 <link rel="canonical" href="{{canonical}}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{title}}">
@@ -17,6 +17,9 @@
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
 <meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1635">
+<meta property="og:image:height" content="736">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -28,6 +31,7 @@
 <body>
 
 <canvas id="substrate" aria-hidden="true"></canvas>
+<canvas id="bubbles" aria-hidden="true"></canvas>
 <div id="vignette" aria-hidden="true"></div>
 <div id="wash" aria-hidden="true"></div>
 <div id="reenc" aria-hidden="true"></div>
@@ -41,9 +45,9 @@
     <span class="sep" aria-hidden="true">/</span>
     <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
-  <nav aria-label="Sections">{{nav}}</nav>
+  <nav aria-label="Sections" data-aria-en="Sections" data-aria-zh="網站區段">{{nav}}</nav>
   <div class="ctl">
-    <button type="button" data-act="console" aria-label="Open command console" data-rf="console">
+    <button type="button" data-act="console" aria-label="Open command console" data-aria-en="Open command console" data-aria-zh="開啟指令控制台" data-rf="console">
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
@@ -59,23 +63,23 @@
       <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
-      <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
+      <a href="CV.pdf">CV.PDF</a>
       <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
 </div>
 
-<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert>{{drawer}}</nav>
+<nav id="drawer" aria-label="Mobile sections" data-aria-en="Mobile sections" data-aria-zh="行動版網站區段" aria-hidden="true" inert>{{drawer}}</nav>
 
-<dialog id="console" aria-label="Command console">
+<dialog id="console" aria-label="Command console" data-aria-en="Command console" data-aria-zh="指令控制台">
   <div class="box">
     <div class="bh"><span class="led"></span><span class="en">STIMULUS CONSOLE</span><span class="zh">刺激控制台</span><span class="esc">ESC</span></div>
-    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" aria-label="Command">
-    <ul role="listbox"></ul>
+    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" data-placeholder-en="Type a command…" data-placeholder-zh="輸入指令…" aria-label="Command" data-aria-en="Command" data-aria-zh="指令" role="combobox" aria-autocomplete="list" aria-controls="command-list" aria-expanded="false">
+    <ul id="command-list" role="listbox"></ul>
   </div>
 </dialog>
 
-<dialog id="lightbox" aria-label="Photograph">
+<dialog id="lightbox" aria-label="Photograph" data-aria-en="Photograph" data-aria-zh="照片檢視器">
   <div class="lb">
     <div class="lb-media" data-lb-media></div>
     <div class="lbar">
@@ -83,18 +87,19 @@
       <span class="cap"></span>
       <span class="sp">
         <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
-        <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
-        <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
+        <button type="button" data-lb-nav="prev" aria-label="Previous" data-aria-en="Previous photograph" data-aria-zh="上一張照片">← <span class="en">PREV</span><span class="zh">上一張</span></button>
+        <button type="button" data-lb-nav="next" aria-label="Next" data-aria-en="Next photograph" data-aria-zh="下一張照片"><span class="en">NEXT</span><span class="zh">下一張</span> →</button>
       </span>
     </div>
   </div>
 </dialog>
 
 <noscript>
-  <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
+  <style>#substrate,#bubbles,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
 <script src="assets/runtime.js" defer></script>
 <script src="assets/substrate.js" defer></script>
+<script src="assets/bubbles.js" defer></script>
 </body>
 </html>
