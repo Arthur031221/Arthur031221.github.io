@@ -1,9 +1,9 @@
 # Aizuri illustration production record
 
-The nine site illustrations were generated on 2026-07-29 with Codex's built-in
+The five chapter illustrations were regenerated on 2026-07-29 with Codex's built-in
 image generation mode, then cropped and encoded as responsive WebP assets. This
 file records the final prompt family so future work can extend the same series
-without returning to the old procedural spirals.
+without returning to the removed card-level fluid pictures.
 
 ## Shared production prompt
 
@@ -30,22 +30,20 @@ human, stock gradient, or unexplained floating object.
 
 | master | scene direction |
 |---|---|
-| `img/art/home-ink.webp` | A broad indigo current rises from layered mountain/island contours into a translucent ink cloud; one tiny red seal/circuit junction; open right-side paper for the name. |
-| `img/art/research.webp` | Four distinct tributaries—memory lattice, probabilistic basin, neural topography, diffusion grid—join one continuous indigo river without literal labels. |
-| `img/art/papers.webp` | Five quiet paper/rock strata settle like archived sheets, linked by one thin indigo current and a tiny vermilion registration mark. |
-| `img/art/field.webp` | Two travel routes cross an imagined coast: one toward a geometric American city silhouette, one toward a Parisian exhibition hall; no landmarks copied literally. |
-| `img/art/record.webp` | Four terraced river levels carry twelve small milestone stones, dense enough to imply chronology but never a chart or axis. |
-| `img/art/thread-pc.webp` | A memory lattice and descending prediction stream meet; the uncancelled residual continues as one clean indigo branch. |
-| `img/art/thread-langevin.webp` | Several brush paths sample a soft multimodal probability basin instead of converging on one peak. |
-| `img/art/thread-fmri.webp` | An abstract head/topographic contour contains a sparse three-dimensional spatial lattice and one denser decoded region. |
-| `img/art/thread-diffusion.webp` | A QR-like square lattice remains optically legible while passing through a controlled indigo mist and edited brush field. |
+| `img/art/home-ink.webp` | A Hokusai-inspired indigo current blooms into branching neural contours; broad upper-left paper remains open for the name. |
+| `img/art/research.webp` | Four distinct tributaries—wet wash, carved waves, a neural arbor and a data lattice—converge around a deliberate white *ma*. |
+| `img/art/papers.webp` | Five quiet pigment strata settle like archived sheets, with only faint signal traces and one vermilion registration point. |
+| `img/art/field.webp` | Two indigo routes cross once at a small island, then separate toward distant imagined shores. |
+| `img/art/record.webp` | Four compact terraced rivers carry exactly twelve milestone circles, avoiding the visual sparsity of a stretched axis. |
 
 ## Masters and derivatives
 
-- `home-ink`: 2000 × 900; `-400`, `-800`, `-1200`.
-- `research`, `papers`, `field`, `record`: 2000 × 750; `-400`, `-800`, `-1200`.
-- Four thread cards: 1200 × 900; `-400`, `-800`.
-- WebP masters use quality 88; derivatives use quality 84.
+- `home-ink`: 1635 × 736; `-400`, `-800`, `-1200`.
+- `research`: 1823 × 684; `papers`: 1855 × 696; `field`: 1828 × 686;
+  `record`: 1844 × 692. Each has `-400`, `-800`, and `-1200` derivatives.
+- WebP masters and derivatives use quality 82 / method 6 with metadata removed.
+- The four obsolete card-level fluid illustrations were removed; research cards
+  now let the verified UCLA, NTHU and Academia Sinica photographs carry the page.
 
 The committed masters are the production source. When extending the series,
 generate one semantic scene at a time with the shared prompt, inspect it at day

@@ -1,3 +1,8 @@
 *.jpg
 *.jpeg
 !img/*
+/_*.html
+__pycache__/
+/drive-download-20260729T043321Z-1-001.zip
+/NEW計畫申請書.docx
+/李騏維_梅貽琦紀念獎章申請表.docx

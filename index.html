@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
 <link rel="canonical" href="https://arthur031221.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chi-Wei Lee — NeuroAI · 李騏維">
@@ -17,17 +17,21 @@
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
 <meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1635">
+<meta property="og:image:height" content="736">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
-<link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2?v=64092ca6" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2?v=fa41c43a" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=07e5df6b">
+<link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=bdb04f47">
 <script>document.documentElement.classList.remove('no-js');try{var m=localStorage.getItem('pe.mode');if(!m)m=matchMedia('(prefers-color-scheme: light)').matches?'fixed':'vivo';document.documentElement.setAttribute('data-mode',m);var l=localStorage.getItem('pe.lang');if(l)document.documentElement.setAttribute('lang',l==='zh'?'zh-Hant':'en');}catch(e){}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Chi-Wei Lee", "alternateName": "李騏維", "jobTitle": "NeuroAI researcher", "url": "https://arthur031221.github.io/", "email": "mailto:levi74108520963@gmail.com", "sameAs": ["https://github.com/Arthur031221"], "affiliation": {"@type": "CollegeOrUniversity", "name": "National Tsing Hua University"}, "knowsAbout": ["Predictive coding", "Associative memory", "Bayesian inference", "Computational neuroscience", "Machine learning"]}</script>
 </head>
 <body>
 
 <canvas id="substrate" aria-hidden="true"></canvas>
+<canvas id="bubbles" aria-hidden="true"></canvas>
 <div id="vignette" aria-hidden="true"></div>
 <div id="wash" aria-hidden="true"></div>
 <div id="reenc" aria-hidden="true"></div>
@@ -41,9 +45,9 @@
     <span class="sep" aria-hidden="true">/</span>
     <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
-  <nav aria-label="Sections"><a href="index.html" aria-current="page"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
+  <nav aria-label="Sections" data-aria-en="Sections" data-aria-zh="網站區段"><a href="index.html" aria-current="page"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
   <div class="ctl">
-    <button type="button" data-act="console" aria-label="Open command console" data-rf="console">
+    <button type="button" data-act="console" aria-label="Open command console" data-aria-en="Open command console" data-aria-zh="開啟指令控制台" data-rf="console">
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
@@ -68,37 +72,37 @@
     <p class="sub err"><span class="en">NeuroAI researcher</span><span class="zh">腦神經 × 機器學習研究者</span> · <span class="en">Physics × EECS (AI Track), double major</span><span class="zh">物理系 × 電資學士班（AI 組），雙主修</span></p>
     <div class="acts err">
       <a class="act p" href="research.html"><span class="en">Explore the research</span><span class="zh">閱讀研究</span></a>
-      <a class="act" href="Chi-Wei_Lee_CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>
+      <a class="act" href="CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>
       <button class="act" type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">Copy email</span><span class="zh">複製信箱</span></button>
     </div>
   </div>
-  <figure class="artwork hero-art" data-art="home-ink"><img src="img/art/home-ink.webp" srcset="img/art/home-ink-400.webp 400w, img/art/home-ink-800.webp 800w, img/art/home-ink-1200.webp 1200w, img/art/home-ink.webp 2000w" sizes="(max-width:720px) 100vw, 1120px" width="2000" height="900" fetchpriority="high" alt="Indigo ink flowing into cortical contours" data-alt-en="Indigo ink flowing into cortical contours" data-alt-zh="靛藍墨流化為皮層般的線條" loading="eager" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure>
-</div><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Research directions" data-cmd-zh="研究方向"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Research directions</span><span class="zh">研究方向</span></h2></div><div class="grid c2"><article class="unit err">
+  <figure class="artwork hero-art" data-art="home-ink"><img src="img/art/home-ink.webp" srcset="img/art/home-ink-400.webp 400w, img/art/home-ink-800.webp 800w, img/art/home-ink-1200.webp 1200w, img/art/home-ink.webp 1635w" sizes="(max-width:720px) 100vw, 1120px" width="1635" height="736" fetchpriority="high" alt="Indigo ink flowing into cortical contours" data-alt-en="Indigo ink flowing into cortical contours" data-alt-zh="靛藍墨流化為皮層般的線條" loading="eager" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure>
+</div><section class="sec" id="frames" data-rail="FRAMES" data-cmd="1" data-cmd-en="A life in frames" data-cmd-zh="大學四年，六個畫面"><div class="sec-h err"><span class="lay">L1b</span><h2><span class="en">A life in frames</span><span class="zh">大學四年，六個畫面</span></h2><span class="note"><span class="en">Six frames · 2023–2026</span><span class="zh">六幀 · 2023–2026</span></span></div><div class="memory-river memory-river--home err"><a class="memory-link memory-frame--wide" href="about.html#four-years"><figure class="memory-frame memory-frame--wide" data-treatment="natural" data-event="" style="--media-ratio:1600 / 1067"><div class="memory-media"><img src="img/moments/nthu-graduation.webp" srcset="img/moments/nthu-graduation-400.webp 400w, img/moments/nthu-graduation-800.webp 800w, img/moments/nthu-graduation-1200.webp 1200w, img/moments/nthu-graduation.webp 1600w" sizes="(max-width:760px) 100vw, 58vw" width="1600" height="1067" style="object-position:50% 46%" alt="NTHU Physics graduates, one frame before the caps came down" data-alt-en="NTHU Physics graduates, one frame before the caps came down" data-alt-zh="清華物理畢業合影——學士帽落下前的一幀" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">01</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">NTHU Physics graduates, one frame before the caps came down</span><span class="zh">清華物理畢業合影——學士帽落下前的一幀</span></span><span class="memory-slug">NTHU PHYSICS · 2026.04 · GRADUATION</span></figcaption></figure></a><a class="memory-link memory-frame--standard" href="research.html#evidence" data-event="ucla-2026"><figure class="memory-frame memory-frame--standard" data-treatment="natural" data-event="ucla-2026" style="--media-ratio:1600 / 1200"><div class="memory-media"><img src="img/moments/ucla-delegation.webp" srcset="img/moments/ucla-delegation-400.webp 400w, img/moments/ucla-delegation-800.webp 800w, img/moments/ucla-delegation-1200.webp 1200w, img/moments/ucla-delegation.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1200" style="object-position:50% 50%" alt="Taiwan Global Pathfinders delegation at UCLA Samueli" data-alt-en="Taiwan Global Pathfinders delegation at UCLA Samueli" data-alt-zh="Taiwan Global Pathfinders 代表團於 UCLA Samueli" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">02</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">Taiwan Global Pathfinders delegation at UCLA Samueli</span><span class="zh">Taiwan Global Pathfinders 代表團於 UCLA Samueli</span></span><span class="memory-slug">UCLA SAMUELI · 2026.07.07 · PATHFINDERS</span></figcaption></figure></a><a class="memory-link memory-frame--standard" href="field-nsf.html" data-event="nsf-y1-2025"><figure class="memory-frame memory-frame--standard" data-treatment="natural" data-event="nsf-y1-2025" style="--media-ratio:1600 / 1306"><div class="memory-media"><img src="img/moments/nsf-aaai-welcome.webp" srcset="img/moments/nsf-aaai-welcome-400.webp 400w, img/moments/nsf-aaai-welcome-800.webp 800w, img/moments/nsf-aaai-welcome-1200.webp 1200w, img/moments/nsf-aaai-welcome.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1306" style="object-position:50% 45%" alt="Team 20iterations at the AAAI-25 workshop in Philadelphia" data-alt-en="Team 20iterations at the AAAI-25 workshop in Philadelphia" data-alt-zh="20iterations 團隊於費城 AAAI-25 workshop" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">03</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">Team 20iterations at the AAAI-25 workshop in Philadelphia</span><span class="zh">20iterations 團隊於費城 AAAI-25 workshop</span></span><span class="memory-slug">PHILADELPHIA · 2025.03.04 · AAAI-25</span></figcaption></figure></a><a class="memory-link memory-frame--inset" href="record.html#meichu-2025" data-event="meichu-2025"><figure class="memory-frame memory-frame--inset" data-treatment="natural" data-event="meichu-2025" style="--media-ratio:1600 / 1068"><div class="memory-media"><img src="img/moments/meichu-first.webp" srcset="img/moments/meichu-first-400.webp 400w, img/moments/meichu-first-800.webp 800w, img/moments/meichu-first-1200.webp 1200w, img/moments/meichu-first.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1068" style="object-position:51% 49%" alt="First place, Maker Track, 2025 Mei-Chu Hackathon" data-alt-en="First place, Maker Track, 2025 Mei-Chu Hackathon" data-alt-zh="2025 梅竹黑客松創客交流組第一名" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">04</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">First place, Maker Track, 2025 Mei-Chu Hackathon</span><span class="zh">2025 梅竹黑客松創客交流組第一名</span></span><span class="memory-slug">HSINCHU · 2025 · MAKER TRACK FIRST PLACE</span></figcaption></figure></a><a class="memory-link memory-frame--inset" href="field-igem.html" data-event="igem-2023"><figure class="memory-frame memory-frame--inset" data-treatment="natural" data-event="igem-2023" style="--media-ratio:1600 / 1200"><div class="memory-media"><img src="img/moments/igem-stage.webp" srcset="img/moments/igem-stage-400.webp 400w, img/moments/igem-stage-800.webp 800w, img/moments/igem-stage-1200.webp 1200w, img/moments/igem-stage.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1200" style="object-position:50% 42%" alt="At the iGEM 2023 Grand Jamboree stage in Paris" data-alt-en="At the iGEM 2023 Grand Jamboree stage in Paris" data-alt-zh="於巴黎 iGEM 2023 Grand Jamboree 舞台" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">05</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">At the iGEM 2023 Grand Jamboree stage in Paris</span><span class="zh">於巴黎 iGEM 2023 Grand Jamboree 舞台</span></span><span class="memory-slug">PARIS EXPO · 2023.11.02 · iGEM</span></figcaption></figure></a><a class="memory-link memory-frame--portrait" href="about.html#four-years" data-event="life-2024"><figure class="memory-frame memory-frame--portrait" data-treatment="aizuri" data-event="life-2024" style="--media-ratio:1400 / 1600"><div class="memory-media"><img src="img/moments/underwater.webp" srcset="img/moments/underwater-400.webp 400w, img/moments/underwater-800.webp 800w, img/moments/underwater-1200.webp 1200w, img/moments/underwater.webp 1400w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1400" height="1600" style="object-position:50% 48%" alt="Below the surface, March 2024" data-alt-en="Below the surface, March 2024" data-alt-zh="水面之下，2024 年 3 月" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">06</span><span class="memory-type"><span class="en">Field frame</span><span class="zh">生活片段</span></span><span class="memory-caption"><span class="en">Below the surface, March 2024</span><span class="zh">水面之下，2024 年 3 月</span></span><span class="memory-slug">BELOW THE SURFACE · 2024.03</span></figcaption></figure></a></div></section><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Research directions" data-cmd-zh="研究方向"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Research directions</span><span class="zh">研究方向</span></h2></div><div class="grid c2"><article class="unit err">
   <div class="idx"><span class="n">01</span><span class="en">Theory</span><span class="zh">理論</span></div>
   <h3><span class="en">Predictive coding needs a memory</span><span class="zh">預測編碼需要記憶</span></h3>
   <p><span class="en">Predictive coding supplies a generative hierarchy; modern Hopfield networks supply content-addressable retrieval.</span><span class="zh">預測編碼提供生成式階層，現代 Hopfield 網路提供內容定址檢索。</span></p>
-  <a class="more" href="research.html#pc"><span class="en">Open thread</span><span class="zh">展開</span></a>
+  <a class="more" href="research.html#pc" aria-label="Open thread: Predictive coding needs a memory" data-aria-en="Open thread: Predictive coding needs a memory" data-aria-zh="展開研究主題：預測編碼需要記憶"><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article><article class="unit err">
   <div class="idx"><span class="n">02</span><span class="en">Theory</span><span class="zh">理論</span></div>
   <h3><span class="en">Inference should sample, not just find a mode</span><span class="zh">推論應該取樣，而不只尋找峰值</span></h3>
   <p><span class="en">Deterministic temporal predictive coding returns only a posterior mode.</span><span class="zh">確定性的時間預測編碼只回傳後驗的一個峰值。</span></p>
-  <a class="more" href="research.html#langevin"><span class="en">Open thread</span><span class="zh">展開</span></a>
+  <a class="more" href="research.html#langevin" aria-label="Open thread: Inference should sample, not just find a mode" data-aria-en="Open thread: Inference should sample, not just find a mode" data-aria-zh="展開研究主題：推論應該取樣，而不只尋找峰值"><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article><article class="unit err">
   <div class="idx"><span class="n">03</span><span class="en">Neural data</span><span class="zh">神經資料</span></div>
   <h3><span class="en">Reading space out of the brain</span><span class="zh">從大腦裡讀出空間</span></h3>
   <p><span class="en">At the HMI Lab, I build generative decoders that reconstruct 3D spatial representations from fMRI.</span><span class="zh">在 HMI Lab，我建立生成式解碼器，從 fMRI 訊號重建三維空間表徵。</span></p>
-  <a class="more" href="research.html#fmri"><span class="en">Open thread</span><span class="zh">展開</span></a>
+  <a class="more" href="research.html#fmri" aria-label="Open thread: Reading space out of the brain" data-aria-en="Open thread: Reading space out of the brain" data-aria-zh="展開研究主題：從大腦裡讀出空間"><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article><article class="unit err">
   <div class="idx"><span class="n">04</span><span class="en">Generative</span><span class="zh">生成模型</span></div>
   <h3><span class="en">Control without losing the picture</span><span class="zh">在不失去畫面的前提下控制</span></h3>
   <p><span class="en">MatrixQR separates scan reliability from creative editing in generated QR codes.</span><span class="zh">MatrixQR 將生成式 QR 碼的掃描可靠性與創意編輯解耦。</span></p>
-  <a class="more" href="research.html#diffusion"><span class="en">Open thread</span><span class="zh">展開</span></a>
+  <a class="more" href="research.html#diffusion" aria-label="Open thread: Control without losing the picture" data-aria-en="Open thread: Control without losing the picture" data-aria-zh="展開研究主題：在不失去畫面的前提下控制"><span class="en">Open thread</span><span class="zh">展開</span></a>
 </article></div></section><section class="sec" id="papers" data-rail="PAPERS" data-cmd="1" data-cmd-en="Selected papers" data-cmd-zh="選錄論文"><div class="sec-h err"><span class="lay">L4</span><h2><span class="en">Selected papers</span><span class="zh">選錄論文</span></h2></div><div class="ledger err"><article class="row" data-status="review">
   <div class="yr">2026</div>
   <div class="bd">
     <h3 lang="en">Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser</h3>
     <p class="who" lang="en">C.-W. Lee (co-first author) et al.</p>
-    <p class="where" lang="en">Preprint · under review</p>
+    <p class="where" lang="en">NeurIPS 2026 · under review</p>
     
   </div>
   <div class="rt"><span class="chip p"><span class="en">Under review</span><span class="zh">審查中</span></span></div>
@@ -107,7 +111,7 @@
   <div class="bd">
     <h3 lang="en">Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities</h3>
     <p class="who" lang="en">C.-W. Lee (co-first author) et al.</p>
-    <p class="where" lang="en">Preprint · under review</p>
+    <p class="where" lang="en">NeurIPS 2026 · under review</p>
     
   </div>
   <div class="rt"><span class="chip p"><span class="en">Under review</span><span class="zh">審查中</span></span></div>
@@ -120,14 +124,20 @@
     
   </div>
   <div class="rt"><span class="chip s"><span class="en">Accepted · poster</span><span class="zh">已接受 · 海報</span></span></div>
-</article></div><div class="acts"><a class="act" href="publications.html"><span class="en">All five entries</span><span class="zh">全部五筆</span></a></div></section><section class="sec" id="honours" data-rail="HONOURS" data-cmd="1" data-cmd-en="Selected honours" data-cmd-zh="代表獎項"><div class="sec-h err"><span class="lay">L5a</span><h2><span class="en">Selected honours</span><span class="zh">代表獎項</span></h2></div><div class="grid c2"><article class="card err">
+</article></div><div class="acts"><a class="act" href="publications.html"><span class="en">All five entries</span><span class="zh">全部五筆</span></a></div></section><section class="sec" id="honours" data-rail="HONOURS" data-cmd="1" data-cmd-en="Selected honours" data-cmd-zh="代表獎項"><div class="sec-h err"><span class="lay">L5a</span><h2><span class="en">Selected honours</span><span class="zh">代表獎項</span></h2></div><div class="grid c2"><article class="card honour-teaser err">
+  <a class="memory-link honour-teaser-frame" href="record.html#meiyichi-2026" data-event="meiyichi-2026"><figure class="memory-frame honour-teaser-frame" data-treatment="natural" data-event="meiyichi-2026" style="--media-ratio:900 / 1600"><div class="memory-media"><img src="img/moments/meiyichi-medal.webp" srcset="img/moments/meiyichi-medal-400.webp 400w, img/moments/meiyichi-medal-800.webp 800w, img/moments/meiyichi-medal.webp 900w" sizes="(max-width:760px) 100vw, 50vw" width="900" height="1600" style="object-position:52% 45%" alt="With the Mei Yi-Chi Memorial Medal at NTHU, May 2026" data-alt-en="With the Mei Yi-Chi Memorial Medal at NTHU, May 2026" data-alt-zh="於清華大學手持梅貽琦紀念獎章，2026 年 5 月" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">With the Mei Yi-Chi Memorial Medal at NTHU, May 2026</span><span class="zh">於清華大學手持梅貽琦紀念獎章，2026 年 5 月</span></span><span class="memory-slug">NTHU · 2026.05.30 · MEI YI-CHI MEDAL</span></figcaption></figure></a>
+  <div class="honour-teaser-copy">
   <div class="idx"><span class="n">2026</span><span class="en">National Tsing Hua University</span><span class="zh">國立清華大學</span></div>
   <h3><span class="en">Mei Yi-Chi Memorial Medal</span><span class="zh">梅貽琦紀念獎章</span></h3>
   <p><span class="en">NTHU&#x27;s highest honour for graduating students — one of eight recipients university-wide and the sole recipient from the College of Science.</span><span class="zh">清華大學畢業生最高榮譽——全校八位獲獎者之一，也是理學院唯一獲獎者。</span></p>
-</article><article class="card err">
+</div>
+</article><article class="card honour-teaser err">
+  <a class="memory-link honour-teaser-frame" href="record.html#nsf-y1-2025" data-event="nsf-y1-2025"><figure class="memory-frame honour-teaser-frame" data-treatment="natural" data-event="nsf-y1-2025" style="--media-ratio:1600 / 1306"><div class="memory-media"><img src="img/moments/nsf-aaai-welcome.webp" srcset="img/moments/nsf-aaai-welcome-400.webp 400w, img/moments/nsf-aaai-welcome-800.webp 800w, img/moments/nsf-aaai-welcome-1200.webp 1200w, img/moments/nsf-aaai-welcome.webp 1600w" sizes="(max-width:760px) 100vw, 50vw" width="1600" height="1306" style="object-position:50% 45%" alt="Team 20iterations at the AAAI-25 workshop in Philadelphia" data-alt-en="Team 20iterations at the AAAI-25 workshop in Philadelphia" data-alt-zh="20iterations 團隊於費城 AAAI-25 workshop" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">Team 20iterations at the AAAI-25 workshop in Philadelphia</span><span class="zh">20iterations 團隊於費城 AAAI-25 workshop</span></span><span class="memory-slug">PHILADELPHIA · 2025.03.04 · AAAI-25</span></figcaption></figure></a>
+  <div class="honour-teaser-copy">
   <div class="idx"><span class="n">2025</span><span class="en">NSF HDR ML Challenge · Year 1</span><span class="zh">NSF HDR ML Challenge · 首屆</span></div>
   <h3><span class="en">2nd overall — NSF HDR ML Challenge</span><span class="zh">總排名第二 — NSF HDR ML Challenge</span></h3>
   <p><span class="en">Led a six-person team to second place in the Year 1 overall competition. The challenge drew more than 600 participating teams across its three datasets; we were invited to present at the AAAI-25 Workshop in Philadelphia.</span><span class="zh">帶領六人團隊獲首屆總排名第二。該賽事三項資料集合計吸引 600 支以上參賽隊伍；團隊並受邀於費城 AAAI-25 Workshop 發表。</span></p>
+</div>
 </article></div><div class="acts"><a class="act" href="record.html#honours"><span class="en">Every honour</span><span class="zh">完整獎項</span></a></div></section><section class="sec" id="field" data-rail="FIELD" data-cmd="1" data-cmd-en="Field notes" data-cmd-zh="現場筆記"><div class="sec-h err"><span class="lay">L5b</span><h2><span class="en">Field notes</span><span class="zh">現場筆記</span></h2></div><div class="ledger"><a class="row err" href="field-nsf.html">
   <div class="yr">2025.02.28 – 03.09</div>
   <div class="bd"><h3><span class="en">20 days, 20 iterations</span><span class="zh">20 天，20 次迭代</span></h3><p class="where">Philadelphia · New York</p></div>
@@ -141,23 +151,23 @@
       <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
-      <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
+      <a href="CV.pdf">CV.PDF</a>
       <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
 </div>
 
-<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert><a href="index.html" aria-current="page"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
+<nav id="drawer" aria-label="Mobile sections" data-aria-en="Mobile sections" data-aria-zh="行動版網站區段" aria-hidden="true" inert><a href="index.html" aria-current="page"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
 
-<dialog id="console" aria-label="Command console">
+<dialog id="console" aria-label="Command console" data-aria-en="Command console" data-aria-zh="指令控制台">
   <div class="box">
     <div class="bh"><span class="led"></span><span class="en">STIMULUS CONSOLE</span><span class="zh">刺激控制台</span><span class="esc">ESC</span></div>
-    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" aria-label="Command">
-    <ul role="listbox"></ul>
+    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" data-placeholder-en="Type a command…" data-placeholder-zh="輸入指令…" aria-label="Command" data-aria-en="Command" data-aria-zh="指令" role="combobox" aria-autocomplete="list" aria-controls="command-list" aria-expanded="false">
+    <ul id="command-list" role="listbox"></ul>
   </div>
 </dialog>
 
-<dialog id="lightbox" aria-label="Photograph">
+<dialog id="lightbox" aria-label="Photograph" data-aria-en="Photograph" data-aria-zh="照片檢視器">
   <div class="lb">
     <div class="lb-media" data-lb-media></div>
     <div class="lbar">
@@ -165,18 +175,19 @@
       <span class="cap"></span>
       <span class="sp">
         <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
-        <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
-        <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
+        <button type="button" data-lb-nav="prev" aria-label="Previous" data-aria-en="Previous photograph" data-aria-zh="上一張照片">← <span class="en">PREV</span><span class="zh">上一張</span></button>
+        <button type="button" data-lb-nav="next" aria-label="Next" data-aria-en="Next photograph" data-aria-zh="下一張照片"><span class="en">NEXT</span><span class="zh">下一張</span> →</button>
       </span>
     </div>
   </div>
 </dialog>
 
 <noscript>
-  <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
+  <style>#substrate,#bubbles,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
-<script src="assets/runtime.js?v=2e543db0" defer></script>
-<script src="assets/substrate.js?v=4ae11a11" defer></script>
+<script src="assets/runtime.js?v=3ad61094" defer></script>
+<script src="assets/substrate.js?v=7973cc77" defer></script>
+<script src="assets/bubbles.js?v=498d6102" defer></script>
 </body>
 </html>

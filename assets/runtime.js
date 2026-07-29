@@ -187,9 +187,7 @@
   }
 
   /* ── 12. imaging modality: vivo (live) ⇄ fixed (histology) ── */
-  function applyMode(mode) {
-    root.setAttribute('data-mode', mode);
-    colourCache = null;
+  function syncModeControl(mode) {
     var btn = document.querySelector('[data-act="mode"]');
     if (btn) {
       var label = mode === 'fixed'
@@ -202,6 +200,11 @@
         ? { en: 'Colour theme: day. Switch to night.', zh: '色彩主題：日。切換為夜。' }
         : { en: 'Colour theme: night. Switch to day.', zh: '色彩主題：夜。切換為日。' }));
     }
+  }
+  function applyMode(mode) {
+    root.setAttribute('data-mode', mode);
+    colourCache = null;
+    syncModeControl(mode);
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--void').trim());
     PE.emit('modechange', mode);
@@ -236,9 +239,16 @@
     document.querySelectorAll('[data-t-en]').forEach(function (el) {
       el.textContent = lang === 'zh' ? el.getAttribute('data-t-zh') : el.getAttribute('data-t-en');
     });
+    document.querySelectorAll('[data-aria-en]').forEach(function (el) {
+      el.setAttribute('aria-label', lang === 'zh' ? el.getAttribute('data-aria-zh') : el.getAttribute('data-aria-en'));
+    });
+    document.querySelectorAll('[data-placeholder-en]').forEach(function (el) {
+      el.setAttribute('placeholder', lang === 'zh' ? el.getAttribute('data-placeholder-zh') : el.getAttribute('data-placeholder-en'));
+    });
     document.querySelectorAll('img[data-alt-en]').forEach(function (el) {
       el.alt = lang === 'zh' ? el.getAttribute('data-alt-zh') : el.getAttribute('data-alt-en');
     });
+    syncModeControl(root.getAttribute('data-mode') || 'vivo');
     PE.emit('langchange', lang);
   }
   PE.setLang = function (lang) {
@@ -460,12 +470,45 @@
   function receptive() {
     if (!PE.fine) return;
     document.addEventListener('pointermove', function (e) {
-      var u = e.target.closest && e.target.closest('.unit,.card');
+      var u = e.target.closest && e.target.closest('.unit,.card,.memory-frame');
       if (!u) return;
       var r = u.getBoundingClientRect();
-      u.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
-      u.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      var x = (e.clientX - r.left) / r.width;
+      var y = (e.clientY - r.top) / r.height;
+      u.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+      u.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      u.style.setProperty('--px', ((x - .5) * 4).toFixed(2) + 'px');
+      u.style.setProperty('--py', ((y - .5) * 4).toFixed(2) + 'px');
     }, { passive: true });
+  }
+
+  /* Matching event identifiers make the photograph and the record answer
+     each other. The response is local and reversible: no surprise scroll. */
+  function eventLinks() {
+    var active = '';
+    function set(id) {
+      if (id === active) return;
+      document.querySelectorAll('[data-event].event-hot').forEach(function (el) { el.classList.remove('event-hot'); });
+      active = id || '';
+      if (!active) return;
+      document.querySelectorAll('[data-event="' + CSS.escape(active) + '"]').forEach(function (el) { el.classList.add('event-hot'); });
+    }
+    document.addEventListener('pointerover', function (e) {
+      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event]');
+      if (el) set(el.getAttribute('data-event'));
+    }, { passive: true });
+    document.addEventListener('pointerout', function (e) {
+      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event]');
+      if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) set('');
+    }, { passive: true });
+    document.addEventListener('focusin', function (e) {
+      var el = e.target.closest && e.target.closest('[data-event]');
+      if (el) set(el.getAttribute('data-event'));
+    });
+    document.addEventListener('focusout', function (e) {
+      var el = e.target.closest && e.target.closest('[data-event]');
+      if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) set('');
+    });
   }
 
   /* ── 20. command console ────────────────────────────────── */
@@ -473,7 +516,7 @@
     var dlg = document.getElementById('console');
     if (!dlg) return;
     var input = dlg.querySelector('input'), list = dlg.querySelector('ul');
-    var items = [], sel = 0;
+    var items = [], sel = 0, consoleReturnFocus = null;
 
     function build() {
       items = [];
@@ -491,7 +534,7 @@
       items.push({ group: { en: 'Control', zh: '控制' }, label: { en: 'Inject a current pulse', zh: '注入電流脈衝' }, key: 'S', run: function () { PE.stimulate(1.4); PE.toast({ en: 'Pulse injected', zh: '已注入脈衝' }); } });
       var mail = document.querySelector('[data-act="mail"]');
       if (mail) items.push({ group: { en: 'Contact', zh: '聯絡' }, label: { en: 'Copy email address', zh: '複製電子郵件' }, key: 'E', run: function () { copyMail(); } });
-      items.push({ group: { en: 'Contact', zh: '聯絡' }, label: { en: 'Download CV (PDF)', zh: '下載履歷 PDF' }, href: 'Chi-Wei_Lee_CV.pdf' });
+      items.push({ group: { en: 'Contact', zh: '聯絡' }, label: { en: 'Download CV (PDF)', zh: '下載履歷 PDF' }, href: 'CV.pdf' });
       items.push({ group: { en: 'Contact', zh: '聯絡' }, label: { en: 'GitHub', zh: 'GitHub' }, href: 'https://github.com/Arthur031221' });
       document.querySelectorAll('[data-cmd]').forEach(function (el) {
         items.push({
@@ -515,11 +558,14 @@
         e.className = 'empty';
         e.textContent = lang === 'zh' ? '沒有相符的指令' : 'No matching command';
         list.appendChild(e);
+        input.removeAttribute('aria-activedescendant');
+        window.__peHits = [];
         return;
       }
       sel = Math.min(sel, hits.length - 1);
       hits.forEach(function (it, i) {
         var li = document.createElement('li');
+        li.id = 'command-option-' + i;
         li.setAttribute('role', 'option');
         li.setAttribute('aria-selected', i === sel ? 'true' : 'false');
         li.innerHTML = '<span class="g"></span><span class="n"></span><span class="k"></span>';
@@ -530,9 +576,11 @@
         li.addEventListener('pointerenter', function () {
           sel = i;
           list.querySelectorAll('li').forEach(function (n, j) { n.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+          input.setAttribute('aria-activedescendant', li.id);
         });
         list.appendChild(li);
       });
+      input.setAttribute('aria-activedescendant', 'command-option-' + sel);
       hits.forEach(function (it, i) { it._i = i; });
       window.__peHits = hits;
     }
@@ -544,8 +592,13 @@
       else if (it.href) location.href = it.href;
     }
     function open() {
+      consoleReturnFocus = document.activeElement;
+      if (!consoleReturnFocus || /^(BODY|HTML)$/.test(consoleReturnFocus.tagName || '')) {
+        consoleReturnFocus = document.querySelector('[data-act="console"]') || document.querySelector('[data-act="drawer"]');
+      }
       build(); sel = 0; input.value = ''; render('');
       if (!dlg.open) dlg.showModal();
+      input.setAttribute('aria-expanded', 'true');
       setTimeout(function () { input.focus(); }, 20);
     }
     function close() { if (dlg.open) dlg.close(); }
@@ -559,6 +612,15 @@
       else if (e.key === 'Enter') { e.preventDefault(); if (hits[sel]) fire(hits[sel]); }
     });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+    dlg.addEventListener('close', function () {
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      var target = consoleReturnFocus && consoleReturnFocus.isConnected
+        ? consoleReturnFocus : document.querySelector('[data-act="console"]');
+      consoleReturnFocus = null;
+      if (target && target.focus) target.focus({ preventScroll: true });
+    });
+    PE.on('langchange', function () { if (dlg.open) render(input.value); });
   }
 
   /* ── 21. lightbox ───────────────────────────────────────── */
@@ -572,11 +634,11 @@
     img.alt = '';
     img.decoding = 'async';
     media.appendChild(img);
-    var num = dlg.querySelector('.n'), cap = dlg.querySelector('.cap'), i = 0;
+    var num = dlg.querySelector('.n'), cap = dlg.querySelector('.cap'), i = 0, active = plates;
 
     function show(k) {
-      i = (k + plates.length) % plates.length;
-      var p = plates[i], src = p.getAttribute('data-lb');
+      i = (k + active.length) % active.length;
+      var p = active[i], src = p.getAttribute('data-lb');
       var w = parseInt(p.getAttribute('data-lb-width'), 10);
       var h = parseInt(p.getAttribute('data-lb-height'), 10);
       if (w && h) { img.width = w; img.height = h; }
@@ -584,13 +646,30 @@
       img.alt = PE.lang() === 'zh'
         ? (p.getAttribute('data-alt-zh') || p.getAttribute('data-cap-zh') || '')
         : (p.getAttribute('data-alt-en') || p.getAttribute('data-cap-en') || '');
-      if (num) num.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(plates.length).padStart(2, '0');
+      if (num) num.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(active.length).padStart(2, '0');
       if (cap) cap.textContent = PE.lang() === 'zh' ? (p.getAttribute('data-cap-zh') || '') : (p.getAttribute('data-cap-en') || '');
     }
     plates.forEach(function (p, k) {
       p.setAttribute('role', 'button');
       p.setAttribute('tabindex', '0');
-      var go = function () { show(k); if (!dlg.open) dlg.showModal(); };
+      p.setAttribute('aria-haspopup', 'dialog');
+      var capEn = p.getAttribute('data-cap-en') || p.getAttribute('data-alt-en') || '';
+      var capZh = p.getAttribute('data-cap-zh') || p.getAttribute('data-alt-zh') || '';
+      p.setAttribute('data-aria-en', 'Open image: ' + capEn);
+      p.setAttribute('data-aria-zh', '開啟圖片：' + capZh);
+      p.setAttribute('aria-label', PE.lang() === 'zh' ? '開啟圖片：' + capZh : 'Open image: ' + capEn);
+      var go = function () {
+        var group = p.getAttribute('data-lb-group') || 'page';
+        active = plates.filter(function (candidate) {
+          return (candidate.getAttribute('data-lb-group') || 'page') === group;
+        });
+        dlg.querySelectorAll('[data-lb-nav]').forEach(function (button) {
+          button.hidden = active.length < 2;
+          button.disabled = active.length < 2;
+        });
+        show(active.indexOf(p));
+        if (!dlg.open) dlg.showModal();
+      };
       p.addEventListener('click', go);
       p.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
     });
@@ -604,6 +683,7 @@
     var close = dlg.querySelector('[data-lb-close]');
     if (close) close.addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.classList.contains('lb')) dlg.close(); });
+    PE.on('langchange', function () { if (dlg.open) show(i); });
   }
 
   /* ── 21b. plates resolve onto their own placeholder ─────── */
@@ -630,8 +710,9 @@
         r.hidden = !ok;
         if (ok) n++;
       });
-      var out = document.querySelector('[data-filter-count]');
-      if (out) out.textContent = String(n).padStart(2, '0');
+      document.querySelectorAll('[data-filter-count]').forEach(function (out) {
+        out.textContent = String(n).padStart(2, '0');
+      });
     });
   }
 
@@ -734,7 +815,7 @@
 
   /* ── 25. go ─────────────────────────────────────────────── */
   function init() {
-    chrome(); observe(); depthAxis(); rail(); hud(); receptive();
+    chrome(); observe(); depthAxis(); rail(); hud(); receptive(); eventLinks();
     consolePanel(); lightbox(); plates(); filters(); boot();
     /* the first screen resolves without waiting for the observer */
     var first = document.querySelector('.hero, .masthead');

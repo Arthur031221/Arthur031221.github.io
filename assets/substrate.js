@@ -322,13 +322,29 @@
     cv.width = W; cv.height = H;
 
     if (G) {
-      SW = Math.max(96, Math.min(400, Math.round(cw / 3.6)));
-      SH = Math.max(64, Math.round(SW / aspect));
+      var nextSW = Math.max(96, Math.min(400, Math.round(cw / 3.6)));
+      var nextSH = Math.max(64, Math.round(nextSW / aspect));
       var gl = G.gl;
+      /* Allocate both targets before swapping. Mobile rotation can
+         transiently reject one framebuffer; the loop never sees half a pair. */
+      var nextA = G.target(nextSW, nextSH);
+      var nextB = G.target(nextSW, nextSH);
+      if (!nextA || !nextB) {
+        if (nextA) { gl.deleteTexture(nextA.tex); gl.deleteFramebuffer(nextA.fb); }
+        if (nextB) { gl.deleteTexture(nextB.tex); gl.deleteFramebuffer(nextB.fb); }
+        if (A) { gl.deleteTexture(A.tex); gl.deleteFramebuffer(A.fb); }
+        if (B) { gl.deleteTexture(B.tex); gl.deleteFramebuffer(B.fb); }
+        A = B = null;
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        toCPU();
+        return;
+      }
       if (A) { gl.deleteTexture(A.tex); gl.deleteFramebuffer(A.fb); }
       if (B) { gl.deleteTexture(B.tex); gl.deleteFramebuffer(B.fb); }
-      A = G.target(SW, SH);
-      B = G.target(SW, SH);
+      A = nextA;
+      B = nextB;
+      SW = nextSW;
+      SH = nextSH;
       var t = [A, B];
       for (var i = 0; i < 2; i++) {
         if (!t[i]) continue;
@@ -364,7 +380,7 @@
   });
   addEventListener('resize', PE.debounce(function () {
     resize();
-    if (PE.reduced || mode) settle();
+    if (PE.reduced) settle();
     else if (cpu) drawCPU();
     else startLoop();
   }, 200), { passive: true });
@@ -373,7 +389,7 @@
      It wanders the water on slow noise and touches down on a beat,
      laying alternate crimson and blue — a third touch of sumi now
      and then — exactly as the marbler's two brushes alternate.  */
-  var touches = [], rnd = PE.rng(0x4b1d), stroke = 0, nextTouch = 900;
+  var touches = [], rnd = PE.rng(0x4b1d), stroke = 0, nextTouch = 520;
   var DYES = [
     [1, 0, 0],   /* 胭脂 */
     [0, 1, 0],   /* 紺青 */
@@ -421,7 +437,7 @@
   function ambient(dt) {
     nextTouch -= dt;
     if (nextTouch > 0) return;
-    nextTouch = 1100 + rnd() * 1400;
+    nextTouch = 720 + rnd() * 980;
     var b = brushAt(time);
     touch(b.x, b.y, 0.045 + rnd() * 0.065, 0.6 + rnd() * 0.35, DYES[stroke++ % DYES.length]);
   }
@@ -466,6 +482,7 @@
   var dyeBuf = new Float32Array(MAXTOUCH * 4);
 
   function step() {
+    if (!G || !A || !B) return;
     var gl = G.gl, u = G.uSim;
     gl.useProgram(G.pSim);
     gl.bindFramebuffer(gl.FRAMEBUFFER, B.fb);
@@ -497,6 +514,7 @@
   }
 
   function present() {
+    if (!G || !A) return;
     var gl = G.gl, u = G.uDraw;
     gl.useProgram(G.pDraw);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -574,11 +592,11 @@
 
   cv.classList.add('live');
 
-  var vitals = 0;
+  var vitals = 0, simAcc = 0;
   function startLoop() {
-    if (!G || PE.reduced || mode || PE.loop.has('substrate')) return;
+    if (!G || PE.reduced || PE.loop.has('substrate')) return;
     PE.loop.add('substrate', function (dt) {
-      if (!G || PE.reduced || mode) {
+      if (!G || PE.reduced) {
         PE.loop.remove('substrate');
         return;
       }
@@ -598,10 +616,15 @@
         }, 400);
         return;
       }
-      time += dt * 0.0026;
-      if (seeded < 1) { seeded = 1; seedMarble(14, 18); }
+      /* Day is living pigment on paper, night is ink on water. Both move;
+         the different rates keep the two registers distinct. */
+      time += dt * (mode ? 0.00325 : 0.00435);
+      if (seeded < 1) { seeded = 1; seedMarble(18, 22); }
       ambient(dt);
-      step();
+      /* Simulation age used to follow the monitor refresh rate. A fixed
+         60 Hz water clock keeps 30/60/120 Hz screens visually equivalent. */
+      simAcc += Math.min(dt, 50);
+      while (simAcc >= 16.667) { step(); simAcc -= 16.667; }
       present();
     });
   }
@@ -612,7 +635,7 @@
       if (cpu) drawCPU();
       return;
     }
-    if (PE.reduced || mode) {
+    if (PE.reduced) {
       PE.loop.remove('substrate');
       settle();
       return;

@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
 <link rel="canonical" href="https://arthur031221.github.io/research.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Research — Chi-Wei Lee">
@@ -17,17 +17,21 @@
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
 <meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1635">
+<meta property="og:image:height" content="736">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
-<link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2?v=64092ca6" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2?v=fa41c43a" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=07e5df6b">
+<link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=bdb04f47">
 <script>document.documentElement.classList.remove('no-js');try{var m=localStorage.getItem('pe.mode');if(!m)m=matchMedia('(prefers-color-scheme: light)').matches?'fixed':'vivo';document.documentElement.setAttribute('data-mode',m);var l=localStorage.getItem('pe.lang');if(l)document.documentElement.setAttribute('lang',l==='zh'?'zh-Hant':'en');}catch(e){}</script>
 
 </head>
 <body>
 
 <canvas id="substrate" aria-hidden="true"></canvas>
+<canvas id="bubbles" aria-hidden="true"></canvas>
 <div id="vignette" aria-hidden="true"></div>
 <div id="wash" aria-hidden="true"></div>
 <div id="reenc" aria-hidden="true"></div>
@@ -41,9 +45,9 @@
     <span class="sep" aria-hidden="true">/</span>
     <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
-  <nav aria-label="Sections"><a href="index.html"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
+  <nav aria-label="Sections" data-aria-en="Sections" data-aria-zh="網站區段"><a href="index.html"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
   <div class="ctl">
-    <button type="button" data-act="console" aria-label="Open command console" data-rf="console">
+    <button type="button" data-act="console" aria-label="Open command console" data-aria-en="Open command console" data-aria-zh="開啟指令控制台" data-rf="console">
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
@@ -61,29 +65,25 @@
   <h1 class="err"><span class="en">RESEARCH</span><span class="zh">研究</span></h1>
   <p class="lede err"><span class="en">One programme across theory and neural data: memory as denoising, posterior sampling, fMRI decoding, and controllable generation.</span><span class="zh">一個橫跨理論與神經資料的研究計畫：記憶即去噪、後驗取樣、fMRI 解碼與可控生成。</span></p>
 </div>
-<figure class="artwork chapter-art" data-art="research"><img src="img/art/research.webp" srcset="img/art/research-400.webp 400w, img/art/research-800.webp 800w, img/art/research-1200.webp 1200w, img/art/research.webp 2000w" sizes="(max-width:720px) 100vw, 1120px" width="2000" height="750" alt="Four indigo currents meeting around a clear centre" data-alt-en="Four indigo currents meeting around a clear centre" data-alt-zh="四股靛藍墨流在留白中心交會" loading="lazy" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Four threads" data-cmd-zh="四條線"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Four threads</span><span class="zh">四條線</span></h2></div><div class="grid c2 thread-deck"><article class="unit thread-card err" id="pc">
-  <div class="plate"><img src="img/art/thread-pc.webp" srcset="img/art/thread-pc-400.webp 400w, img/art/thread-pc-800.webp 800w, img/art/thread-pc.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Two currents of ink meeting" data-alt-en="Two currents of ink meeting" data-alt-zh="兩股墨流相會" loading="lazy" decoding="async" class=""></div>
+<figure class="artwork chapter-art" data-art="research"><img src="img/art/research.webp" srcset="img/art/research-400.webp 400w, img/art/research-800.webp 800w, img/art/research-1200.webp 1200w, img/art/research.webp 1823w" sizes="(max-width:720px) 100vw, 1120px" width="1823" height="684" fetchpriority="high" alt="Four indigo currents meeting around a clear centre" data-alt-en="Four indigo currents meeting around a clear centre" data-alt-zh="四股靛藍墨流在留白中心交會" loading="eager" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure><section class="sec" id="evidence" data-rail="EVIDENCE" data-cmd="1" data-cmd-en="Where the work happens" data-cmd-zh="研究發生的地方"><div class="sec-h err"><span class="lay">L1b</span><h2><span class="en">Where the work happens</span><span class="zh">研究發生的地方</span></h2><span class="note"><span class="en">NTHU · Academia Sinica · UCLA</span><span class="zh">清華 · 中研院 · UCLA</span></span></div><div class="memory-river memory-river--research err"><figure class="memory-frame memory-frame--wide" data-treatment="natural" data-event="ucla-2026" style="--media-ratio:1600 / 1200" data-lb="img/moments/ucla-delegation.webp" data-lb-group="research" data-lb-width="1600" data-lb-height="1200" data-cap-en="Taiwan Global Pathfinders delegation at UCLA Samueli" data-cap-zh="Taiwan Global Pathfinders 代表團於 UCLA Samueli"><div class="memory-media"><img src="img/moments/ucla-delegation.webp" srcset="img/moments/ucla-delegation-400.webp 400w, img/moments/ucla-delegation-800.webp 800w, img/moments/ucla-delegation-1200.webp 1200w, img/moments/ucla-delegation.webp 1600w" sizes="(max-width:760px) 100vw, 58vw" width="1600" height="1200" style="object-position:50% 50%" alt="Taiwan Global Pathfinders delegation at UCLA Samueli" data-alt-en="Taiwan Global Pathfinders delegation at UCLA Samueli" data-alt-zh="Taiwan Global Pathfinders 代表團於 UCLA Samueli" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">01</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">Taiwan Global Pathfinders delegation at UCLA Samueli</span><span class="zh">Taiwan Global Pathfinders 代表團於 UCLA Samueli</span></span><span class="memory-slug">UCLA SAMUELI · 2026.07.07 · PATHFINDERS</span></figcaption></figure><figure class="memory-frame memory-frame--standard" data-treatment="natural" data-event="ucla-2026" style="--media-ratio:1600 / 1200" data-lb="img/moments/ucla-lab.webp" data-lb-group="research" data-lb-width="1600" data-lb-height="1200" data-cap-en="A research exchange gathering at UCLA, July 2026" data-cap-zh="UCLA 研究交流合影，2026 年 7 月"><div class="memory-media"><img src="img/moments/ucla-lab.webp" srcset="img/moments/ucla-lab-400.webp 400w, img/moments/ucla-lab-800.webp 800w, img/moments/ucla-lab-1200.webp 1200w, img/moments/ucla-lab.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1200" style="object-position:50% 48%" alt="A research exchange gathering at UCLA, July 2026" data-alt-en="A research exchange gathering at UCLA, July 2026" data-alt-zh="UCLA 研究交流合影，2026 年 7 月" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">02</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">A research exchange gathering at UCLA, July 2026</span><span class="zh">UCLA 研究交流合影，2026 年 7 月</span></span><span class="memory-slug">UCLA · 2026.07.27 · RESEARCH EXCHANGE</span></figcaption></figure><figure class="memory-frame memory-frame--standard" data-treatment="natural" data-event="iis-2025" style="--media-ratio:1600 / 1067" data-lb="img/moments/academia-sinica.webp" data-lb-group="research" data-lb-width="1600" data-lb-height="1067" data-cap-en="The 2025 summer research cohort at Academia Sinica IIS" data-cap-zh="中研院資訊所 2025 暑期研究實習合影"><div class="memory-media"><img src="img/moments/academia-sinica.webp" srcset="img/moments/academia-sinica-400.webp 400w, img/moments/academia-sinica-800.webp 800w, img/moments/academia-sinica-1200.webp 1200w, img/moments/academia-sinica.webp 1600w" sizes="(max-width:520px) 100vw, (max-width:760px) 50vw, 36vw" width="1600" height="1067" style="object-position:50% 49%" alt="The 2025 summer research cohort at Academia Sinica IIS" data-alt-en="The 2025 summer research cohort at Academia Sinica IIS" data-alt-zh="中研院資訊所 2025 暑期研究實習合影" loading="lazy" decoding="async" class=""><span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div><figcaption><span class="memory-no">03</span><span class="memory-type"><span class="en">Event photograph</span><span class="zh">現場影像</span></span><span class="memory-caption"><span class="en">The 2025 summer research cohort at Academia Sinica IIS</span><span class="zh">中研院資訊所 2025 暑期研究實習合影</span></span><span class="memory-slug">ACADEMIA SINICA IIS · 2025.08.28</span></figcaption></figure></div></section><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Four threads" data-cmd-zh="四條線"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Four threads</span><span class="zh">四條線</span></h2></div><div class="grid c2 thread-deck"><article class="unit thread-card err" id="pc">
   <div class="tc-body">
     <div class="idx"><span class="n">01</span><span class="en">Theory</span><span class="zh">理論</span></div>
     <h3><span class="en">Predictive coding needs a memory</span><span class="zh">預測編碼需要記憶</span></h3>
     <p><span class="en">Predictive coding supplies a generative hierarchy; modern Hopfield networks supply content-addressable retrieval. A Tweedie–Hopfield correspondence shows that both rely on the same Bayesian denoiser. HOPE combines hierarchical inference, temporal prediction, and layer-wise memory in one energy trained with local Hebbian updates.</span><span class="zh">預測編碼提供生成式階層，現代 Hopfield 網路提供內容定址檢索。Tweedie–Hopfield 對應關係顯示，兩者依賴同一個貝氏去噪器。HOPE 以單一能量函數整合階層推論、時間預測與逐層記憶，並以局部 Hebbian 更新學習。</span></p>
   </div>
 </article><article class="unit thread-card err" id="langevin">
-  <div class="plate"><img src="img/art/thread-langevin.webp" srcset="img/art/thread-langevin-400.webp 400w, img/art/thread-langevin-800.webp 800w, img/art/thread-langevin.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink circling a ring of wells" data-alt-en="Ink circling a ring of wells" data-alt-zh="墨繞著八個勢阱迴旋" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">02</span><span class="en">Theory</span><span class="zh">理論</span></div>
     <h3><span class="en">Inference should sample, not just find a mode</span><span class="zh">推論應該取樣，而不只尋找峰值</span></h3>
     <p><span class="en">Deterministic temporal predictive coding returns only a posterior mode. Coupling overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation instead makes the full filtering posterior the flow&#x27;s stationary density, preserving multiple plausible explanations.</span><span class="zh">確定性的時間預測編碼只回傳後驗的一個峰值。將 overdamped Langevin 動力學與 preconditioner 透過漲落–耗散關係配對，能讓完整的濾波後驗成為流的穩態分佈，保留多個合理解釋。</span></p>
   </div>
 </article><article class="unit thread-card err" id="fmri">
-  <div class="plate"><img src="img/art/thread-fmri.webp" srcset="img/art/thread-fmri-400.webp 400w, img/art/thread-fmri-800.webp 800w, img/art/thread-fmri.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Threads of ink pulled into a loose lattice" data-alt-en="Threads of ink pulled into a loose lattice" data-alt-zh="墨絲被拉成疏鬆的網格" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">03</span><span class="en">Neural data</span><span class="zh">神經資料</span></div>
     <h3><span class="en">Reading space out of the brain</span><span class="zh">從大腦裡讀出空間</span></h3>
     <p><span class="en">At the HMI Lab, I build generative decoders that reconstruct 3D spatial representations from fMRI. The goal is not just to predict a coordinate, but to quantify what the neural signal supports and how uncertain that reconstruction remains.</span><span class="zh">在 HMI Lab，我建立生成式解碼器，從 fMRI 訊號重建三維空間表徵。目標不只是預測一個座標，還要量化神經訊號支持哪些重建，以及重建仍帶有多少不確定性。</span></p>
   </div>
 </article><article class="unit thread-card err" id="diffusion">
-  <div class="plate"><img src="img/art/thread-diffusion.webp" srcset="img/art/thread-diffusion-400.webp 400w, img/art/thread-diffusion-800.webp 800w, img/art/thread-diffusion.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink drifting from crisp to diffuse" data-alt-en="Ink drifting from crisp to diffuse" data-alt-zh="墨由清晰漂向瀰散" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">04</span><span class="en">Generative</span><span class="zh">生成模型</span></div>
     <h3><span class="en">Control without losing the picture</span><span class="zh">在不失去畫面的前提下控制</span></h3>
@@ -94,23 +94,23 @@
       <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
-      <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
+      <a href="CV.pdf">CV.PDF</a>
       <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
 </div>
 
-<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
+<nav id="drawer" aria-label="Mobile sections" data-aria-en="Mobile sections" data-aria-zh="行動版網站區段" aria-hidden="true" inert><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
 
-<dialog id="console" aria-label="Command console">
+<dialog id="console" aria-label="Command console" data-aria-en="Command console" data-aria-zh="指令控制台">
   <div class="box">
     <div class="bh"><span class="led"></span><span class="en">STIMULUS CONSOLE</span><span class="zh">刺激控制台</span><span class="esc">ESC</span></div>
-    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" aria-label="Command">
-    <ul role="listbox"></ul>
+    <input type="text" autocomplete="off" spellcheck="false" placeholder="Type a command…" data-placeholder-en="Type a command…" data-placeholder-zh="輸入指令…" aria-label="Command" data-aria-en="Command" data-aria-zh="指令" role="combobox" aria-autocomplete="list" aria-controls="command-list" aria-expanded="false">
+    <ul id="command-list" role="listbox"></ul>
   </div>
 </dialog>
 
-<dialog id="lightbox" aria-label="Photograph">
+<dialog id="lightbox" aria-label="Photograph" data-aria-en="Photograph" data-aria-zh="照片檢視器">
   <div class="lb">
     <div class="lb-media" data-lb-media></div>
     <div class="lbar">
@@ -118,18 +118,19 @@
       <span class="cap"></span>
       <span class="sp">
         <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
-        <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
-        <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
+        <button type="button" data-lb-nav="prev" aria-label="Previous" data-aria-en="Previous photograph" data-aria-zh="上一張照片">← <span class="en">PREV</span><span class="zh">上一張</span></button>
+        <button type="button" data-lb-nav="next" aria-label="Next" data-aria-en="Next photograph" data-aria-zh="下一張照片"><span class="en">NEXT</span><span class="zh">下一張</span> →</button>
       </span>
     </div>
   </div>
 </dialog>
 
 <noscript>
-  <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
+  <style>#substrate,#bubbles,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
-<script src="assets/runtime.js?v=2e543db0" defer></script>
-<script src="assets/substrate.js?v=4ae11a11" defer></script>
+<script src="assets/runtime.js?v=3ad61094" defer></script>
+<script src="assets/substrate.js?v=7973cc77" defer></script>
+<script src="assets/bubbles.js?v=498d6102" defer></script>
 </body>
 </html>

@@ -16,7 +16,7 @@
   "email": "levi74108520963@gmail.com",
   "github": "https://github.com/Arthur031221",
   "site": "https://arthur031221.github.io/",
-  "cv": "Chi-Wei_Lee_CV.pdf",
+  "cv": "CV.pdf",
   "location": {
    "en": "Taiwan · currently visiting UCLA",
    "zh": "台灣 · 現於 UCLA 訪問"
@@ -149,7 +149,7 @@
    "status": "review",
    "title": "Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser",
    "authors": "C.-W. Lee (co-first author) et al.",
-   "venue": "Preprint · under review",
+      "venue": "NeurIPS 2026 · under review",
    "badge": {
     "en": "Under review",
     "zh": "審查中"
@@ -164,7 +164,7 @@
    "status": "review",
    "title": "Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities",
    "authors": "C.-W. Lee (co-first author) et al.",
-   "venue": "Preprint · under review",
+      "venue": "NeurIPS 2026 · under review",
    "badge": {
     "en": "Under review",
     "zh": "審查中"
@@ -225,6 +225,7 @@
  ],
  "awards": [
   {
+   "id": "meiyichi-2026",
    "year": "2026",
    "title": {
     "en": "Mei Yi-Chi Memorial Medal",
@@ -235,6 +236,8 @@
     "zh": "國立清華大學"
    },
    "hero": true,
+   "media": ["meiyichi-medal"],
+   "evidence": [],
    "note": {
     "en": "NTHU's highest honour for graduating students — one of eight recipients university-wide and the sole recipient from the College of Science.",
     "zh": "清華大學畢業生最高榮譽——全校八位獲獎者之一，也是理學院唯一獲獎者。"
@@ -242,6 +245,7 @@
    "url": "https://dsa.site.nthu.edu.tw/p/404-1266-142677.php?Lang=zh-tw"
   },
   {
+   "id": "nsf-y1-2025",
    "year": "2025",
    "title": {
     "en": "2nd overall — NSF HDR ML Challenge",
@@ -252,6 +256,8 @@
     "zh": "NSF HDR ML Challenge · 首屆"
    },
    "hero": true,
+   "media": ["nsf-aaai-welcome"],
+   "evidence": ["nsf-y1-overall-second"],
    "note": {
     "en": "Led a six-person team to second place in the Year 1 overall competition. The challenge drew more than 600 participating teams across its three datasets; we were invited to present at the AAAI-25 Workshop in Philadelphia.",
     "zh": "帶領六人團隊獲首屆總排名第二。該賽事三項資料集合計吸引 600 支以上參賽隊伍；團隊並受邀於費城 AAAI-25 Workshop 發表。"
@@ -259,6 +265,7 @@
    "url": "https://www.nsfhdr.org/html/mlchallenge-y1/leaderboard.html"
   },
   {
+   "id": "nsf-y2-2026",
    "year": "2026",
    "title": {
     "en": "2nd — Imageomics: Sentinel Beetles",
@@ -268,6 +275,8 @@
     "en": "NSF HDR Scientific-MOOD Challenge · Year 2",
     "zh": "NSF HDR Scientific-MOOD Challenge · 第二屆"
    },
+   "media": [],
+   "evidence": ["nsf-y2-imageomics-leaderboard"],
    "note": {
     "en": "Team 20iterations placed second in Imageomics: Sentinel Beetles and tied fourth overall.",
     "zh": "20iterations 團隊於 Imageomics: Sentinel Beetles 項目獲第二名，總排名並列第四。"
@@ -275,6 +284,7 @@
    "url": "https://www.nsfhdr.org/html/mlchallenge-y2/winners.html"
   },
   {
+   "id": "meichu-2025",
    "year": "2025",
    "title": {
     "en": "1st place — Mei-Chu Hackathon",
@@ -282,14 +292,17 @@
    },
    "org": {
     "en": "Maker Track",
-    "zh": "Maker 組"
+    "zh": "創客交流組"
    },
+   "media": ["meichu-first"],
+   "evidence": [],
    "note": {
     "en": "A wearable-and-app system modelling walking trajectories for dementia safety monitoring.",
     "zh": "以穿戴裝置結合行動應用，建模失智症患者的行走軌跡並進行安全監測。"
    }
   },
   {
+   "id": "igem-2023",
    "year": "2023",
    "title": {
     "en": "Gold Medal — iGEM",
@@ -299,6 +312,8 @@
     "en": "NTHU-Taiwan · Dry Lab Lead",
     "zh": "NTHU-Taiwan · Dry Lab 組長"
    },
+   "media": ["igem-stage"],
+   "evidence": ["igem-gold-certificate"],
    "note": {
     "en": "Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.",
     "zh": "以機器學習進行大腸癌篩檢，並整合 Arduino 自動化診斷裝置；成果於巴黎發表。"
@@ -313,42 +328,6 @@
    },
    "place": "Philadelphia · New York",
    "date": "2025.02.28 – 03.09",
-   "hero": "img/NSF1",
-   "photos": [
-    {
-     "src": "img/NSF1",
-     "fx": "50%",
-     "fy": "34%",
-     "role": "hero",
-     "slug": "PHL · 39.95 N, 75.16 W · 2025-03 · NSF HDR",
-     "cap": {
-      "en": "The six of us — team 20iterations",
-      "zh": "我們六人——20iterations 團隊"
-     }
-    },
-    {
-     "src": "img/NSF0",
-     "fx": "50%",
-     "fy": "42%",
-     "role": "plate",
-     "slug": "PHL · AAAI-25 WORKSHOP · 2025-03-01",
-     "cap": {
-      "en": "AAAI-25 workshop, Philadelphia",
-      "zh": "費城 AAAI-25 workshop"
-     }
-    },
-    {
-     "src": "img/NSF2",
-     "fx": "50%",
-     "fy": "40%",
-     "role": "bleed",
-     "slug": "PHL · YEAR 1 OVERALL RUNNER-UP · 2025-03",
-     "cap": {
-      "en": "Year 1 overall runner-up",
-      "zh": "首屆總排名第二"
-     }
-    }
-   ],
    "zh": [
     "報名 NSF HDR ML Challenge 時，距離提交只剩 20 天。我找來五位隊友組成 20iterations，分頭處理重力波、蝴蝶雜交種與海平面異常偵測。主辦方指出，三項資料集合計有 600 支以上參賽隊伍；我們在完成全部三題的總排名中位居第二，並受邀前往費城的 AAAI-25 Workshop。",
     "這 20 天的核心不是一次命中的模型，而是反覆拆解任務與評估規則：建立 baseline、檢查資料切分、追蹤錯誤，再把每次失敗變成下一輪實驗。身為六人團隊的隊長，我負責整合三個子題的進度與決策，確保每個結果都能被重現與說明。",
@@ -369,53 +348,6 @@
    },
    "place": "Paris, France",
    "date": "2023.10.31 – 11.11",
-   "hero": "img/igem2",
-   "photos": [
-    {
-     "src": "img/igem2",
-     "fx": "50%",
-     "fy": "38%",
-     "role": "hero",
-     "slug": "CDG · 48.86 N, 2.35 E · 2023-11 · iGEM",
-     "cap": {
-      "en": "Sixteen people, one gold medal",
-      "zh": "十六個人，一面金牌"
-     }
-    },
-    {
-     "src": "img/igem1",
-     "fx": "50%",
-     "fy": "45%",
-     "role": "detail",
-     "slug": "NTHU · DRY LAB · 2023",
-     "cap": {
-      "en": "The Dry Lab bench",
-      "zh": "Dry Lab 的工作現場"
-     }
-    },
-    {
-     "src": "img/igem3",
-     "fx": "50%",
-     "fy": "42%",
-     "role": "plate",
-     "slug": "CDG · GRAND JAMBOREE · 2023-11",
-     "cap": {
-      "en": "Presenting the diagnostic device",
-      "zh": "展示我們的診斷裝置"
-     }
-    },
-    {
-     "src": "img/igem0",
-     "fx": "50%",
-     "fy": "40%",
-     "role": "bleed",
-     "slug": "CDG · 2023-11-11 · GOLD",
-     "cap": {
-      "en": "iGEM Grand Jamboree, Paris",
-      "zh": "巴黎 iGEM Grand Jamboree"
-     }
-    }
-   ],
    "zh": [
     "2023 年，我與另外十五位隊友組成 NTHU-Taiwan，從題目選定、文獻與模型，到硬體、軟體與 wiki，完成一套以機器學習協助大腸癌早期篩檢的系統。我們把診斷模型接上 Arduino 裝置，前往巴黎參加 iGEM Grand Jamboree，最終獲得金牌。",
     "我擔任 Dry Lab 組長，也是組內最年輕的成員。我的工作不只包括模型與技術決策，也要在不同子團隊之間對齊介面、時程與證據，讓演算法、裝置與簡報最後能說成同一個完整故事。",
@@ -430,11 +362,359 @@
    ]
   }
  },
+ "media": {
+  "portrait-philadelphia": {
+   "src": "img/moments/portrait-philadelphia",
+   "event": "nsf-y1-2025",
+   "kind": "portrait",
+   "treatment": "natural",
+   "href": "about.html",
+   "fx": "50%",
+   "fy": "46%",
+   "slug": "PHILADELPHIA · 2025.03 · BETWEEN SESSIONS",
+   "cap": {
+    "en": "A quiet hour between sessions in Philadelphia, March 2025",
+    "zh": "費城行程的會議空檔，2025 年 3 月"
+   }
+  },
+  "meiyichi-medal": {
+   "src": "img/moments/meiyichi-medal",
+   "event": "meiyichi-2026",
+   "kind": "award",
+   "treatment": "natural",
+   "href": "record.html#meiyichi-2026",
+   "fx": "52%",
+   "fy": "45%",
+   "slug": "NTHU · 2026.05.30 · MEI YI-CHI MEDAL",
+   "cap": {
+    "en": "With the Mei Yi-Chi Memorial Medal at NTHU, May 2026",
+    "zh": "於清華大學手持梅貽琦紀念獎章，2026 年 5 月"
+   }
+  },
+  "nthu-graduation": {
+   "src": "img/moments/nthu-graduation",
+   "event": "",
+   "kind": "milestone",
+   "treatment": "natural",
+   "href": "about.html#four-years",
+   "fx": "50%",
+   "fy": "46%",
+   "slug": "NTHU PHYSICS · 2026.04 · GRADUATION",
+   "cap": {
+    "en": "NTHU Physics graduates, one frame before the caps came down",
+    "zh": "清華物理畢業合影——學士帽落下前的一幀"
+   }
+  },
+  "meichu-first": {
+   "src": "img/moments/meichu-first",
+   "event": "meichu-2025",
+   "kind": "award",
+   "treatment": "natural",
+   "href": "record.html#meichu-2025",
+   "fx": "51%",
+   "fy": "49%",
+   "slug": "HSINCHU · 2025 · MAKER TRACK FIRST PLACE",
+   "cap": {
+    "en": "First place, Maker Track, 2025 Mei-Chu Hackathon",
+    "zh": "2025 梅竹黑客松創客交流組第一名"
+   }
+  },
+  "nsf-team": {
+   "src": "img/moments/nsf-team",
+   "event": "nsf-y1-2025",
+   "kind": "team",
+   "treatment": "natural",
+   "href": "field-nsf.html",
+   "fx": "50%",
+   "fy": "47%",
+   "slug": "NTHU · 2025.02.27 · TEAM 20ITERATIONS",
+   "cap": {
+    "en": "The six members of team 20iterations before Philadelphia",
+    "zh": "前往費城前的 20iterations 六人團隊"
+   }
+  },
+  "nsf-aaai-welcome": {
+   "src": "img/moments/nsf-aaai-welcome",
+   "event": "nsf-y1-2025",
+   "kind": "field",
+   "treatment": "natural",
+   "href": "field-nsf.html",
+   "fx": "50%",
+   "fy": "45%",
+   "slug": "PHILADELPHIA · 2025.03.04 · AAAI-25",
+   "cap": {
+    "en": "Team 20iterations at the AAAI-25 workshop in Philadelphia",
+    "zh": "20iterations 團隊於費城 AAAI-25 workshop"
+   }
+  },
+  "nsf-talk": {
+   "src": "img/moments/nsf-talk",
+   "event": "nsf-y1-2025",
+   "kind": "presentation",
+   "treatment": "natural",
+   "href": "field-nsf.html",
+   "fx": "58%",
+   "fy": "43%",
+   "slug": "AAAI-25 · 2025.03 · PODIUM",
+   "cap": {
+    "en": "Presenting the NSF HDR challenge work at AAAI-25",
+    "zh": "於 AAAI-25 發表 NSF HDR 挑戰成果"
+   }
+  },
+  "nsf-workshop": {
+   "src": "img/moments/nsf-workshop",
+   "event": "nsf-y1-2025",
+   "kind": "field",
+   "treatment": "natural",
+   "href": "field-nsf.html",
+   "fx": "50%",
+   "fy": "47%",
+   "slug": "PHILADELPHIA · 2025.03.04 · WORKSHOP",
+   "cap": {
+    "en": "The AAAI-25 workshop room after the final session",
+    "zh": "AAAI-25 workshop 最後一場結束後的全體合影"
+   }
+  },
+  "nsf-philadelphia": {
+   "src": "img/moments/nsf-philadelphia",
+   "event": "nsf-y1-2025",
+   "kind": "journey",
+   "treatment": "aizuri",
+   "href": "field-nsf.html",
+   "fx": "50%",
+   "fy": "50%",
+   "slug": "PHILADELPHIA · 2025.03 · AFTER THE WORK",
+   "cap": {
+    "en": "Philadelphia at sunset, after the workshop",
+    "zh": "workshop 結束後的費城夕景"
+   }
+  },
+  "nsf-new-york": {
+   "src": "img/moments/nsf-new-york",
+   "event": "nsf-y1-2025",
+   "kind": "journey",
+   "treatment": "natural",
+   "href": "field-nsf.html",
+   "fx": "50%",
+   "fy": "48%",
+   "slug": "NEW YORK · 2025.03 · MANHATTAN BRIDGE",
+   "cap": {
+    "en": "Five teammates beneath Manhattan Bridge during the New York leg",
+    "zh": "紐約行程中，五位隊友在曼哈頓橋下"
+   }
+  },
+  "igem-eiffel-team": {
+   "src": "img/moments/igem-eiffel-team",
+   "event": "igem-2023",
+   "kind": "journey",
+   "treatment": "natural",
+   "href": "field-igem.html",
+   "fx": "50%",
+   "fy": "48%",
+   "slug": "PARIS · 2023.11 · NTHU-TAIWAN",
+   "cap": {
+    "en": "NTHU-Taiwan beneath the Eiffel Tower during iGEM 2023",
+    "zh": "iGEM 2023 行程中，NTHU-Taiwan 團隊在艾菲爾鐵塔下"
+   }
+  },
+  "igem-stage": {
+   "src": "img/moments/igem-stage",
+   "event": "igem-2023",
+   "kind": "field",
+   "treatment": "natural",
+   "href": "field-igem.html",
+   "fx": "50%",
+   "fy": "42%",
+   "slug": "PARIS EXPO · 2023.11.02 · iGEM",
+   "cap": {
+    "en": "At the iGEM 2023 Grand Jamboree stage in Paris",
+    "zh": "於巴黎 iGEM 2023 Grand Jamboree 舞台"
+   }
+  },
+  "igem-work": {
+   "src": "img/moments/igem-work",
+   "event": "igem-2023",
+   "kind": "process",
+   "treatment": "natural",
+   "href": "field-igem.html",
+   "fx": "51%",
+   "fy": "44%",
+   "slug": "GRAND JAMBOREE · 2023.11.04 · DRY LAB",
+   "cap": {
+    "en": "Working through the final details at the Grand Jamboree",
+    "zh": "Grand Jamboree 現場校對最後細節"
+   }
+  },
+  "igem-eiffel-portrait": {
+   "src": "img/moments/igem-eiffel-portrait",
+   "event": "igem-2023",
+   "kind": "journey",
+   "treatment": "aizuri",
+   "href": "field-igem.html",
+   "fx": "50%",
+   "fy": "48%",
+   "slug": "PARIS · 2023.11 · AFTER THE JAMBOREE",
+   "cap": {
+    "en": "Paris after the Grand Jamboree",
+    "zh": "Grand Jamboree 之後的巴黎"
+   }
+  },
+  "igem-team-gold": {
+   "src": "img/igem2",
+   "event": "igem-2023",
+   "kind": "team",
+   "treatment": "natural",
+   "href": "field-igem.html",
+   "fx": "50%",
+   "fy": "38%",
+   "slug": "NTHU-TAIWAN · 2023 · GOLD",
+   "cap": {
+    "en": "Sixteen people, one iGEM Gold Medal",
+    "zh": "十六個人，一面 iGEM 金牌"
+   }
+  },
+  "igem-device": {
+   "src": "img/igem3",
+   "event": "igem-2023",
+   "kind": "presentation",
+   "treatment": "natural",
+   "href": "field-igem.html",
+   "fx": "50%",
+   "fy": "42%",
+   "slug": "PARIS · 2023.11 · DIAGNOSTIC DEVICE",
+   "cap": {
+    "en": "Presenting the Arduino-integrated diagnostic device",
+    "zh": "展示整合 Arduino 的診斷裝置"
+   }
+  },
+  "ucla-delegation": {
+   "src": "img/moments/ucla-delegation",
+   "event": "ucla-2026",
+   "kind": "research",
+   "treatment": "natural",
+   "href": "research.html#evidence",
+   "fx": "50%",
+   "fy": "50%",
+   "slug": "UCLA SAMUELI · 2026.07.07 · PATHFINDERS",
+   "cap": {
+    "en": "Taiwan Global Pathfinders delegation at UCLA Samueli",
+    "zh": "Taiwan Global Pathfinders 代表團於 UCLA Samueli"
+   }
+  },
+  "ucla-lab": {
+   "src": "img/moments/ucla-lab",
+   "event": "ucla-2026",
+   "kind": "research",
+   "treatment": "natural",
+   "href": "research.html#evidence",
+   "fx": "50%",
+   "fy": "48%",
+   "slug": "UCLA · 2026.07.27 · RESEARCH EXCHANGE",
+   "cap": {
+    "en": "A research exchange gathering at UCLA, July 2026",
+    "zh": "UCLA 研究交流合影，2026 年 7 月"
+   }
+  },
+  "academia-sinica": {
+   "src": "img/moments/academia-sinica",
+   "event": "iis-2025",
+   "kind": "research",
+   "treatment": "natural",
+   "href": "research.html#diffusion",
+   "fx": "50%",
+   "fy": "49%",
+   "slug": "ACADEMIA SINICA IIS · 2025.08.28",
+   "cap": {
+    "en": "The 2025 summer research cohort at Academia Sinica IIS",
+    "zh": "中研院資訊所 2025 暑期研究實習合影"
+   }
+  },
+  "underwater": {
+   "src": "img/moments/underwater",
+   "event": "life-2024",
+   "kind": "life",
+   "treatment": "aizuri",
+   "href": "about.html#four-years",
+   "fx": "50%",
+   "fy": "48%",
+   "slug": "BELOW THE SURFACE · 2024.03",
+   "cap": {
+    "en": "Below the surface, March 2024",
+    "zh": "水面之下，2024 年 3 月"
+   }
+  },
+  "ucla-football": {
+   "src": "img/moments/ucla-football",
+   "event": "ucla-2026",
+   "kind": "life",
+   "treatment": "natural",
+   "href": "about.html#four-years",
+   "fx": "50%",
+   "fy": "54%",
+   "slug": "UCLA · 2026.07.12 · OFF THE CLOCK",
+   "cap": {
+    "en": "Off the clock at UCLA, July 2026",
+    "zh": "研究之外的 UCLA，2026 年 7 月"
+   }
+  },
+  "igem-gold-certificate": {
+   "src": "img/evidence/igem-gold-certificate",
+   "event": "igem-2023",
+   "kind": "certificate",
+   "treatment": "certificate",
+   "label": {
+    "en": "Certificate · primary evidence",
+    "zh": "證書 · 主要佐證"
+   },
+   "cap": {
+    "en": "iGEM 2023 Gold Medal participation certificate",
+    "zh": "iGEM 2023 金牌參賽證書"
+   }
+  },
+  "nsf-y1-overall-second": {
+   "src": "img/evidence/nsf-y1-overall-second",
+   "event": "nsf-y1-2025",
+   "kind": "certificate",
+   "treatment": "certificate",
+   "label": {
+    "en": "Certificate · primary evidence",
+    "zh": "證書 · 主要佐證"
+   },
+   "cap": {
+    "en": "NSF HDR ML Challenge Year 1 Overall Second Place certificate",
+    "zh": "NSF HDR ML Challenge 首屆總排名第二證書"
+   }
+  },
+  "nsf-y2-imageomics-leaderboard": {
+   "src": "img/evidence/nsf-y2-imageomics-leaderboard",
+   "event": "nsf-y2-2026",
+   "kind": "leaderboard",
+   "treatment": "certificate",
+   "label": {
+    "en": "Leaderboard excerpt · supporting evidence",
+    "zh": "榜單節錄 · 佐證"
+   },
+   "cap": {
+    "en": "Imageomics: Sentinel Beetles leaderboard excerpt showing 20iterations in second place",
+    "zh": "Imageomics：哨兵甲蟲榜單節錄，20iterations 位列第二"
+   }
+  }
+ },
+ "collections": {
+  "home": ["nthu-graduation", "ucla-delegation", "nsf-aaai-welcome", "meichu-first", "igem-stage", "underwater"],
+  "research": ["ucla-delegation", "ucla-lab", "academia-sinica"],
+  "papers": ["nsf-talk", "academia-sinica"],
+  "nsf": ["nsf-team", "nsf-aaai-welcome", "nsf-talk", "nsf-workshop", "nsf-new-york", "nsf-philadelphia"],
+  "igem": ["igem-eiffel-team", "igem-work", "igem-device", "igem-stage", "igem-team-gold", "igem-eiffel-portrait"],
+  "about": ["igem-eiffel-portrait", "underwater", "meichu-first", "nthu-graduation", "ucla-football"]
+ },
  "portrait": {
-  "src": "img/portrait",
+  "src": "img/moments/portrait-philadelphia",
+  "fx": "50%",
+  "fy": "46%",
   "cap": {
-   "en": "Hsinchu, June 2026",
-   "zh": "新竹，2026 年 6 月"
+   "en": "Philadelphia, March 2025",
+   "zh": "費城，2025 年 3 月"
   }
  }
 }
