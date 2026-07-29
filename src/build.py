@@ -52,14 +52,14 @@ TITLES = {
 }
 
 DESCS = {
-    "index":        "Chi-Wei Lee — NeuroAI researcher studying predictive coding, associative memory, and Bayesian inference. NTHU Physics × EECS graduate, currently visiting UCLA.",
-    "research":     "Four research threads: predictive coding with memory, Langevin inference, spatial decoding from fMRI, and controllable diffusion.",
+    "index":        "Chi-Wei Lee — NeuroAI and computer vision researcher working across neuroscience, predictive coding, Bayesian inference, and 3D reconstruction from neural data.",
+    "research":     "Research across neuroscience and computer vision: predictive coding with memory, Langevin inference, 3D reconstruction from fMRI, and controllable diffusion.",
     "publications": "Five papers and preprints by Chi-Wei Lee across NeuroAI, generative modelling, and scientific machine learning.",
     "field":        "Field notes from the NSF HDR ML Challenge in Philadelphia and New York, and the iGEM Grand Jamboree in Paris.",
     "field-nsf":    "Twenty days, twenty iterations — leading a six-person team to second place in the NSF HDR ML Challenge Year 1 overall competition and presenting at AAAI-25 in Philadelphia.",
     "field-igem":   "Sixteen people, one gold medal — leading the Dry Lab team at the iGEM Grand Jamboree in Paris.",
-    "record":       "Twelve research, field and award milestones from 2023 to 2026, grouped into a readable chronology.",
-    "about":        "Chi-Wei Lee — NTHU Physics × EECS (AI Track) graduate, HMI Lab researcher, and UCLA visitor. Seeking NeuroAI PhD positions for 2027 entry.",
+    "record":       "A documented register of Chi-Wei Lee's academic work, research roles, grants, honours, papers and field milestones from 2022 to 2026.",
+    "about":        "Chi-Wei Lee — NeuroAI and computer vision researcher working on neuroscience, generative modelling, and 3D reconstruction from fMRI; currently visiting UCLA.",
     "404":          "The requested page does not exist. Continue to one of the site's six sections.",
 }
 
@@ -225,6 +225,41 @@ def art(name, alt, cls="chapter-art", sizes="(max-width:720px) 100vw, 1120px", l
             f'</figure>')
 
 
+def brush_flourish():
+    """A code-native calligraphic gesture shared by the opening prints.
+
+    The paths are decorative and deliberately stay outside the image files:
+    they can inherit either pigment register, move by a few pixels with the
+    page, and disappear cleanly in print without altering documentary media.
+    """
+    return '''<span class="chapter-tide" aria-hidden="true">
+  <svg viewBox="0 0 1000 420" preserveAspectRatio="none" focusable="false">
+    <path class="brush-stroke brush-stroke--body" pathLength="1" d="M-70 346 C92 236 232 370 402 258 S710 112 1070 226"/>
+    <path class="brush-stroke brush-stroke--dry" pathLength="1" d="M-58 363 C112 268 246 390 421 278 S731 146 1052 244"/>
+    <path class="brush-stroke brush-stroke--hair" pathLength="1" d="M-35 318 C116 212 256 338 420 232 S724 88 1028 204"/>
+    <g class="brush-flecks">
+      <circle cx="134" cy="286" r="5"/><circle cx="153" cy="276" r="2.4"/>
+      <circle cx="684" cy="151" r="4"/><circle cx="703" cy="140" r="2"/>
+      <circle cx="870" cy="188" r="3.4"/><circle cx="888" cy="184" r="1.7"/>
+    </g>
+  </svg>
+</span>'''
+
+
+def calligraphy(phrase, source, gloss):
+    """A four-character colophon: historical line, modern page argument."""
+    spoken = {
+        "en": f'{phrase} — {source}. {gloss["en"]}',
+        "zh": f'{phrase}——{source}。{gloss["zh"]}',
+    }
+    glyphs = "".join(f'<span>{e(char)}</span>' for char in phrase)
+    return (f'<blockquote class="chapter-calligraphy" lang="zh-Hant" '
+            f'aria-label="{e(spoken["en"])}" {attr_bi("aria", spoken)}>'
+            f'<span class="calligraphy-mark" aria-hidden="true">{glyphs}</span>'
+            f'<footer><cite>{e(source)}</cite><span class="calligraphy-gloss">{bi(gloss)}</span></footer>'
+            f'</blockquote>')
+
+
 def cartouche(label_zh, seal="李"):
     """浮世繪 title cartouche: one vertical label block per page, with the
     seal below it — the way a print signs itself."""
@@ -265,10 +300,13 @@ def p_index():
     <div class="acts err">
       <a class="act p" href="research.html"><span class="en">Explore the research</span><span class="zh">閱讀研究</span></a>
       <a class="act" href="CV.pdf"><span class="en">CV (PDF)</span><span class="zh">履歷 PDF</span></a>
+      <a class="act" href="{e(M["linkedin"])}" rel="me noopener">LinkedIn ↗</a>
       <button class="act" type="button" data-act="mail" data-mail="{e(M["email"])}"><span class="en">Copy email</span><span class="zh">複製信箱</span></button>
     </div>
   </div>
   {art("home-ink", {"en": "Indigo ink flowing into cortical contours", "zh": "靛藍墨流化為皮層般的線條"}, cls="hero-art", loading="eager")}
+  {brush_flourish()}
+  {calligraphy("乘物遊心", "《莊子》", {"en": "Let the mind roam with things.", "zh": "讓心隨萬物自在遊行。"})}
 </div>''')
 
     # The visual biography: no gallery filler, only frames that resolve to a
@@ -390,13 +428,17 @@ def pub_row(p, note=True):
 # ── page: research ──────────────────────────────────────────────────
 def p_research():
     o = [f'''
+<div class="chapter-stage chapter-stage--research" data-chapter="02">
 <div class="masthead">
   {cartouche("研究")}
   <div class="band err"><span class="en">SECTION 02 · FOUR THREADS</span><span class="zh">第 02 節 · 四條線</span></div>
   <h1 class="err"><span class="en">RESEARCH</span><span class="zh">研究</span></h1>
-  <p class="lede err"><span class="en">One programme across theory and neural data: memory as denoising, posterior sampling, fMRI decoding, and controllable generation.</span><span class="zh">一個橫跨理論與神經資料的研究計畫：記憶即去噪、後驗取樣、fMRI 解碼與可控生成。</span></p>
+  <p class="lede err"><span class="en">One programme across neuroscience and computer vision: memory as denoising, posterior sampling, 3D reconstruction from fMRI, and controllable generation.</span><span class="zh">一個橫跨腦神經與電腦視覺的研究計畫：記憶即去噪、後驗取樣、從 fMRI 進行 3D 重建，以及可控生成。</span></p>
 </div>
-{art("research", {"en": "Four indigo currents meeting around a clear centre", "zh": "四股靛藍墨流在留白中心交會"})}''']
+{art("research", {"en": "Four indigo currents meeting around a clear centre", "zh": "四股靛藍墨流在留白中心交會"})}
+{brush_flourish()}
+{calligraphy("格物致知", "《大學》", {"en": "Investigate things; extend knowledge.", "zh": "窮究事理，推致其知。"})}
+</div>''']
 
     o.append(section(
         "evidence", "L1b", {"en": "Where the work happens", "zh": "研究發生的地方"},
@@ -459,6 +501,7 @@ def p_publications():
                          pattern=["wide", "standard"], links=False,
                          lightbox=True, group="papers")
     return f'''
+<div class="chapter-stage chapter-stage--papers" data-chapter="03">
 <div class="masthead">
   {cartouche("論文")}
   <div class="band err"><span class="en">SECTION 03 · RESEARCH OUTPUTS</span><span class="zh">第 03 節 · 研究成果</span></div>
@@ -466,6 +509,9 @@ def p_publications():
   <p class="lede err"><span class="en">Five research outputs across predictive coding, Bayesian sampling, controllable generation, scientific imaging, and anomaly-detection benchmarks.</span><span class="zh">五項研究成果，涵蓋預測編碼、貝氏取樣、可控生成、科學影像與異常偵測基準。</span></p>
 </div>
 {art("papers", {"en": "Five quiet layers of indigo pigment settling on paper", "zh": "五層靛藍顏料沉積於紙上"})}
+{brush_flourish()}
+{calligraphy("文以載道", "周敦頤", {"en": "Writing carries the way.", "zh": "以文字承載思想與道路。"})}
+</div>
 {section("evidence", "L3", {"en": "Research in public", "zh": "研究，走到現場"}, proof,
          rail="EVIDENCE", note={"en": "Workshop · research cohort", "zh": "Workshop · 研究實習"})}
 {section("list", "L4", {"en": "Entries", "zh": "條目"}, body, rail="PAPERS")}'''
@@ -491,7 +537,7 @@ def p_field():
         keys = C["collections"][key]
         hero = medium(keys[0])
         cards.append(f'''<a class="unit trip-card err" href="{href}" data-event="{e(hero.get("event", ""))}">
-  <div class="trip-card-media">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="lazy", position=f'{hero.get("fx", "50%")} {hero.get("fy", "50%")}')}<span class="memory-ink" aria-hidden="true"></span></div>
+  <div class="trip-card-media" data-treatment="{e(hero.get("treatment", "natural"))}">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="lazy", position=f'{hero.get("fx", "50%")} {hero.get("fy", "50%")}')}<span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div>
   <div class="trip-card-copy">
     <div class="idx"><span class="n">{e(t["date"])}</span>{e(t["place"])}</div>
     <h3>{bi(t["title"])}</h3>
@@ -509,6 +555,7 @@ def p_field():
         proof_sections.append(section(f"{key}-frames", "L5b", title, river,
                                       rail=f"{key.upper()} FRAMES", note=note))
     return f'''
+<div class="chapter-stage chapter-stage--field" data-chapter="04">
 <div class="masthead">
   {cartouche("現場")}
   <div class="band err"><span class="en">SECTION 04 · AWAY FROM THE DESK</span><span class="zh">第 04 節 · 離開桌前</span></div>
@@ -516,6 +563,9 @@ def p_field():
   <p class="lede err"><span class="en">Two teams, two international stages, and the work behind the result: the NSF HDR ML Challenge and iGEM.</span><span class="zh">兩個團隊、兩個國際舞台，以及成果背後的工作：NSF HDR ML Challenge 與 iGEM。</span></p>
 </div>
 {art("field", {"en": "Two indigo paths crossing an imagined coastline", "zh": "兩條靛藍旅路跨過想像的海岸"})}
+{brush_flourish()}
+{calligraphy("行遠自邇", "《禮記》", {"en": "To go far, begin near.", "zh": "欲行其遠，必自近處開始。"})}
+</div>
 {section("trips", "L5a", {"en": "Two journeys", "zh": "兩段現場"}, f'<div class="grid c2">{"".join(cards)}</div>', rail="TRIPS")}
 {"".join(proof_sections)}'''
 
@@ -601,7 +651,7 @@ def p_record():
             pos = f'{ph.get("fx", "50%")} {ph.get("fy", "50%")} '
             thumb = (f'<span class="chron-thumb" data-treatment="{e(ph.get("treatment", "natural"))}">'
                      f'{img(ph["src"], ph["cap"], sizes="(max-width:760px) calc(100vw - 64px), (max-width:1100px) 40vw, 36vw", position=pos.strip())}'
-                     f'<span aria-hidden="true"></span></span>')
+                     f'<span class="chron-ink" aria-hidden="true"></span></span>')
         thumb_line = f"    {thumb}\n" if thumb else ""
         return f'''<li>
   <a class="chron-event chron-event--{kind}{visual}" href="{e(href)}" data-kind="{kind}" data-event="{e(event_id)}">
@@ -648,6 +698,66 @@ def p_record():
 </li>''' for year in range(2023, 2027))
     chron = f'<ol class="chronology err">{chron_years}</ol>'
 
+    # The complete application-table register. Public outcomes are allowed to
+    # point into the visual chronology or an official record; quieter academic,
+    # funding and service entries stay compact instead of pretending to be
+    # award dossiers of equal weight.
+    deed_categories = [
+        ("academic", "A", {"en": "Academic foundation", "zh": "學業"}),
+        ("funding", "S", {"en": "Scholarships & support", "zh": "獎學金與補助"}),
+        ("role", "R", {"en": "Roles & service", "zh": "職務、社團與校隊"}),
+        ("outcome", "O", {"en": "Research & competition outcomes", "zh": "研究與競賽成果"}),
+    ]
+    deed_groups = []
+    for kind, mark, label in deed_categories:
+        entries = [d for d in C["deeds"] if d["category"] == kind]
+        rows = []
+        for i, d in enumerate(entries):
+            links = []
+            if d.get("href"):
+                links.append(f'<a href="{e(d["href"])}"><span class="en">DETAIL</span><span class="zh">詳情</span></a>')
+            if d.get("url"):
+                links.append(f'<a href="{e(d["url"])}" rel="noopener"><span class="en">SOURCE ↗</span><span class="zh">來源 ↗</span></a>')
+            actions = f'<span class="deed-actions">{"".join(links)}</span>' if links else ""
+            actions_line = f'  {actions}\n' if actions else ""
+            rows.append(f'''<li class="deed-item" id="deed-{e(d["id"])}">
+  <span class="deed-no">{mark}{i + 1:02d}</span>
+  <time>{bi(d["date"])}</time>
+  <span class="deed-copy"><strong>{bi(d["title"])}</strong><small>{bi(d["detail"])}</small></span>
+{actions_line}</li>''')
+        deed_groups.append(f'''<section class="deed-group" data-kind="{e(kind)}">
+  <header><span class="deed-mark">{mark}</span><h3>{bi(label)}</h3><span class="deed-count">{len(entries):02d}</span></header>
+  <ol>{"".join(rows)}</ol>
+</section>''')
+    deed_support_keys = ["academia-internship-certificate", "taai-matrixqr-acceptance", "jmp-paper-first-page"]
+    deed_support = "".join(memory_frame(
+        key, cls="proof-frame", sizes="(max-width:760px) 100vw, 33vw",
+        lightbox=True, group="deed-documents", href="", index=f"{i + 1:02d}"
+    ) for i, key in enumerate(deed_support_keys))
+    deeds = (f'<div class="deed-register err">{"".join(deed_groups)}</div>'
+             f'<div class="deed-support err"><div class="deed-support-head"><span>APPX.</span><h3><span class="en">Supporting facsimiles</span><span class="zh">補充文件</span></h3><p><span class="en">Research appointment · acceptance · publication</span><span class="zh">研究經歷 · 接受紀錄 · 出版成果</span></p></div><div class="deed-proof-grid">{deed_support}</div></div>'
+             f'<p class="record-provenance err"><span class="en">All 22 entries are transcribed from the specific-achievements table supplied with the Mei Yi-Chi application and reconciled against the current CV. Public outcomes link to primary records where available; student IDs, application contact fields and home-address details are not reproduced on this page.</span><span class="zh">22 筆全部轉錄自梅貽琦獎章申請文件的具體事蹟表，並與最新 CV 交叉核對；公開成果盡量連至一手紀錄，申請表內的學號、聯絡欄位與住址資訊不轉載於本頁。</span></p>')
+
+    press_cards = []
+    for p in C["press"]:
+        photo = medium(p["media"])
+        position = f'{photo.get("fx", "50%")} {photo.get("fy", "50%")} '
+        quote = f'<blockquote>{bi(p["quote"])}</blockquote>' if p.get("quote") else ""
+        quote_line = f'    {quote}\n' if quote else ""
+        press_cards.append(f'''<a class="press-card err" href="{e(p["url"])}" rel="noopener">
+  <span class="press-image" data-treatment="{e(photo.get("treatment", "natural"))}">
+    {img(photo["src"], photo["cap"], sizes="(max-width:760px) 100vw, 50vw", position=position.strip())}
+    <span class="press-wave" aria-hidden="true"></span>
+  </span>
+  <span class="press-copy">
+    <span class="press-meta"><time>{e(p["date"])}</time>{bi(p["source"])}</span>
+    <strong>{bi(p["title"])}</strong>
+    <span class="press-excerpt">{bi(p["excerpt"])}</span>
+{quote_line}    <span class="press-read"><span class="en">PRIMARY SOURCE ↗</span><span class="zh">閱讀一手來源 ↗</span></span>
+  </span>
+</a>''')
+    press = f'<div class="press-grid">{"".join(press_cards)}</div>'
+
     def honour_actions(a):
         actions = []
         if a.get("hero"):
@@ -684,25 +794,34 @@ def p_record():
 </a>''' for k, href in (("nsf", "field-nsf.html"), ("igem", "field-igem.html")))
 
     n_aw, n_pa, n_tr = len(C["awards"]), len(C["publications"]), 2
+    n_public, n_deeds, n_press = n_aw + n_pa + n_tr, len(C["deeds"]), len(C["press"])
 
-    return f'''<div class="masthead">
+    return f'''<div class="chapter-stage chapter-stage--record" data-chapter="05">
+<div class="masthead">
   {cartouche("紀錄")}
   <div class="band err"><span class="en">SECTION 05 · THE RECORD</span><span class="zh">第 05 節 · 紀錄</span></div>
   <h1 class="err"><span class="en">RECORD</span><span class="zh">紀錄</span></h1>
-  <p class="lede err"><span class="en">{n_aw + n_pa + n_tr} entries · 2023–2026 · {n_pa} papers · {n_aw} honours · {n_tr} field notes.</span><span class="zh">{n_aw + n_pa + n_tr} 筆紀錄 · 2023–2026 · {n_pa} 篇論文 · {n_aw} 項獎項 · {n_tr} 篇現場筆記。</span></p>
+  <p class="lede err"><span class="en">{n_deeds} documented deeds · {n_public} selected milestones · {n_aw} honours · {n_pa} papers.</span><span class="zh">{n_deeds} 筆具體事蹟 · {n_public} 個精選里程碑 · {n_aw} 項獎項與入選 · {n_pa} 篇論文。</span></p>
 </div>
-{art("record", {"en": "A four-terrace indigo river carrying twelve milestones", "zh": "承載十二個里程碑的四段靛藍河階"})}
-{section("chronology", "L4", {"en": "Twelve frames of the record", "zh": "十二幀紀錄"}, chron,
-         rail="CHRONOLOGY", note={"en": "Grouped by public outcome", "zh": "依成果公開年份分組"})}
+{art("record", {"en": "A four-terrace indigo river carrying a dense record", "zh": "承載完整紀錄的四段靛藍河階"})}
+{brush_flourish()}
+{calligraphy("上下求索", "《楚辭》", {"en": "Search above and below.", "zh": "向上向下，始終求索。"})}
+</div>
+{section("chronology", "L4", {"en": f"{n_public} selected milestones", "zh": f"{n_public} 個精選里程碑"}, chron,
+         rail="CHRONOLOGY", note={"en": "Four honest year bands; density follows the events", "zh": "四個真實年份；事件多寡決定密度"})}
+{section("deeds", "L4b", {"en": "The complete deed register", "zh": "完整具體事蹟冊"}, deeds,
+         rail="DEEDS", note={"en": f"All {n_deeds} entries · nothing promoted into filler", "zh": f"全 {n_deeds} 筆 · 輕重分明，不以空話填版"})}
 {section("honours", "L5a", {"en": "Honours", "zh": "獎項"},
          f'<div class="honour-dossiers">{honours}</div>', rail="HONOURS",
          note={"en": "Certificate when one exists; no stand-ins", "zh": "有證書才放證書，不以其他文件代替"})}
-{section("field", "L5b", {"en": "Field work", "zh": "現場"},
+{section("press", "L5b", {"en": "In the public record", "zh": "公開報導"}, press,
+         rail="PRESS", note={"en": f"{n_press} first-party reports · excerpted, not inflated", "zh": f"{n_press} 則一手報導 · 節錄而不誇飾"})}
+{section("field", "L5c", {"en": "Field work", "zh": "現場"},
          f'<div class="ledger err">{field}</div>'
          f'<p class="err" style="margin-top:var(--s5);font-family:var(--f-mono);font-size:var(--t-2xs);'
          f'letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">'
-         f'<span class="en">{n_aw + n_pa + n_tr:02d} ENTRIES · {n_aw:02d} AWARDS · {n_pa:02d} PAPERS · {n_tr:02d} FIELD</span>'
-         f'<span class="zh">{n_aw + n_pa + n_tr:02d} 筆紀錄 · 獎項 {n_aw:02d} · 論文 {n_pa:02d} · 現場 {n_tr:02d}</span></p>',
+         f'<span class="en">{n_deeds:02d} DEEDS · {n_public:02d} SELECTED MILESTONES · {n_aw:02d} HONOURS · {n_pa:02d} PAPERS · {n_tr:02d} FIELD</span>'
+         f'<span class="zh">{n_deeds:02d} 筆事蹟 · {n_public:02d} 個精選里程碑 · 獎項與入選 {n_aw:02d} · 論文 {n_pa:02d} · 現場 {n_tr:02d}</span></p>',
          rail="FIELD")}'''
 
 
@@ -731,13 +850,13 @@ def p_about():
          memory_river(C["collections"]["about"], "about",
                       pattern=["portrait", "standard", "wide", "wide", "portrait"],
                       links=False, lightbox=True, group="about"),
-         rail="FOUR YEARS", note={"en": "Paris · water · Hsinchu · graduation · UCLA", "zh": "巴黎 · 水下 · 新竹 · 畢業 · UCLA"})}
+         rail="FOUR YEARS", note={"en": "Paris · water · Hsinchu · varsity · graduation · UCLA", "zh": "巴黎 · 水下 · 新竹 · 校隊 · 畢業 · UCLA"})}
 {section("facts", "L4", {"en": "Profile", "zh": "簡歷"},
          f'<div class="ledger err">{facts}</div>'
          f'<div class="acts"><a class="act" href="record.html#honours">'
          f'<span class="en">Honours and chronology</span><span class="zh">獎項與年表</span></a></div>', rail="FACTS")}
 {section("contact", "L6", {"en": "Contact", "zh": "聯絡方式"},
-         f'''<div class="grid c3" style="background:transparent;border:0;gap:var(--s3)">
+         f'''<div class="grid contact-grid" style="background:transparent;border:0;gap:var(--s3)">
   <button class="card err" type="button" data-act="mail" data-mail="{e(M["email"])}" style="text-align:left">
     <div class="idx"><span class="n">01</span><span class="en">EMAIL</span><span class="zh">電子郵件</span></div>
     <h3 style="font-size:var(--t-sm);word-break:break-all">{e(M["email"])}</h3>
@@ -748,8 +867,13 @@ def p_about():
     <h3 style="font-size:var(--t-sm)">Arthur031221</h3>
     <span class="more"><span class="en">Open</span><span class="zh">前往</span></span>
   </a>
+  <a class="card err" href="{e(M["linkedin"])}" rel="me noopener">
+    <div class="idx"><span class="n">03</span>LINKEDIN</div>
+    <h3 style="font-size:var(--t-sm)">Arthur Lee</h3>
+    <span class="more"><span class="en">Connect</span><span class="zh">前往</span></span>
+  </a>
   <a class="card err" href="{e(M["cv"])}">
-    <div class="idx"><span class="n">03</span><span class="en">CURRICULUM VITAE</span><span class="zh">履歷</span></div>
+    <div class="idx"><span class="n">04</span><span class="en">CURRICULUM VITAE</span><span class="zh">履歷</span></div>
     <h3 style="font-size:var(--t-sm)">CV.pdf</h3>
     <span class="more"><span class="en">Download</span><span class="zh">下載</span></span>
   </a>
@@ -806,9 +930,10 @@ def jsonld(pid):
         "jobTitle": M["role"]["en"],
         "url": SITE,
         "email": "mailto:" + M["email"],
-        "sameAs": [M["github"]],
+        "sameAs": [M["github"], M["linkedin"]],
         "affiliation": {"@type": "CollegeOrUniversity", "name": "National Tsing Hua University"},
         "knowsAbout": ["Predictive coding", "Associative memory", "Bayesian inference",
+                       "Neuroscience", "Computer vision", "3D reconstruction",
                        "Computational neuroscience", "Machine learning"],
     }
     return ('<script type="application/ld+json">'

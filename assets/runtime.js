@@ -468,18 +468,39 @@
 
   /* ── 19. receptive field on units ───────────────────────── */
   function receptive() {
-    if (!PE.fine) return;
+    if (!PE.fine || PE.reduced) return;
     document.addEventListener('pointermove', function (e) {
-      var u = e.target.closest && e.target.closest('.unit,.card,.memory-frame');
-      if (!u) return;
-      var r = u.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width;
-      var y = (e.clientY - r.top) / r.height;
-      u.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
-      u.style.setProperty('--my', (y * 100).toFixed(1) + '%');
-      u.style.setProperty('--px', ((x - .5) * 4).toFixed(2) + 'px');
-      u.style.setProperty('--py', ((y - .5) * 4).toFixed(2) + 'px');
+      var closest = e.target.closest && e.target.closest.bind(e.target);
+      if (!closest) return;
+      var u = closest('.unit,.card,.memory-frame,.chron-event');
+      if (u) {
+        var r = u.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width;
+        var y = (e.clientY - r.top) / r.height;
+        u.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+        u.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+        u.style.setProperty('--px', ((x - .5) * 4).toFixed(2) + 'px');
+        u.style.setProperty('--py', ((y - .5) * 4).toFixed(2) + 'px');
+      }
+      var stage = closest('.chapter-stage,.hero-stage');
+      if (stage) {
+        var sr = stage.getBoundingClientRect();
+        var sx = Math.max(0, Math.min(1, (e.clientX - sr.left) / sr.width));
+        var sy = Math.max(0, Math.min(1, (e.clientY - sr.top) / sr.height));
+        stage.style.setProperty('--chapter-x', ((sx - .5) * -14).toFixed(2) + 'px');
+        stage.style.setProperty('--chapter-y', ((sy - .5) * -8).toFixed(2) + 'px');
+        stage.style.setProperty('--copy-x', ((sx - .5) * 3).toFixed(2) + 'px');
+        stage.style.setProperty('--copy-y', ((sy - .5) * 2).toFixed(2) + 'px');
+      }
     }, { passive: true });
+    document.querySelectorAll('.chapter-stage,.hero-stage').forEach(function (stage) {
+      stage.addEventListener('pointerleave', function () {
+        stage.style.setProperty('--chapter-x', '0px');
+        stage.style.setProperty('--chapter-y', '0px');
+        stage.style.setProperty('--copy-x', '0px');
+        stage.style.setProperty('--copy-y', '0px');
+      }, { passive: true });
+    });
   }
 
   /* Matching event identifiers make the photograph and the record answer
@@ -494,11 +515,11 @@
       document.querySelectorAll('[data-event="' + CSS.escape(active) + '"]').forEach(function (el) { el.classList.add('event-hot'); });
     }
     document.addEventListener('pointerover', function (e) {
-      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event]');
+      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event],.chron-event[data-event]');
       if (el) set(el.getAttribute('data-event'));
     }, { passive: true });
     document.addEventListener('pointerout', function (e) {
-      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event]');
+      var el = e.target.closest && e.target.closest('.memory-frame[data-event],.trip-card[data-event],.honour-dossier[data-event],.chron-event[data-event]');
       if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) set('');
     }, { passive: true });
     document.addEventListener('focusin', function (e) {
