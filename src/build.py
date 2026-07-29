@@ -323,99 +323,34 @@ def pub_row(p, note=True):
 
 
 # ── page: research ──────────────────────────────────────────────────
-FIGS = {
-    "pc": ("hopfield", {"en": "Covariance-rule retrieval from a corrupted lattice",
-                        "zh": "以共變異規則從受損晶格中回想"},
-           {"en": "Three patterns are stored. The lattice starts corrupted at the bit-flip rate you set; asynchronous sweeps drive it back. Under the plain Hebb rule the shared background swamps the cue and the widest basin wins every time — the patterns are centred first, which is why the correct one comes back.",
-            "zh": "儲存三個樣式。晶格以你設定的位元翻轉率開始受損，再由非同步掃描推回原狀。若用單純的 Hebb 規則，共同背景會淹沒提示，最寬的吸引盆每次都會勝出——因此樣式先被置中化，正確的那一個才回得來。"}),
-    "langevin": ("langevin", {"en": "Eight-mode Langevin sampling against gradient descent",
-                              "zh": "八模態 Langevin 取樣 vs 梯度下降"},
-                 {"en": "Both columns descend the same energy. The left one only descends and arrives at point masses; the right one descends and diffuses, and recovers the density's actual width. The readout measures that width against the density's own sigma — drag the temperature to zero and the sampler collapses into the descent.",
-                  "zh": "兩欄下降的是同一個能量。左欄只下降，最後停在點質量上；右欄同時下降並擴散，還原出密度真正的寬度。讀數量的就是這個寬度，以密度自身的 sigma 為單位——把溫度拉到零，取樣就會塌陷成下降。"}),
-    "fmri": ("fmri", {"en": "Reading position out of a population of voxels",
-                      "zh": "從一群體素中讀出位置"},
-             {"en": "Each voxel has a preferred location and a width. Move the stimulus and the population response moves with it; the decoded estimate is the population vector, and it degrades exactly as fast as you would expect when voxels are dropped.",
-              "zh": "每個體素都有偏好位置與調諧寬度。移動刺激，群體反應就跟著移動；解碼估計即群體向量，而當體素被移除時，它退化的速度正如預期。"}),
-    "diffusion": ("guidance", {"en": "Guidance strength against sample diversity",
-                               "zh": "引導強度 vs 樣本多樣性"},
-                  {"en": "Turn the guidance up and every sample obeys the constraint — and every sample becomes the same sample. The interesting region is the one where reliability rises before diversity has collapsed, and that region is narrow.",
-                   "zh": "把引導調強，每個樣本都會服從約束——然後每個樣本都變成同一個樣本。有意思的區間是可靠度已經上升、但多樣性尚未崩潰的那一段，而它很窄。"}),
-}
-
-
 def p_research():
     o = [f'''
 <div class="masthead">
   {cartouche("研究")}
   <div class="band err"><span class="en">SECTION 02 · FOUR THREADS</span><span class="zh">第 02 節 · 四條線</span></div>
   <h1 class="err"><span class="en">RESEARCH</span><span class="zh">研究</span></h1>
-  <p class="lede err"><span class="en">Every figure below runs. None of them is a picture of a result — each one computes, live, in your browser, and prints what it actually measured. Where a number comes from a paper instead, it says so.</span><span class="zh">底下每一張圖都在運算。它們不是結果的圖片——每一張都在你的瀏覽器裡即時計算，並印出它真正量到的值。若某個數字來自論文而非現場計算，圖上會註明。</span></p>
-</div>''']
+  <p class="lede err"><span class="en">Four threads, one question — what a posterior should carry, and what memory has to do with carrying it.</span><span class="zh">四條研究線，一個問題——後驗應該承載什麼，而記憶與這件事有什麼關係。</span></p>
+</div>
+{art("research", {"en": "Ink artwork", "zh": "墨圖"})}''']
 
     for i, t in enumerate(C["threads"]):
-        fig_id, fig_title, fig_note = FIGS[t["id"]]
         body = f'''<div class="reading err">
   <p class="lede" style="max-width:66ch;color:var(--ink-dim);font-size:var(--t-md)">{bi(t["body"])}</p>
-</div>
-<div class="fig err" data-fig="{fig_id}" style="margin-top:var(--s6)">
-  <div class="fh">
-    <span class="t">{bi(fig_title)}</span>
-    <span class="out" data-out>—</span>
-  </div>
-  <canvas></canvas>
-  <div class="ctl" data-ctl></div>
-  <div class="fc">{bi(fig_note)}</div>
 </div>'''
         o.append(section(t["id"], LAMINAE[i + 1][0], t["title"], body,
                          rail=t["id"].upper(), note=t["tag"]))
 
-    # the relationship map is generated from the record, not hand-drawn:
-    # an edge exists only where a thread's own description names the work.
-    thread_short = {
-        "pc":        {"en": "Predictive coding", "zh": "預測編碼"},
-        "langevin":  {"en": "Langevin inference", "zh": "Langevin 推論"},
-        "fmri":      {"en": "Spatial decoding", "zh": "空間解碼"},
-        "diffusion": {"en": "Controllable diffusion", "zh": "可控擴散"},
-    }
-    nodes = [{"id": t["id"], "kind": "thread", "label": thread_short[t["id"]]} for t in C["threads"]]
-    short = [
-        {"en": "PC + memory denoiser", "zh": "預測編碼 + 記憶去噪"},
-        {"en": "Langevin TPC", "zh": "Langevin 時序預測編碼"},
-        {"en": "MatrixQR", "zh": "MatrixQR"},
-        {"en": "Interferometer modes", "zh": "干涉儀模態分類"},
-        {"en": "Anomaly benchmark", "zh": "異常偵測基準"},
-    ]
-    for i, p in enumerate(C["publications"]):
-        nodes.append({"id": "p%d" % i, "kind": "paper", "label": short[i],
-                      "year": p["year"], "status": p["status"]})
-    edges = [
-        {"a": "pc", "b": "p0", "why": {"en": "HOPE is this thread", "zh": "HOPE 即此線"}},
-        {"a": "langevin", "b": "p1", "why": {"en": "the manuscript is this thread", "zh": "該手稿即此線"}},
-        {"a": "diffusion", "b": "p2", "why": {"en": "MatrixQR is this thread", "zh": "MatrixQR 即此線"}},
-        {"a": "pc", "b": "langevin", "why": {"en": "same energy, sampled instead of descended", "zh": "同一能量，改為取樣而非下降"}},
-        {"a": "langevin", "b": "diffusion", "why": {"en": "same mathematics, different clothes", "zh": "同一套數學，換了衣服"}},
-        {"a": "fmri", "b": "pc", "why": {"en": "the theory decides what a decoder may claim", "zh": "理論決定解碼器能宣稱什麼"}},
-    ]
-    o.append('<script type="application/json" id="fig-map">'
-             + json.dumps({"nodes": nodes, "edges": edges}, ensure_ascii=False) + "</script>")
-
-    o.append(section("map", "L6",
-                     {"en": "What connects to what", "zh": "什麼連到什麼"},
-                     '<div class="fig err" data-fig="map">'
-                     '<div class="fh"><span class="t"><span class="en">Threads, papers and the edges that are real</span>'
-                     '<span class="zh">研究線、論文，以及真正存在的連線</span></span>'
-                     '<span class="out" data-out>—</span></div>'
-                     '<canvas></canvas>'
-                     '<div class="fc"><span class="en">An edge is drawn only where a paper actually uses the thread. '
-                     'Hover a node to isolate its edges.</span>'
-                     '<span class="zh">只有論文真正用到該研究線時才畫上連線。將游標移到節點上可單獨顯示它的連線。</span></div></div>',
-                     rail="MAP"))
-    o.append('<p class="err" style="max-width:62ch;margin-top:var(--s5);color:var(--muted);font-size:var(--t-sm)">'
-             '<span class="en">Two entries have no edge. The interferometer paper is undergraduate physics and the '
-             'anomaly benchmark is community service — neither belongs to a thread, and the spatial-decoding thread '
-             'has no paper yet because the work is still running.</span>'
-             '<span class="zh">有兩筆沒有連線。干涉儀那篇是大學部物理，異常偵測基準屬於社群服務——兩者都不屬於任何一條研究線；'
-             '而空間解碼那條線目前沒有論文，因為工作仍在進行中。</span></p>')
+    o.append(section("papers-link", "L6",
+                     {"en": "Where the threads are written down", "zh": "這些線寫在哪裡"},
+                     '<p class="err" style="max-width:62ch;color:var(--ink-dim)">'
+                     '<span class="en">The first two threads are the two co-first-author manuscripts under '
+                     'review; the fourth is MatrixQR at TAAI 2025. The spatial-decoding thread has no paper '
+                     'yet because the work is still running — that gap is real, and it is the next thing.</span>'
+                     '<span class="zh">前兩條線就是兩篇共同第一作者、審查中的手稿；第四條是 TAAI 2025 的 MatrixQR。'
+                     '空間解碼那條線目前沒有論文，因為工作仍在進行——這個缺口是真實的，也是下一步。</span></p>'
+                     '<div class="acts err"><a class="act p" href="publications.html">'
+                     '<span class="en">The papers</span><span class="zh">論文列表</span></a></div>',
+                     rail="PAPERS"))
     return "".join(o)
 
 

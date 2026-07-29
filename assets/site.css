@@ -74,8 +74,9 @@
   --void:#060b16; --bg1:#0b1120; --bg2:#141c30; --bg3:#1c263c;
   --ink:#e8ebf2; --ink-dim:#a6b0c6; --muted:#6f7c95;
   --sig:#2ff0bd; --pre:#ff4d9d; --inh:#8b6cff; --hot:#f4fffb;
-  --ink-drop:#b9cde9;      /* moonlit ink, luminous in dark water */
-  --ink-haze:#3a5680;
+  --dye-crimson:#a06a80;   /* 胭脂, lifted to read on night water */
+  --dye-blue:#7fa3cf;      /* 紺青, luminous */
+  --dye-sumi:#8c97a8;      /* 墨, pale ash */
   --bokashi:#132644;
   --sheet:linear-gradient(90deg,transparent,rgba(5,8,16,.74) 7%,rgba(5,8,16,.74) 93%,transparent);      /* the wash reads as a rubbing: light on dark */
   --seal:#cf3b30;          /* 朱砂 — the one colour that encodes nothing */
@@ -107,8 +108,9 @@
   --pre:#9a2f42;           /* 胭脂 */
   --inh:#4f3a86;           /* 石青 */
   --hot:#0d0f13;
-  --ink-drop:#152a42;      /* sumi deepened with Prussian blue */
-  --ink-haze:#57748f;
+  --dye-crimson:#8e3a4c;   /* 胭脂 */
+  --dye-blue:#27507b;      /* 紺青 */
+  --dye-sumi:#3f4750;      /* 墨 */
   --bokashi:#2e567e;       /* the Hokusai band */
   --sheet:linear-gradient(90deg,transparent,rgba(244,240,229,.92) 7%,rgba(244,240,229,.92) 93%,transparent);
   --seal:#b8352b;

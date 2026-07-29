@@ -3,7 +3,7 @@
 Written so another agent, or a future session, can extend this site without
 re-deriving the decisions. Read this before touching anything.
 
-**Status (2026-07-29, ink-in-water revision):** this document is the current contract. It replaces the
+**Status (2026-07-29, suminagashi revision):** this document is the current contract. It replaces the
 V2/V3 "probabilistic instrumentarium" handoff; that design and its external
 `CV` build workspace are gone. Everything needed to build the site is now in
 this repository.
@@ -101,44 +101,35 @@ modality toggle is a real temperature schedule.
 
 ---
 
-## 4. The substrate — 墨入水, simulated
+## 4. The substrate — 墨流し, simulated
 
-`substrate.js` advects a dye field through a divergence-free curl-noise flow
-(Bridson) with one extra force: ink is denser than water, so it sinks. Drops
-are the ONLY source — one falls into a margin every 25–60 s, a click or `S`
-lets one go. Each drop drives its own descending jet for ~2 s; the billow,
-lobes and tendrils come from that jet colliding with the ambient curl, not
-from any drawn shape. Fresh ink (R) ages into haze (G); haze lags the flow
-and diffuses — crisp over soft is what reads as water rather than smoke.
+`substrate.js` is suminagashi: three dyes in one byte texture — R 胭脂
+crimson (top-down prediction), G 紺青 Prussian blue (bottom-up evidence),
+B 墨 sumi (where they met and cancelled) — advected together through slow
+Bridson curl noise, one large octave dominant, no gravity: floated ink.
+A brush point wanders the sheet and touches down every couple of seconds,
+laying alternating crimson/blue rings (sumi every fifth); the curl folds
+the rings into marble. Where crimson and blue overlap, the sim bleeds them
+into sumi — prediction and evidence annihilating into ash. The fold lines
+in the display pass come from the gradient of the marble itself.
 
-Register: aizuri-e, 藍摺絵. Fixed = Prussian-deepened ink `--ink-drop` on
-pale water under a `--bokashi` band; vivo = deep indigo water, pale luminous
-ink. The seal keeps the only red.
-
-Hard-won constraints — keep all of them:
-
-- **UNSIGNED_BYTE state textures, always.** Half-float targets pass the
-  completeness probe on some drivers and then silently render nothing.
-- **Dithered decay.** At 8 bits a multiplicative fade rounds back to itself
-  and freckles of ink hang forever; the decay subtracts a hashed quantum.
-- **Array uniforms are fetched as `name[0]`** with a plain-name fallback.
-- **The loop checks `isContextLost()` every ~48 frames** — a context can die
-  before the lost-event listener exists, after which every GL call no-ops
-  while JS keeps running. One rebuild attempt, then the Canvas2D still sheet.
-- Velocity stays ≤ ~1 sim texel per step; larger steps let linear sampling
-  eat the filaments. A 0.055 unsharp term keeps edges crisp; more speckles.
-- The reading column damps to 5 % (fixed) / 13 % (vivo), and `.shell::before`
-  lays a near-solid `--sheet` panel under the whole column — the readability
-  fix is the panel, not dimming the painting.
+The driver traps from the previous revision still apply (bytes only,
+`name[0]` uniform lookup, dithered decay, context pulse check). One new
+one: **do not unsharpen the dye at 8 bits** — it breeds scanlines; keep
+mild diffusion in SIM and let the display-pass edge term carry crispness.
+`seedMarble()` pre-folds strokes at load so the sheet arrives marbled.
+A click or `S` touches the brush where the pointer is (`PE.drop` keeps
+its old signature and now lays the next dye in the rotation).
 
 ## 4b. Calm is enforced
 
-Figures are **still by default**. `mount()` draws ~90 settled frames when a
-figure scrolls into view, then runs the loop only while the pointer is over
-it (fine pointers) or its ▶ toggle is on (coarse). Dragging a control always
-animates its consequence. The prediction-error glyph scramble exists on the
-index hero name only — mastheads are book titles. Do not add per-page
-ambient animation back; one moving thing at a time is the rule.
+The research page has **no figures and no interactive chrome at all** —
+four threads in prose on quiet water, ending in a pointer to the papers.
+The only live instrument left is the career raster on `record` (still by
+default like everything else). `mount()` still exists in instruments.js
+for it: settled frame on entry, runs on hover / ▶ toggle only. The glyph
+scramble exists on the index hero name only. Do not add ambient per-page
+animation back.
 
 ## 4c. Image-first: art slots
 
