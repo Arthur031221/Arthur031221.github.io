@@ -25,6 +25,7 @@
 @font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/InstrumentSans-normal-400-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/InstrumentSans-normal-400-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Instrument Sans';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/InstrumentSans-italic-400-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Masa Brush';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/MasaFont-phrases.woff2) format('woff2')}
 
 @font-face{font-family:'Spectral';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/Spectral-normal-300-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'Spectral';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/Spectral-normal-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -1532,3 +1533,439 @@ html[lang="zh-Hant"] .prose p.lead::first-letter{font-size:3.6em;padding-top:.16
     font-size:clamp(3rem,14vw,3.65rem);line-height:1.08;letter-spacing:-.025em;text-wrap:balance
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   35. OPENING PRINTS — image, title and colophon share one sheet
+
+   The paintings are no longer banners inserted below a masthead.  Each
+   opening is one full-bleed print: copy sits in the pale ma, pigment moves
+   behind it, and a four-character colophon signs the page.
+   ═══════════════════════════════════════════════════════════════ */
+
+.hero-stage,.chapter-stage{
+  --chapter-x:0px;--chapter-y:0px;--copy-x:0px;--copy-y:0px;
+  --stage-pad:max(clamp(22px,4vw,52px),calc((100vw - var(--shell))/2 + 52px));
+}
+
+/* The home opening is a true edge-to-edge scroll rather than a framed image. */
+.hero-stage{
+  width:100vw;margin-left:calc(50% - 50vw);padding-inline:var(--stage-pad);
+  overflow:clip;
+}
+.hero-stage>.hero-art{
+  position:absolute;inset:0;width:100%;height:100%;margin:0;
+  border:0;box-shadow:none;background:transparent;clip-path:none;
+}
+.hero-stage>.hero-art .art-img{
+  width:100%;height:100%;object-fit:cover;transform:translate3d(var(--chapter-x),var(--chapter-y),0) scale(1.035);
+  transition:transform 1.1s var(--ease),filter .6s var(--ease);
+}
+.hero-stage>.hero-art::before{
+  background:
+    linear-gradient(90deg,var(--void) 0%,color-mix(in srgb,var(--void) 94%,transparent) 23%,color-mix(in srgb,var(--void) 55%,transparent) 50%,transparent 78%),
+    linear-gradient(180deg,color-mix(in srgb,var(--void) 20%,transparent),transparent 25% 76%,color-mix(in srgb,var(--void) 84%,transparent));
+}
+
+.chapter-stage{
+  position:relative;isolation:isolate;overflow:clip;
+  width:100vw;margin-left:calc(50% - 50vw);min-height:clamp(570px,72svh,740px);
+  display:flex;align-items:center;padding-inline:var(--stage-pad);
+  border-block:1px solid var(--line);background:var(--void);
+}
+.chapter-stage::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg,var(--void) 0%,color-mix(in srgb,var(--void) 95%,transparent) 25%,color-mix(in srgb,var(--void) 66%,transparent) 48%,transparent 76%),
+    linear-gradient(180deg,color-mix(in srgb,var(--void) 38%,transparent),transparent 23% 76%,var(--void));
+}
+.chapter-stage::after{
+  content:"CH." attr(data-chapter);position:absolute;z-index:5;top:24px;right:var(--stage-pad);
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.24em;color:var(--seal);
+  border-top:1px solid var(--seal);padding-top:6px;pointer-events:none;
+}
+.chapter-stage>.masthead{
+  position:relative;z-index:4;width:min(62%,780px);max-width:none;margin:0;
+  padding:clamp(62px,8vw,106px) 0;text-shadow:0 2px 24px var(--void),0 0 72px var(--void);
+}
+.chapter-stage>.masthead h1{transform:translate3d(var(--copy-x),var(--copy-y),0);transition:transform .9s var(--ease)}
+.chapter-stage>.chapter-art{
+  position:absolute;z-index:0;inset:0;width:100%;height:100%;aspect-ratio:auto;margin:0;
+  clip-path:none;border:0;box-shadow:none;background:transparent;pointer-events:none;
+}
+.chapter-stage>.chapter-art::after{box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+.chapter-stage>.chapter-art .art-img{
+  width:100%;height:100%;object-fit:cover;
+  transform:translate3d(var(--chapter-x),var(--chapter-y),0) scale(1.035);
+  transition:transform 1.1s var(--ease),filter .6s var(--ease);
+}
+.chapter-stage>.chapter-art:hover .art-img{transform:translate3d(var(--chapter-x),var(--chapter-y),0) scale(1.035)}
+.chapter-stage--research .chapter-art .art-img{object-position:52% 50%}
+.chapter-stage--papers .chapter-art .art-img{object-position:50% 58%}
+.chapter-stage--field .chapter-art .art-img{object-position:50% 52%}
+.chapter-stage--record .chapter-art .art-img{object-position:50% 50%}
+:root[data-mode="fixed"] .chapter-stage>.chapter-art .art-img{filter:saturate(.86) contrast(1.03)}
+:root[data-mode="vivo"] .chapter-stage>.chapter-art .art-img{filter:brightness(.53) saturate(.84) contrast(1.09)}
+
+/* A free brush gesture crosses the print.  It is vector, inherits the active
+   pigment register, and never touches the documentary image files. */
+.chapter-tide{
+  position:absolute;z-index:2;left:0;right:0;bottom:-3%;height:56%;pointer-events:none;
+  color:var(--dye-blue);opacity:.48;mix-blend-mode:multiply;
+  transform:translate3d(var(--copy-x),var(--copy-y),0);transition:transform 1.1s var(--ease),opacity .5s var(--ease);
+}
+:root[data-mode="vivo"] .chapter-tide{color:#91b3c7;opacity:.23;mix-blend-mode:screen}
+.chapter-tide svg{width:100%;height:100%;overflow:visible}
+.brush-stroke{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0;animation:brush-write 1.65s var(--ease) both}
+.brush-stroke--body{stroke-width:42;opacity:.24;stroke-dasharray:.70 .018 .13 .025}
+.brush-stroke--dry{stroke-width:7;opacity:.66;stroke-dasharray:.055 .014;animation-delay:.12s}
+.brush-stroke--hair{stroke-width:2.2;opacity:.76;stroke-dasharray:.82 .035;animation-delay:.22s}
+.brush-flecks{fill:currentColor;opacity:.58;animation:brush-flecks .7s .85s var(--ease) both}
+@keyframes brush-write{from{stroke-dashoffset:1;opacity:0}to{stroke-dashoffset:0}}
+@keyframes brush-flecks{from{opacity:0;transform:translate3d(-8px,5px,0)}to{opacity:.58;transform:none}}
+
+/* The quotation is a colophon inside the image, not a detached text card. */
+.chapter-calligraphy{
+  position:absolute;z-index:3;top:50%;right:calc(var(--stage-pad) + clamp(8px,3vw,42px));
+  width:min(20vw,230px);margin:0;color:var(--dye-sumi);opacity:.70;pointer-events:none;
+  transform:translate3d(var(--copy-x),-50%,0) rotate(-2.4deg);transform-origin:center;
+  mix-blend-mode:multiply;text-align:center;
+}
+:root[data-mode="vivo"] .chapter-calligraphy{color:#d5e0e5;opacity:.28;mix-blend-mode:screen}
+.calligraphy-mark{
+  display:flex;flex-direction:column;align-items:center;
+  font-family:'Masa Brush','DFKai-SB','BiauKai','STKaiti','KaiTi',serif;
+  font-size:clamp(5.7rem,8.4vw,9.2rem);line-height:.68;font-weight:400;
+  filter:drop-shadow(0 1px 0 color-mix(in srgb,var(--void) 36%,transparent));
+}
+.calligraphy-mark>span{
+  --r:0deg;--tx:0px;display:block;transform:translateX(var(--tx)) rotate(var(--r));
+  animation:glyph-land .9s var(--ease) both;
+}
+.calligraphy-mark>span:nth-child(1){--r:-4deg;--tx:-5px;animation-delay:.20s}
+.calligraphy-mark>span:nth-child(2){--r:2.5deg;--tx:7px;animation-delay:.34s}
+.calligraphy-mark>span:nth-child(3){--r:-1.5deg;--tx:-2px;animation-delay:.48s}
+.calligraphy-mark>span:nth-child(4){--r:4deg;--tx:6px;animation-delay:.62s}
+@keyframes glyph-land{
+  from{opacity:0;filter:blur(4px);transform:translate3d(calc(var(--tx) + 18px),-10px,0) rotate(calc(var(--r) - 5deg)) scale(1.09)}
+  to{opacity:1;filter:none;transform:translateX(var(--tx)) rotate(var(--r)) scale(1)}
+}
+.chapter-calligraphy footer{
+  width:max-content;max-width:230px;margin:22px auto 0;padding:8px 10px 7px;
+  border-left:3px solid var(--seal);background:color-mix(in srgb,var(--void) 62%,transparent);
+  font-family:var(--f-mono);font-size:8px;line-height:1.55;letter-spacing:.08em;text-align:left;
+}
+.chapter-calligraphy cite{display:block;color:var(--seal);font-style:normal;letter-spacing:.18em}
+.calligraphy-gloss{display:block;margin-top:2px;color:var(--ink-dim)}
+
+/* ═══════════════════════════════════════════════════════════════
+   36. THE WHOLE NOTEBOOK IS THE PRINT
+
+   Photographs remain photographs. Ukiyo-e enters through the paper,
+   seigaiha rules, carved mats, registration corners and printed surfaces.
+   ═══════════════════════════════════════════════════════════════ */
+
+#vignette{
+  background:
+    radial-gradient(circle at 50% 100%,transparent 0 8px,var(--line-2) 8.5px 9.5px,transparent 10px 13px,var(--line) 13.5px 14.5px,transparent 15px) 0 calc(100% - 5px)/30px 16px repeat-x,
+    radial-gradient(130% 100% at 50% 35%,transparent 46%,rgba(3,9,15,.34) 100%);
+}
+:root[data-mode="fixed"] #vignette{
+  background:
+    radial-gradient(circle at 50% 100%,transparent 0 8px,var(--line-2) 8.5px 9.5px,transparent 10px 13px,var(--line) 13.5px 14.5px,transparent 15px) 0 calc(100% - 5px)/30px 16px repeat-x,
+    radial-gradient(130% 100% at 50% 35%,transparent 52%,rgba(65,50,28,.18) 100%);
+}
+.sec-h::after{
+  height:17px;opacity:.78;background:
+    radial-gradient(circle at 50% 100%,transparent 0 5px,var(--line-3) 5.5px 6.5px,transparent 7px 9px,var(--line-2) 9.5px 10.5px,transparent 11px) 0 0/22px 12px repeat-x;
+  -webkit-mask:none;mask:none;
+}
+.sec-h::before{
+  content:"";position:absolute;left:0;bottom:1px;width:clamp(38px,7vw,88px);height:3px;z-index:1;
+  background:var(--seal);clip-path:polygon(0 30%,76% 0,100% 46%,70% 74%,0 100%);
+}
+
+/* Subtle carved patterns live in the paper surfaces, never across faces. */
+.unit,.chron-event,.filters button{
+  background-image:
+    linear-gradient(135deg,transparent 0 48%,var(--line) 49% 51%,transparent 52%),
+    linear-gradient(45deg,transparent 0 48%,var(--line) 49% 51%,transparent 52%);
+  background-size:24px 24px;background-position:right bottom;
+}
+.unit::after{
+  content:"";position:absolute;z-index:-1;right:0;bottom:0;width:42%;height:34%;pointer-events:none;opacity:.5;
+  background:radial-gradient(circle at 50% 100%,transparent 0 7px,var(--line-2) 7.5px 8.5px,transparent 9px) 0 0/28px 14px;
+  -webkit-mask:linear-gradient(135deg,transparent 16%,#000);mask:linear-gradient(135deg,transparent 16%,#000);
+}
+.thread-card .tc-body{position:relative;z-index:1}
+.filters button[aria-pressed="true"]{
+  background-color:var(--pre-wash);box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--seal) 70%,transparent);
+}
+.chron-year-head{
+  background-color:var(--pre-wash);
+  background-image:radial-gradient(circle at 50% 100%,transparent 0 7px,var(--line-2) 7.5px 8.5px,transparent 9px) ;
+  background-size:28px 14px;background-position:left bottom;
+}
+.chron-event{background-color:color-mix(in srgb,var(--panel-solid) 70%,transparent)}
+.honour-dossier{position:relative}
+.honour-dossier::before{
+  content:"";position:absolute;right:0;bottom:0;width:min(46%,540px);height:54px;pointer-events:none;opacity:.42;
+  background:radial-gradient(circle at 50% 100%,transparent 0 8px,var(--line-2) 8.5px 9.5px,transparent 10px 13px,var(--line) 13.5px 14.5px,transparent 15px) 0 100%/30px 16px repeat-x;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 26%);mask:linear-gradient(90deg,transparent,#000 26%);
+}
+
+/* Selected frames receive a carved mat and registration shift. The centre of
+   every photograph remains colour-true; certificate frames are excluded. */
+.memory-frame[data-treatment="aizuri"] .memory-ink,
+.memory-frame[data-treatment="hanga"] .memory-ink,
+.trip-card-media[data-treatment="aizuri"] .memory-ink,
+.trip-card-media[data-treatment="hanga"] .memory-ink{
+  clip-path:none;background:none;opacity:1;mix-blend-mode:normal;
+}
+.memory-frame[data-treatment="aizuri"] .memory-ink::before,
+.memory-frame[data-treatment="hanga"] .memory-ink::before,
+.trip-card-media[data-treatment="aizuri"] .memory-ink::before,
+.trip-card-media[data-treatment="hanga"] .memory-ink::before,
+.chron-thumb[data-treatment="aizuri"] .chron-ink::before,
+.chron-thumb[data-treatment="hanga"] .chron-ink::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:clamp(12px,8%,34px);pointer-events:none;
+  background:radial-gradient(circle at 50% 100%,transparent 0 6px,color-mix(in srgb,var(--dye-blue) 66%,transparent) 6.5px 7.5px,transparent 8px 10px,color-mix(in srgb,var(--dye-blue) 38%,transparent) 10.5px 11.5px,transparent 12px) 0 100%/24px 13px repeat-x;
+  opacity:.62;transition:opacity .35s var(--ease),transform .7s var(--ease);
+}
+.memory-frame[data-treatment="aizuri"] .memory-ink::after,
+.memory-frame[data-treatment="hanga"] .memory-ink::after,
+.trip-card-media[data-treatment="aizuri"] .memory-ink::after,
+.trip-card-media[data-treatment="hanga"] .memory-ink::after,
+.chron-thumb[data-treatment="aizuri"] .chron-ink::after,
+.chron-thumb[data-treatment="hanga"] .chron-ink::after{
+  content:"";position:absolute;right:0;top:0;bottom:0;width:clamp(7px,4%,18px);pointer-events:none;
+  background:repeating-linear-gradient(168deg,color-mix(in srgb,var(--dye-blue) 64%,transparent) 0 1px,transparent 1px 5px);
+  opacity:.52;clip-path:polygon(28% 0,100% 0,100% 100%,8% 100%,48% 84%,16% 70%,52% 54%,13% 38%,44% 19%);
+}
+.chron-ink{position:absolute;inset:0;z-index:2;pointer-events:none}
+.chron-thumb[data-treatment="certificate"] .chron-ink{display:none}
+.memory-frame[data-treatment="hanga"]::before{
+  content:"";position:absolute;z-index:4;inset:5px;border:1px solid color-mix(in srgb,var(--dye-blue) 48%,transparent);
+  clip-path:polygon(0 2%,22% 0,46% 1%,73% 0,100% 3%,99% 72%,100% 100%,65% 99%,34% 100%,1% 98%);
+  pointer-events:none;opacity:.54;
+}
+.memory-register::before,.memory-register::after{transition:transform .5s var(--ease),opacity .3s var(--ease)}
+.memory-frame:hover .memory-register::before,.memory-link:focus-visible .memory-register::before,.trip-card:hover .memory-register::before,.trip-card:focus-visible .memory-register::before{transform:translate3d(-2px,1px,0)}
+.memory-frame:hover .memory-register::after,.memory-link:focus-visible .memory-register::after,.trip-card:hover .memory-register::after,.trip-card:focus-visible .memory-register::after{transform:translate3d(2px,-1px,0)}
+
+.trip-card-copy{
+  position:relative;z-index:3;margin:-18px 12px 0;padding:clamp(22px,3vw,34px);
+  background-color:var(--panel-solid);border-top:1px solid var(--line-2);
+  clip-path:polygon(0 4px,11% 0,24% 3px,39% 1px,57% 4px,73% 0,88% 3px,100% 1px,100% 100%,0 100%);
+  background-image:radial-gradient(circle at 50% 100%,transparent 0 7px,var(--line) 7.5px 8.5px,transparent 9px);
+  background-size:28px 14px;background-position:right bottom;
+}
+
+/* Six memories become one continuous contact scroll, not six pasted cards. */
+.memory-river--home{
+  position:relative;isolation:isolate;gap:2px;padding:1px;overflow:hidden;
+  background:var(--line-2);border-block:1px solid var(--line-2);
+  clip-path:polygon(0 .5%,13% 0,29% .4%,47% 0,68% .6%,84% 0,100% .4%,100% 99.5%,83% 100%,64% 99.6%,43% 100%,21% 99.5%,0 100%);
+  box-shadow:var(--lift);
+}
+.memory-river--home :is(.memory-frame,.memory-link .memory-frame){border:0;box-shadow:none;clip-path:none}
+.memory-river--home .memory-register{opacity:.42}
+
+@media (max-width:760px){
+  .hero-stage,.chapter-stage{--stage-pad:16px;width:100vw;margin-left:calc(50% - 50vw);padding-inline:16px}
+  .hero-stage{display:flex;align-items:center;min-height:clamp(680px,92svh,780px);padding-bottom:0;overflow:clip}
+  .hero-stage>.hero{width:100%;min-height:0;padding:72px 0 118px;justify-content:center;text-shadow:0 2px 22px var(--void)}
+  .hero-stage>.hero-art{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;margin:0;border:0}
+  .hero-stage>.hero-art::before{
+    background:linear-gradient(180deg,var(--void) 0%,color-mix(in srgb,var(--void) 94%,transparent) 24%,color-mix(in srgb,var(--void) 66%,transparent) 52%,transparent 76%,var(--void) 100%);
+  }
+  .chapter-stage{min-height:clamp(610px,84svh,720px);align-items:flex-start}
+  .chapter-stage::before{
+    background:linear-gradient(180deg,var(--void) 0%,color-mix(in srgb,var(--void) 95%,transparent) 34%,color-mix(in srgb,var(--void) 62%,transparent) 56%,transparent 78%,var(--void) 100%);
+  }
+  .chapter-stage::after{top:18px;right:16px}
+  .chapter-stage>.masthead{width:100%;padding:58px 0 250px;text-shadow:0 2px 20px var(--void),0 0 55px var(--void)}
+  .chapter-stage>.chapter-art{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;margin:0;border:0}
+  .chapter-stage>.chapter-art .art-img{object-position:center}
+  .chapter-tide{height:43%;bottom:1%;opacity:.34}
+  :root[data-mode="vivo"] .chapter-tide{opacity:.18}
+  .chapter-calligraphy{
+    top:auto;right:18px;bottom:42px;width:132px;
+    transform:translate3d(var(--copy-x),0,0) rotate(-3deg);opacity:.58;
+  }
+  :root[data-mode="vivo"] .chapter-calligraphy{opacity:.24}
+  .calligraphy-mark{font-size:clamp(4.6rem,21vw,6.2rem);line-height:.64}
+  .chapter-calligraphy footer{max-width:150px;margin-top:14px;padding:6px 8px;font-size:7px}
+  .memory-river--home{gap:2px}
+  .trip-card-copy{margin:-14px 7px 0}
+}
+
+@media print{
+  .hero-stage,.chapter-stage{width:auto;margin:0;min-height:0;padding:0;display:block;border:0}
+  .hero-stage>.hero-art,.chapter-stage>.chapter-art{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:8/3;margin:20px 0}
+  .chapter-stage::before,.chapter-stage::after,.chapter-tide,.chapter-calligraphy{display:none!important}
+  .memory-ink,.memory-register,.chron-ink{display:none!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero-stage .art-img,.chapter-stage .art-img,.chapter-stage .masthead h1,.chapter-tide,.calligraphy-mark>span{animation:none!important;transform:none!important;transition:none!important}
+  .chapter-calligraphy{transform:translateY(-50%) rotate(-2deg)!important}
+}
+
+@media (max-width:760px) and (prefers-reduced-motion:reduce){
+  .chapter-calligraphy{transform:rotate(-3deg)!important}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   37. THE DEED REGISTER — a dense orihon, not a résumé wall
+
+   Major outcomes keep their documentary dossiers.  The complete supplied
+   table lives here at a smaller scale: four folded leaves, twenty-two exact
+   lines, and only the links that resolve to evidence.
+   ═══════════════════════════════════════════════════════════════ */
+
+.deed-register{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  border:1px solid var(--line-2);background:var(--panel);box-shadow:var(--lift);
+  background-image:
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--line-2) 50%,transparent calc(50% + .5px)),
+    radial-gradient(circle at 50% 100%,transparent 0 7px,var(--line) 7.5px 8.5px,transparent 9px);
+  background-size:100% 100%,28px 14px;background-position:center,right bottom;
+}
+.deed-group{min-width:0;padding:clamp(22px,3vw,36px)}
+.deed-group:nth-child(even){border-left:1px solid var(--line-2)}
+.deed-group:nth-child(n+3){border-top:1px solid var(--line-2)}
+.deed-group>header{
+  display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:12px;
+  margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line-2)
+}
+.deed-mark{
+  display:grid;place-items:center;width:31px;height:31px;border:1px solid var(--seal);color:var(--seal);
+  font-family:var(--f-display);font-size:1.05rem;transform:rotate(-2deg);
+  background:var(--pre-wash);box-shadow:inset 0 0 0 3px var(--void)
+}
+.deed-group>header h3{font-family:var(--f-display);font-size:clamp(1.15rem,1.7vw,1.45rem);font-weight:600}
+.deed-count{font-family:var(--f-mono);font-size:9px;letter-spacing:.15em;color:var(--muted)}
+.deed-group ol{list-style:none}
+.deed-item{
+  scroll-margin-top:90px;display:grid;grid-template-columns:30px 104px minmax(0,1fr) auto;gap:9px 12px;
+  align-items:start;padding:13px 0;border-bottom:1px solid var(--line);position:relative
+}
+.deed-item:last-child{border-bottom:0}
+.deed-item::before{
+  content:"";position:absolute;left:-8px;top:8px;bottom:8px;width:2px;background:var(--seal);
+  transform:scaleY(0);transform-origin:top;transition:transform .3s var(--ease)
+}
+.deed-item:target::before,.deed-item:hover::before{transform:scaleY(1)}
+.deed-no,.deed-item time,.deed-actions{
+  font-family:var(--f-mono);font-size:8px;line-height:1.5;letter-spacing:.08em;color:var(--muted)
+}
+.deed-no{color:var(--seal)}
+.deed-item time{font-variant-numeric:tabular-nums}
+.deed-copy{display:block;min-width:0}
+.deed-copy strong{display:block;font-family:var(--f-serif);font-size:.96rem;line-height:1.42;font-weight:600;color:var(--ink)}
+.deed-copy small{display:block;margin-top:5px;font-size:.73rem;line-height:1.55;color:var(--muted)}
+.deed-actions{display:flex;flex-direction:column;align-items:flex-end;gap:5px;white-space:nowrap}
+.deed-actions a{padding-bottom:2px;border-bottom:1px solid var(--line-2);color:var(--ink-dim)}
+.deed-actions a:hover,.deed-actions a:focus-visible{color:var(--seal);border-color:var(--seal)}
+
+.deed-support{
+  margin-top:clamp(34px,5vw,58px);padding-top:18px;border-top:3px double var(--line-2)
+}
+.deed-support-head{display:grid;grid-template-columns:70px minmax(0,1fr) auto;align-items:end;gap:14px;margin-bottom:18px}
+.deed-support-head>span{font-family:var(--f-mono);font-size:8px;letter-spacing:.16em;color:var(--seal)}
+.deed-support-head h3{font-family:var(--f-display);font-size:1.35rem}
+.deed-support-head p{font-family:var(--f-mono);font-size:8px;letter-spacing:.09em;color:var(--muted);text-transform:uppercase}
+.deed-proof-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start}
+.deed-proof-grid .proof-frame{height:100%}
+.deed-proof-grid .proof-frame .memory-media{aspect-ratio:4/3;display:grid;place-items:center}
+.deed-proof-grid .proof-frame .memory-media img{width:100%;height:100%;object-fit:contain!important}
+.record-provenance{
+  margin-top:22px;padding:14px 16px 14px 42px;max-width:94ch;position:relative;
+  border-left:2px solid var(--seal);background:var(--pre-wash);
+  font-family:var(--f-mono);font-size:9px;line-height:1.7;letter-spacing:.035em;color:var(--muted)
+}
+.record-provenance::before{content:"記";position:absolute;left:13px;top:13px;color:var(--seal);font-family:var(--f-display);font-size:1.05rem}
+
+/* The year bands pack themselves; seven events now occupy two compact rows
+   instead of creating a single sparse or excessively tall column. */
+.chron-events,
+.chron-year[data-count="2"] .chron-events,
+.chron-year[data-count="4"] .chron-events,
+.chron-year[data-count="5"] .chron-events{
+  grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr))
+}
+.chron-year[data-count="5"] .chron-events>li,
+.chron-year[data-count="5"] .chron-events>li:nth-last-child(-n+2),
+.chron-year[data-count="5"] .chron-events>li:last-child{grid-column:auto}
+
+/* Official reporting appears as a continuous printed news sheet.  Images
+   bleed to the carved wave edge; words and attribution stay on paper. */
+.press-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--line-2);border:1px solid var(--line-2);box-shadow:var(--lift)}
+.press-card{display:grid;grid-template-rows:clamp(180px,20vw,250px) minmax(0,1fr);min-width:0;background:var(--panel-solid);color:var(--ink);overflow:hidden;position:relative}
+.press-card:focus-visible{outline:2px solid var(--seal);outline-offset:-4px}
+.press-image{position:relative;display:block;overflow:hidden;background:var(--bg2)}
+.press-image img{width:100%;height:100%;object-fit:cover;filter:saturate(.91) contrast(1.035);transition:transform .9s var(--ease),filter .5s var(--ease)}
+.press-image[data-treatment="certificate"] img{object-fit:contain;background:#f5f0e5;padding:12px;filter:none}
+.press-card:hover .press-image img{transform:scale(1.018);filter:saturate(1) contrast(1.035)}
+.press-image[data-treatment="certificate"] img,.press-card:hover .press-image[data-treatment="certificate"] img{transform:none;filter:none}
+.press-wave{
+  position:absolute;left:0;right:0;bottom:-1px;height:22px;pointer-events:none;
+  background:radial-gradient(circle at 50% 100%,transparent 0 7px,var(--panel-solid) 7.5px 12px,transparent 12.5px) 0 100%/28px 22px repeat-x
+}
+.press-copy{display:flex;flex-direction:column;min-width:0;padding:clamp(20px,3vw,32px);position:relative}
+.press-copy::after{
+  content:"";position:absolute;right:0;bottom:0;width:40%;height:48px;opacity:.38;pointer-events:none;
+  background:repeating-linear-gradient(165deg,var(--line-2) 0 1px,transparent 1px 6px);
+  clip-path:polygon(44% 0,100% 0,100% 100%,0 100%)
+}
+.press-meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;margin-bottom:15px;font-family:var(--f-mono);font-size:8px;line-height:1.45;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.press-meta time{color:var(--seal)}
+.press-copy>strong{font-family:var(--f-display);font-size:clamp(1.25rem,2vw,1.8rem);line-height:1.17;font-weight:600}
+.press-excerpt{display:block;margin-top:13px;font-size:.87rem;line-height:1.68;color:var(--ink-dim)}
+.press-copy blockquote{margin:15px 0 0;padding-left:12px;border-left:2px solid var(--seal);font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--ink)}
+.press-read{margin-top:auto;padding-top:22px;font-family:var(--f-mono);font-size:8px;letter-spacing:.14em;color:var(--seal);position:relative;z-index:1}
+
+@media (min-width:901px){
+  .press-card:last-child:nth-child(odd){
+    grid-column:1/-1;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+    grid-template-rows:minmax(330px,auto)
+  }
+}
+
+@media (max-width:900px){
+  .deed-register{grid-template-columns:minmax(0,1fr);background-image:radial-gradient(circle at 50% 100%,transparent 0 7px,var(--line) 7.5px 8.5px,transparent 9px);background-size:28px 14px}
+  .deed-group:nth-child(even){border-left:0}
+  .deed-group:nth-child(n+2){border-top:1px solid var(--line-2)}
+  .deed-proof-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .deed-proof-grid>:last-child{grid-column:1/-1;width:min(100%,620px)}
+}
+
+@media (max-width:760px){
+  .deed-group{padding:22px 17px}
+  .deed-item{grid-template-columns:27px minmax(0,1fr) auto;gap:5px 9px;padding:15px 0}
+  .deed-item time{grid-column:2;grid-row:1;color:var(--seal)}
+  .deed-no{grid-column:1;grid-row:1/3}
+  .deed-copy{grid-column:2/4;grid-row:2}
+  .deed-actions{grid-column:3;grid-row:1;flex-direction:row}
+  .deed-copy strong{font-size:.94rem}
+  .deed-copy small{font-size:.75rem}
+  .deed-support-head{grid-template-columns:auto minmax(0,1fr);align-items:center}
+  .deed-support-head p{grid-column:1/-1}
+  .deed-proof-grid{grid-template-columns:minmax(0,1fr)}
+  .deed-proof-grid>:last-child{grid-column:auto;width:auto}
+  .press-grid{grid-template-columns:minmax(0,1fr);gap:1px}
+  .press-card{grid-template-rows:210px minmax(0,1fr)}
+  .press-meta{grid-template-columns:minmax(0,1fr)}
+}
+
+@media print{
+  .deed-register,.press-grid{box-shadow:none;background:none}
+  .deed-group,.deed-item,.press-card,.deed-support{break-inside:avoid}
+  .deed-actions,.press-read{display:none}
+}
+
+.contact-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.contact-grid .card .idx{display:flex;align-items:center;gap:8px}
+@media (max-width:980px){.contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.contact-grid{grid-template-columns:minmax(0,1fr)}}
+@media (hover:none){.memory-frame.event-hot::after{display:none}}
