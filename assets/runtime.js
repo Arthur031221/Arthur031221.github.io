@@ -193,12 +193,14 @@
     var btn = document.querySelector('[data-act="mode"]');
     if (btn) {
       var label = mode === 'fixed'
-        ? { en: 'FIXED', zh: '固定切片' }
-        : { en: 'IN VIVO', zh: '活體' };
+        ? { en: 'DAY', zh: '日' }
+        : { en: 'NIGHT', zh: '夜' };
       btn.querySelector('.lb').textContent = PE.t(label);
+      var glyph = btn.querySelector('.mode-glyph');
+      if (glyph) glyph.textContent = mode === 'fixed' ? '☀' : '☾';
       btn.setAttribute('aria-label', PE.t(mode === 'fixed'
-        ? { en: 'Imaging modality: fixed section. Switch to in vivo.', zh: '影像模式：固定切片。切換為活體。' }
-        : { en: 'Imaging modality: in vivo. Switch to fixed section.', zh: '影像模式：活體。切換為固定切片。' }));
+        ? { en: 'Colour theme: day. Switch to night.', zh: '色彩主題：日。切換為夜。' }
+        : { en: 'Colour theme: night. Switch to day.', zh: '色彩主題：夜。切換為日。' }));
     }
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--void').trim());
@@ -225,6 +227,11 @@
     if (btn) {
       btn.querySelector('.lb').textContent = lang === 'zh' ? 'EN' : '中';
       btn.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換為中文');
+    }
+    var menu = document.querySelector('[data-act="drawer"]');
+    if (menu) {
+      var open = menu.getAttribute('aria-expanded') === 'true';
+      menu.setAttribute('aria-label', lang === 'zh' ? (open ? '關閉選單' : '開啟選單') : (open ? 'Close menu' : 'Open menu'));
     }
     document.querySelectorAll('[data-t-en]').forEach(function (el) {
       el.textContent = lang === 'zh' ? el.getAttribute('data-t-zh') : el.getAttribute('data-t-en');
@@ -253,45 +260,7 @@
     else applyLang((navigator.language || 'en').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en');
   })();
 
-  /* ── 13. prediction-error type resolve ──────────────────────
-     Display type only. A headline arrives as a wrong prediction and
-     the residual decays: each glyph settles at its own time, drawn
-     from an exponential schedule. Body copy is never touched.       */
-  var GLYPHS = '01<>[]{}/\\|=+-*#%&$@ΔΣΛΦΨΩ∇∂∫≈≠';
-  function resolveText(el) {
-    if (el.dataset.peDone) return;
-    el.dataset.peDone = '1';
-    var text = el.textContent;
-    if (PE.reduced || text.length > 90) return;
-    var chars = Array.from(text);
-    var frag = document.createDocumentFragment();
-    var spans = [];
-    chars.forEach(function (ch) {
-      var s = document.createElement('span');
-      s.className = 'g';
-      s.textContent = ch;
-      if (ch.trim()) { s.classList.add('wrong'); spans.push({ el: s, ch: ch }); }
-      frag.appendChild(s);
-    });
-    el.textContent = '';
-    el.appendChild(frag);
-    el.classList.add('pe');
-    var rnd = PE.rng(text.length * 7919 + 13);
-    var order = spans.map(function (s, i) { return { s: s, at: 90 + i * 16 + rnd() * 190 }; });
-    var t0 = performance.now(), id = 'pe-' + (Math.random() * 1e9 | 0);
-    PE.loop.add(id, function () {
-      var t = performance.now() - t0, live = 0;
-      for (var i = 0; i < order.length; i++) {
-        var o = order[i];
-        if (o.done) continue;
-        if (t >= o.at) { o.s.el.textContent = o.s.ch; o.s.el.classList.remove('wrong'); o.done = true; }
-        else { o.s.el.textContent = GLYPHS[(rnd() * GLYPHS.length) | 0]; live++; }
-      }
-      if (!live) PE.loop.remove(id);
-    });
-  }
-
-  /* ── 14. settling: sections resolve as they arrive ─────────────
+  /* ── 13. settling: sections resolve as they arrive ─────────────
      A sweep, not only an observer. An observer misses anything the
      reader jumps over — an in-page anchor, Cmd+End, find-in-page —
      and a section that was jumped past would stay invisible. The
@@ -303,7 +272,6 @@
 
     function settle(el) {
       el.classList.add('settled');
-      el.querySelectorAll('[data-pe]').forEach(resolveText);
       var id = el.id;
       if (id) {
         var tick = document.querySelector('.rail .tick[data-for="' + id + '"]');
@@ -518,7 +486,7 @@
           href: a.getAttribute('href'), key: a.querySelector('.ch') ? a.querySelector('.ch').textContent : ''
         });
       });
-      items.push({ group: { en: 'Control', zh: '控制' }, label: { en: 'Switch imaging modality', zh: '切換影像模式' }, key: 'T', run: function () { PE.setMode(PE.mode() === 'vivo' ? 'fixed' : 'vivo'); } });
+      items.push({ group: { en: 'Control', zh: '控制' }, label: { en: 'Switch day / night theme', zh: '切換日／夜主題' }, key: 'T', run: function () { PE.setMode(PE.mode() === 'vivo' ? 'fixed' : 'vivo'); } });
       items.push({ group: { en: 'Control', zh: '控制' }, label: { en: 'Switch language', zh: '切換語言' }, key: 'L', run: function () { PE.setLang(PE.lang() === 'en' ? 'zh' : 'en'); } });
       items.push({ group: { en: 'Control', zh: '控制' }, label: { en: 'Inject a current pulse', zh: '注入電流脈衝' }, key: 'S', run: function () { PE.stimulate(1.4); PE.toast({ en: 'Pulse injected', zh: '已注入脈衝' }); } });
       var mail = document.querySelector('[data-act="mail"]');
@@ -599,13 +567,23 @@
     if (!dlg) return;
     var plates = Array.prototype.slice.call(document.querySelectorAll('[data-lb]'));
     if (!plates.length) return;
-    var img = dlg.querySelector('img'), num = dlg.querySelector('.n'), cap = dlg.querySelector('.cap'), i = 0;
+    var media = dlg.querySelector('[data-lb-media]');
+    var img = document.createElement('img');
+    img.alt = '';
+    img.decoding = 'async';
+    media.appendChild(img);
+    var num = dlg.querySelector('.n'), cap = dlg.querySelector('.cap'), i = 0;
 
     function show(k) {
       i = (k + plates.length) % plates.length;
       var p = plates[i], src = p.getAttribute('data-lb');
+      var w = parseInt(p.getAttribute('data-lb-width'), 10);
+      var h = parseInt(p.getAttribute('data-lb-height'), 10);
+      if (w && h) { img.width = w; img.height = h; }
       img.src = src;
-      img.alt = PE.lang() === 'zh' ? (p.getAttribute('data-alt-zh') || '') : (p.getAttribute('data-alt-en') || '');
+      img.alt = PE.lang() === 'zh'
+        ? (p.getAttribute('data-alt-zh') || p.getAttribute('data-cap-zh') || '')
+        : (p.getAttribute('data-alt-en') || p.getAttribute('data-cap-en') || '');
       if (num) num.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(plates.length).padStart(2, '0');
       if (cap) cap.textContent = PE.lang() === 'zh' ? (p.getAttribute('data-cap-zh') || '') : (p.getAttribute('data-cap-en') || '');
     }
@@ -623,6 +601,8 @@
     dlg.querySelectorAll('[data-lb-nav]').forEach(function (b) {
       b.addEventListener('click', function () { show(i + (b.getAttribute('data-lb-nav') === 'next' ? 1 : -1)); });
     });
+    var close = dlg.querySelector('[data-lb-close]');
+    if (close) close.addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.classList.contains('lb')) dlg.close(); });
   }
 
@@ -666,6 +646,36 @@
 
   /* ── 24. chrome wiring ──────────────────────────────────── */
   function chrome() {
+    var drawer = document.getElementById('drawer');
+    var drawerButton = document.querySelector('[data-act="drawer"]');
+    var drawerReturnFocus = null;
+    var drawerBackground = [
+      document.getElementById('main'),
+      document.querySelector('.bar .id'),
+      document.querySelector('.bar nav'),
+      document.querySelector('.bar .ctl')
+    ].filter(Boolean);
+
+    function setDrawer(open, restoreFocus) {
+      if (!drawer || !drawerButton) return;
+      root.classList.toggle('drawer-open', open);
+      drawerButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawerButton.setAttribute('aria-label', PE.lang() === 'zh'
+        ? (open ? '關閉選單' : '開啟選單')
+        : (open ? 'Close menu' : 'Open menu'));
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      drawer.inert = !open;
+      drawerBackground.forEach(function (el) { el.inert = open; });
+      if (open) {
+        drawerReturnFocus = document.activeElement;
+        var first = drawer.querySelector('a');
+        if (first) requestAnimationFrame(function () { first.focus(); });
+      } else if (restoreFocus !== false && drawerReturnFocus && drawerReturnFocus.focus) {
+        drawerReturnFocus.focus();
+        drawerReturnFocus = null;
+      }
+    }
+
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act]');
       if (!b) return;
@@ -676,14 +686,32 @@
       } else if (act === 'lang') { PE.setLang(PE.lang() === 'en' ? 'zh' : 'en'); }
       else if (act === 'console') { e.preventDefault(); PE.openConsole && PE.openConsole(); }
       else if (act === 'mail') { e.preventDefault(); copyMail(); }
-      else if (act === 'drawer') { root.classList.toggle('drawer-open'); }
+      else if (act === 'drawer') { setDrawer(!root.classList.contains('drawer-open')); }
       else if (act === 'top') { scrollTo({ top: 0, behavior: PE.reduced ? 'auto' : 'smooth' }); }
     });
     document.querySelectorAll('#drawer a').forEach(function (a) {
-      a.addEventListener('click', function () { root.classList.remove('drawer-open'); });
+      a.addEventListener('click', function () { setDrawer(false, false); });
     });
 
     addEventListener('keydown', function (e) {
+      if (root.classList.contains('drawer-open')) {
+        if (e.key === 'Escape') { e.preventDefault(); setDrawer(false); return; }
+        if (e.key === 'Tab' && drawer && drawerButton) {
+          var links = Array.prototype.slice.call(drawer.querySelectorAll('a'));
+          var first = links[0], last = links[links.length - 1], active = document.activeElement;
+          if (!links.length) { e.preventDefault(); drawerButton.focus(); return; }
+          if (active === drawerButton) {
+            e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
+          }
+          if (e.shiftKey && active === first) {
+            e.preventDefault(); drawerButton.focus(); return;
+          }
+          if (!e.shiftKey && active === last) {
+            e.preventDefault(); drawerButton.focus(); return;
+          }
+          if (!drawer.contains(active)) { e.preventDefault(); first.focus(); return; }
+        }
+      }
       var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
       if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); PE.openConsole && PE.openConsole(); return; }
       if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -692,8 +720,11 @@
       else if (e.key === 'l' || e.key === 'L') { PE.setLang(PE.lang() === 'en' ? 'zh' : 'en'); }
       else if (e.key === 's' || e.key === 'S') { PE.stimulate(1.4); PE.toast({ en: 'Pulse injected', zh: '已注入脈衝' }); }
       else if (e.key === 'e' || e.key === 'E') { copyMail(); }
-      else if (e.key === 'Escape') { root.classList.remove('drawer-open'); }
+      else if (e.key === 'Escape') { setDrawer(false); }
     });
+
+    var drawerMQ = matchMedia('(max-width:1100px)');
+    drawerMQ.addEventListener('change', function (e) { if (!e.matches) setDrawer(false, false); });
   }
 
   function debounce(fn, ms) {
@@ -709,9 +740,6 @@
     var first = document.querySelector('.hero, .masthead');
     if (first) {
       first.classList.add('settled');
-      first.querySelectorAll('[data-pe]').forEach(function (el) {
-        setTimeout(function () { resolveText(el); }, PE.reduced ? 0 : 420);
-      });
     }
     PE.emit('ready');
   }

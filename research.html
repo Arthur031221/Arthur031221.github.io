@@ -4,21 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Research — Chi-Wei Lee</title>
-<meta name="description" content="Four research threads: predictive coding with memory, Langevin inference, spatial decoding from fMRI, and controllable diffusion — with live instruments for each.">
+<meta name="description" content="Four research threads: predictive coding with memory, Langevin inference, spatial decoding from fMRI, and controllable diffusion.">
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
 <link rel="canonical" href="https://arthur031221.github.io/research.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Research — Chi-Wei Lee">
-<meta property="og:description" content="Four research threads: predictive coding with memory, Langevin inference, spatial decoding from fMRI, and controllable diffusion — with live instruments for each.">
+<meta property="og:description" content="Four research threads: predictive coding with memory, Langevin inference, spatial decoding from fMRI, and controllable diffusion.">
 <meta property="og:url" content="https://arthur031221.github.io/research.html">
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
+<meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
+<meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2?v=64092ca6" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2?v=fa41c43a" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=466cb265">
+<link rel="stylesheet" href="assets/site.css?v=07e5df6b">
 <script>document.documentElement.classList.remove('no-js');try{var m=localStorage.getItem('pe.mode');if(!m)m=matchMedia('(prefers-color-scheme: light)').matches?'fixed':'vivo';document.documentElement.setAttribute('data-mode',m);var l=localStorage.getItem('pe.lang');if(l)document.documentElement.setAttribute('lang',l==='zh'?'zh-Hant':'en');}catch(e){}</script>
 
 </head>
@@ -31,14 +34,12 @@
 
 <a class="skip" href="#main"><span class="en">Skip to content</span><span class="zh">跳至內容</span></a>
 
-<div class="rig" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
 <header class="bar">
   <a class="id" href="index.html" aria-label="Chi-Wei Lee — home">
     <span class="seal" aria-hidden="true">李</span>
     <b><span class="en">CHI-WEI LEE</span><span class="zh">李騏維</span></b>
     <span class="sep" aria-hidden="true">/</span>
-    <span class="role"><span class="en">NEUROAI</span><span class="zh">腦神經 × 機器學習</span></span>
+    <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
   <nav aria-label="Sections"><a href="index.html"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
   <div class="ctl">
@@ -46,76 +47,60 @@
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
-    <button type="button" data-act="mode" aria-label="Switch imaging modality"><span class="lb">IN VIVO</span><span class="k">T</span></button>
+    <button type="button" data-act="mode" aria-label="Switch colour theme"><span class="mode-glyph" aria-hidden="true">◐</span><span class="lb">NIGHT</span><span class="k">T</span></button>
   </div>
-  <button type="button" class="burger" data-act="drawer" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button type="button" class="burger" data-act="drawer" aria-label="Menu" aria-controls="drawer" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
 <div class="shell">
-  <aside class="depth" aria-hidden="true"><div class="lay"><span class="t"></span><b>L1</b><span class="nm"><span class="en">MOLECULAR</span><span class="zh">分子層</span></span></div><div class="lay"><span class="t"></span><b>L2/3</b><span class="nm"><span class="en">ASSOCIATIVE</span><span class="zh">聯合層</span></span></div><div class="lay"><span class="t"></span><b>L4</b><span class="nm"><span class="en">GRANULAR</span><span class="zh">顆粒層</span></span></div><div class="lay"><span class="t"></span><b>L5a</b><span class="nm"><span class="en">OUTPUT</span><span class="zh">輸出層</span></span></div><div class="lay"><span class="t"></span><b>L5b</b><span class="nm"><span class="en">PROJECTION</span><span class="zh">投射層</span></span></div><div class="lay"><span class="t"></span><b>L6</b><span class="nm"><span class="en">FEEDBACK</span><span class="zh">回饋層</span></span></div></aside>
   <main id="main">
 
 <div class="masthead">
   <aside class="cartouche" aria-hidden="true"><span>研究</span><b>李</b></aside>
   <div class="band err"><span class="en">SECTION 02 · FOUR THREADS</span><span class="zh">第 02 節 · 四條線</span></div>
   <h1 class="err"><span class="en">RESEARCH</span><span class="zh">研究</span></h1>
-  <p class="lede err"><span class="en">Four threads, one question — what a posterior should carry, and what memory has to do with carrying it.</span><span class="zh">四條研究線，一個問題——後驗應該承載什麼，而記憶與這件事有什麼關係。</span></p>
+  <p class="lede err"><span class="en">One programme across theory and neural data: memory as denoising, posterior sampling, fMRI decoding, and controllable generation.</span><span class="zh">一個橫跨理論與神經資料的研究計畫：記憶即去噪、後驗取樣、fMRI 解碼與可控生成。</span></p>
 </div>
-<figure class="plate artwork wide"><img src="img/art/research.webp" width="2000" height="700" alt="Ink artwork" data-alt-en="Ink artwork" data-alt-zh="墨圖" loading="lazy" decoding="async"></figure><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Four threads" data-cmd-zh="四條線"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Four threads</span><span class="zh">四條線</span></h2></div><div class="grid c2 thread-deck"><article class="unit thread-card err" id="pc">
-  <div class="plate"><img src="img/art/thread-pc.webp" srcset="img/art/thread-pc-800.webp 800w, img/art/thread-pc.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Two currents of ink meeting" data-alt-en="Two currents of ink meeting" data-alt-zh="兩股墨流相會" loading="lazy" decoding="async" class=""></div>
+<figure class="artwork chapter-art" data-art="research"><img src="img/art/research.webp" srcset="img/art/research-400.webp 400w, img/art/research-800.webp 800w, img/art/research-1200.webp 1200w, img/art/research.webp 2000w" sizes="(max-width:720px) 100vw, 1120px" width="2000" height="750" alt="Four indigo currents meeting around a clear centre" data-alt-en="Four indigo currents meeting around a clear centre" data-alt-zh="四股靛藍墨流在留白中心交會" loading="lazy" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure><section class="sec" id="threads" data-rail="THREADS" data-cmd="1" data-cmd-en="Four threads" data-cmd-zh="四條線"><div class="sec-h err"><span class="lay">L2/3</span><h2><span class="en">Four threads</span><span class="zh">四條線</span></h2></div><div class="grid c2 thread-deck"><article class="unit thread-card err" id="pc">
+  <div class="plate"><img src="img/art/thread-pc.webp" srcset="img/art/thread-pc-400.webp 400w, img/art/thread-pc-800.webp 800w, img/art/thread-pc.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Two currents of ink meeting" data-alt-en="Two currents of ink meeting" data-alt-zh="兩股墨流相會" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">01</span><span class="en">Theory</span><span class="zh">理論</span></div>
     <h3><span class="en">Predictive coding needs a memory</span><span class="zh">預測編碼需要記憶</span></h3>
-    <p><span class="en">Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.</span><span class="zh">預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。</span></p>
+    <p><span class="en">Predictive coding supplies a generative hierarchy; modern Hopfield networks supply content-addressable retrieval. A Tweedie–Hopfield correspondence shows that both rely on the same Bayesian denoiser. HOPE combines hierarchical inference, temporal prediction, and layer-wise memory in one energy trained with local Hebbian updates.</span><span class="zh">預測編碼提供生成式階層，現代 Hopfield 網路提供內容定址檢索。Tweedie–Hopfield 對應關係顯示，兩者依賴同一個貝氏去噪器。HOPE 以單一能量函數整合階層推論、時間預測與逐層記憶，並以局部 Hebbian 更新學習。</span></p>
   </div>
 </article><article class="unit thread-card err" id="langevin">
-  <div class="plate"><img src="img/art/thread-langevin.webp" srcset="img/art/thread-langevin-800.webp 800w, img/art/thread-langevin.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink circling a ring of wells" data-alt-en="Ink circling a ring of wells" data-alt-zh="墨繞著八個勢阱迴旋" loading="lazy" decoding="async" class=""></div>
+  <div class="plate"><img src="img/art/thread-langevin.webp" srcset="img/art/thread-langevin-400.webp 400w, img/art/thread-langevin-800.webp 800w, img/art/thread-langevin.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink circling a ring of wells" data-alt-en="Ink circling a ring of wells" data-alt-zh="墨繞著八個勢阱迴旋" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">02</span><span class="en">Theory</span><span class="zh">理論</span></div>
-    <h3><span class="en">Inference should sample, not just peak</span><span class="zh">推論應該取樣,而不只是找峰</span></h3>
-    <p><span class="en">Temporal predictive coding descends the energy deterministically, so it returns only the posterior&#x27;s MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow&#x27;s unique stationary density: the inference now carries the whole shape of the belief.</span><span class="zh">時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。</span></p>
+    <h3><span class="en">Inference should sample, not just find a mode</span><span class="zh">推論應該取樣，而不只尋找峰值</span></h3>
+    <p><span class="en">Deterministic temporal predictive coding returns only a posterior mode. Coupling overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation instead makes the full filtering posterior the flow&#x27;s stationary density, preserving multiple plausible explanations.</span><span class="zh">確定性的時間預測編碼只回傳後驗的一個峰值。將 overdamped Langevin 動力學與 preconditioner 透過漲落–耗散關係配對，能讓完整的濾波後驗成為流的穩態分佈，保留多個合理解釋。</span></p>
   </div>
 </article><article class="unit thread-card err" id="fmri">
-  <div class="plate"><img src="img/art/thread-fmri.webp" srcset="img/art/thread-fmri-800.webp 800w, img/art/thread-fmri.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Threads of ink pulled into a loose lattice" data-alt-en="Threads of ink pulled into a loose lattice" data-alt-zh="墨絲被拉成疏鬆的網格" loading="lazy" decoding="async" class=""></div>
+  <div class="plate"><img src="img/art/thread-fmri.webp" srcset="img/art/thread-fmri-400.webp 400w, img/art/thread-fmri-800.webp 800w, img/art/thread-fmri.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Threads of ink pulled into a loose lattice" data-alt-en="Threads of ink pulled into a loose lattice" data-alt-zh="墨絲被拉成疏鬆的網格" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">03</span><span class="en">Neural data</span><span class="zh">神經資料</span></div>
     <h3><span class="en">Reading space out of the brain</span><span class="zh">從大腦裡讀出空間</span></h3>
-    <p><span class="en">At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.</span><span class="zh">在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。</span></p>
+    <p><span class="en">At the HMI Lab, I build generative decoders that reconstruct 3D spatial representations from fMRI. The goal is not just to predict a coordinate, but to quantify what the neural signal supports and how uncertain that reconstruction remains.</span><span class="zh">在 HMI Lab，我建立生成式解碼器，從 fMRI 訊號重建三維空間表徵。目標不只是預測一個座標，還要量化神經訊號支持哪些重建，以及重建仍帶有多少不確定性。</span></p>
   </div>
 </article><article class="unit thread-card err" id="diffusion">
-  <div class="plate"><img src="img/art/thread-diffusion.webp" srcset="img/art/thread-diffusion-800.webp 800w, img/art/thread-diffusion.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink drifting from crisp to diffuse" data-alt-en="Ink drifting from crisp to diffuse" data-alt-zh="墨由清晰漂向瀰散" loading="lazy" decoding="async" class=""></div>
+  <div class="plate"><img src="img/art/thread-diffusion.webp" srcset="img/art/thread-diffusion-400.webp 400w, img/art/thread-diffusion-800.webp 800w, img/art/thread-diffusion.webp 1200w" sizes="(max-width:900px) 100vw, 50vw" width="1200" height="900" alt="Ink drifting from crisp to diffuse" data-alt-en="Ink drifting from crisp to diffuse" data-alt-zh="墨由清晰漂向瀰散" loading="lazy" decoding="async" class=""></div>
   <div class="tc-body">
     <div class="idx"><span class="n">04</span><span class="en">Generative</span><span class="zh">生成模型</span></div>
     <h3><span class="en">Control without losing the picture</span><span class="zh">在不失去畫面的前提下控制</span></h3>
-    <p><span class="en">MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.</span><span class="zh">MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。</span></p>
+    <p><span class="en">MatrixQR separates scan reliability from creative editing in generated QR codes. The method preserves machine readability while giving the image model room to change appearance, turning a visual constraint into an explicit optimisation target.</span><span class="zh">MatrixQR 將生成式 QR 碼的掃描可靠性與創意編輯解耦。在保留機器可讀性的同時，也讓影像模型有調整外觀的空間，將視覺限制轉成明確的最佳化目標。</span></p>
   </div>
-</article></div></section><section class="sec" id="papers-link" data-rail="PAPERS" data-cmd="1" data-cmd-en="Where the threads are written down" data-cmd-zh="這些線寫在哪裡"><div class="sec-h err"><span class="lay">L6</span><h2><span class="en">Where the threads are written down</span><span class="zh">這些線寫在哪裡</span></h2></div><p class="err" style="max-width:62ch;color:var(--ink-dim)"><span class="en">The first two threads are the two co-first-author manuscripts under review; the fourth is MatrixQR at TAAI 2025. The spatial-decoding thread has no paper yet because the work is still running — that gap is real, and it is the next thing.</span><span class="zh">前兩條線就是兩篇共同第一作者、審查中的手稿；第四條是 TAAI 2025 的 MatrixQR。空間解碼那條線目前沒有論文，因為工作仍在進行——這個缺口是真實的，也是下一步。</span></p><div class="acts err"><a class="act p" href="publications.html"><span class="en">The papers</span><span class="zh">論文列表</span></a></div></section>
+</article></div></section><section class="sec" id="papers-link" data-rail="PAPERS" data-cmd="1" data-cmd-en="Where the threads are written down" data-cmd-zh="這些線寫在哪裡"><div class="sec-h err"><span class="lay">L6</span><h2><span class="en">Where the threads are written down</span><span class="zh">這些線寫在哪裡</span></h2></div><p class="err" style="max-width:62ch;color:var(--ink-dim)"><span class="en">The predictive-coding and Langevin projects are co-first-author manuscripts under review. MatrixQR was accepted as a TAAI 2025 poster. The fMRI decoding project is ongoing.</span><span class="zh">預測編碼與 Langevin 專案為共同第一作者、審查中的手稿；MatrixQR 已接受為 TAAI 2025 海報；fMRI 解碼專案仍在進行。</span></p><div class="acts err"><a class="act p" href="publications.html"><span class="en">The papers</span><span class="zh">論文列表</span></a></div></section>
     <footer class="foot">
-      <span><span class="en">Chi-Wei Lee · Hsinchu, Taiwan</span><span class="zh">李騏維 · 台灣新竹</span></span>
+      <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
       <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
-      <span class="r"><span class="en">Hand-written. No frameworks, no libraries.</span><span class="zh">手寫。無框架、無函式庫。</span></span>
+      <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
-  <aside class="rail" aria-hidden="true">
-    <div class="track"></div>
-    <canvas class="spikes"></canvas>
-    <div class="head" data-pct="0%"></div>
-  </aside>
 </div>
 
-<div class="hud" aria-hidden="true">
-  <span class="grp rec"><span class="dot"></span><span data-t-en="REC" data-t-zh="錄製中">REC</span></span>
-  <span class="grp opt"><span class="en">FRAME-LFP</span><span class="zh">畫格場電位</span></span>
-  <canvas></canvas>
-  <span class="grp opt"><span class="en">FPS</span><span class="zh">FPS</span> <b class="sig" data-v="fps">60</b></span>
-  <span class="grp"><span class="en">DEPTH</span><span class="zh">深度</span> <b data-v="layer">L1</b></span>
-  <span class="grp"><span class="en">POS</span><span class="zh">位置</span> <b data-v="pos">000%</b></span>
-  <span class="grp opt"><span class="en">TPE</span><span class="zh">台北</span> <b data-v="clock">--:--:--</b></span>
-</div>
-
-<div id="drawer"><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></div>
+<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html" aria-current="page"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
 
 <dialog id="console" aria-label="Command console">
   <div class="box">
@@ -127,11 +112,12 @@
 
 <dialog id="lightbox" aria-label="Photograph">
   <div class="lb">
-    <img alt="" data-lb-img>
+    <div class="lb-media" data-lb-media></div>
     <div class="lbar">
       <span class="n">01 / 01</span>
       <span class="cap"></span>
       <span class="sp">
+        <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
         <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
         <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
       </span>
@@ -139,24 +125,11 @@
   </div>
 </dialog>
 
-<div id="boot" aria-hidden="true">
-  <div class="b">
-    <div class="l"><span>ELECTRODE</span><b>LOWERED</b></div>
-    <div class="l"><span>BASELINE</span><b>ACQUIRED</b></div>
-    <div class="l"><span>LAMINAE</span><b>L1–L6</b></div>
-    <div class="l"><span>PREDICTION</span><b>DESCENDING</b></div>
-    <div class="l"><span>EVIDENCE</span><b>ASCENDING</b></div>
-    <div class="l"><span>RESIDUAL</span><b>RECORDING</b></div>
-    <div class="track"><i></i></div>
-  </div>
-</div>
-
 <noscript>
   <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
-<script src="assets/runtime.js?v=b63cbb9a" defer></script>
-<script src="assets/substrate.js?v=18bb692a" defer></script>
-<script src="assets/instruments.js?v=56b1c252" defer></script>
+<script src="assets/runtime.js?v=2e543db0" defer></script>
+<script src="assets/substrate.js?v=4ae11a11" defer></script>
 </body>
 </html>

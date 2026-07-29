@@ -4,21 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Papers — Chi-Wei Lee</title>
-<meta name="description" content="Papers and preprints by Chi-Wei Lee, with status stated as it actually stands.">
+<meta name="description" content="Five papers and preprints by Chi-Wei Lee across NeuroAI, generative modelling, and scientific machine learning.">
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
 <link rel="canonical" href="https://arthur031221.github.io/publications.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Papers — Chi-Wei Lee">
-<meta property="og:description" content="Papers and preprints by Chi-Wei Lee, with status stated as it actually stands.">
+<meta property="og:description" content="Five papers and preprints by Chi-Wei Lee across NeuroAI, generative modelling, and scientific machine learning.">
 <meta property="og:url" content="https://arthur031221.github.io/publications.html">
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
+<meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
+<meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2?v=64092ca6" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2?v=fa41c43a" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=466cb265">
+<link rel="stylesheet" href="assets/site.css?v=07e5df6b">
 <script>document.documentElement.classList.remove('no-js');try{var m=localStorage.getItem('pe.mode');if(!m)m=matchMedia('(prefers-color-scheme: light)').matches?'fixed':'vivo';document.documentElement.setAttribute('data-mode',m);var l=localStorage.getItem('pe.lang');if(l)document.documentElement.setAttribute('lang',l==='zh'?'zh-Hant':'en');}catch(e){}</script>
 
 </head>
@@ -31,14 +34,12 @@
 
 <a class="skip" href="#main"><span class="en">Skip to content</span><span class="zh">跳至內容</span></a>
 
-<div class="rig" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
 <header class="bar">
   <a class="id" href="index.html" aria-label="Chi-Wei Lee — home">
     <span class="seal" aria-hidden="true">李</span>
     <b><span class="en">CHI-WEI LEE</span><span class="zh">李騏維</span></b>
     <span class="sep" aria-hidden="true">/</span>
-    <span class="role"><span class="en">NEUROAI</span><span class="zh">腦神經 × 機器學習</span></span>
+    <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
   <nav aria-label="Sections"><a href="index.html"><span class="ch">01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html" aria-current="page"><span class="ch">03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
   <div class="ctl">
@@ -46,65 +47,64 @@
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
-    <button type="button" data-act="mode" aria-label="Switch imaging modality"><span class="lb">IN VIVO</span><span class="k">T</span></button>
+    <button type="button" data-act="mode" aria-label="Switch colour theme"><span class="mode-glyph" aria-hidden="true">◐</span><span class="lb">NIGHT</span><span class="k">T</span></button>
   </div>
-  <button type="button" class="burger" data-act="drawer" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button type="button" class="burger" data-act="drawer" aria-label="Menu" aria-controls="drawer" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
 <div class="shell">
-  <aside class="depth" aria-hidden="true"><div class="lay"><span class="t"></span><b>L1</b><span class="nm"><span class="en">MOLECULAR</span><span class="zh">分子層</span></span></div><div class="lay"><span class="t"></span><b>L2/3</b><span class="nm"><span class="en">ASSOCIATIVE</span><span class="zh">聯合層</span></span></div><div class="lay"><span class="t"></span><b>L4</b><span class="nm"><span class="en">GRANULAR</span><span class="zh">顆粒層</span></span></div><div class="lay"><span class="t"></span><b>L5a</b><span class="nm"><span class="en">OUTPUT</span><span class="zh">輸出層</span></span></div><div class="lay"><span class="t"></span><b>L5b</b><span class="nm"><span class="en">PROJECTION</span><span class="zh">投射層</span></span></div><div class="lay"><span class="t"></span><b>L6</b><span class="nm"><span class="en">FEEDBACK</span><span class="zh">回饋層</span></span></div></aside>
   <main id="main">
 
 <div class="masthead">
   <aside class="cartouche" aria-hidden="true"><span>論文</span><b>李</b></aside>
-  <div class="band err"><span class="en">SECTION 03 · THE RECORD</span><span class="zh">第 03 節 · 紀錄</span></div>
+  <div class="band err"><span class="en">SECTION 03 · RESEARCH OUTPUTS</span><span class="zh">第 03 節 · 研究成果</span></div>
   <h1 class="err"><span class="en">PAPERS</span><span class="zh">論文</span></h1>
-  <p class="lede err"><span class="en">Five entries. Two are co-first-author manuscripts under review, one is an accepted TAAI poster, one is published, and one is a 150-author community benchmark I contributed to.</span><span class="zh">五筆。其中兩篇是共同第一作者、審查中的手稿，一篇是已接受的 TAAI 海報，一篇已發表，另一篇是我參與的 150 人社群基準論文。</span></p>
+  <p class="lede err"><span class="en">Five research outputs across predictive coding, Bayesian sampling, controllable generation, scientific imaging, and anomaly-detection benchmarks.</span><span class="zh">五項研究成果，涵蓋預測編碼、貝氏取樣、可控生成、科學影像與異常偵測基準。</span></p>
 </div>
-<figure class="plate artwork wide"><img src="img/art/papers.webp" width="2000" height="560" alt="Ink artwork" data-alt-en="Ink artwork" data-alt-zh="墨圖" loading="lazy" decoding="async"></figure>
+<figure class="artwork chapter-art" data-art="papers"><img src="img/art/papers.webp" srcset="img/art/papers-400.webp 400w, img/art/papers-800.webp 800w, img/art/papers-1200.webp 1200w, img/art/papers.webp 2000w" sizes="(max-width:720px) 100vw, 1120px" width="2000" height="750" alt="Five quiet layers of indigo pigment settling on paper" data-alt-en="Five quiet layers of indigo pigment settling on paper" data-alt-zh="五層靛藍顏料沉積於紙上" loading="lazy" decoding="async" class="art-img"><span class="art-registration" aria-hidden="true"></span></figure>
 <section class="sec" id="list" data-rail="PAPERS" data-cmd="1" data-cmd-en="Entries" data-cmd-zh="條目"><div class="sec-h err"><span class="lay">L4</span><h2><span class="en">Entries</span><span class="zh">條目</span></h2></div><div class="filters err"><button type="button" data-filter="all" aria-pressed="true"><span class="en">All</span><span class="zh">全部</span></button><button type="button" data-filter="review" aria-pressed="false"><span class="en">Under review</span><span class="zh">審查中</span></button><button type="button" data-filter="accepted" aria-pressed="false"><span class="en">Accepted</span><span class="zh">已接受</span></button><button type="button" data-filter="published" aria-pressed="false"><span class="en">Published</span><span class="zh">已發表</span></button><button type="button" data-filter="service" aria-pressed="false"><span class="en">Co-author</span><span class="zh">共同作者</span></button></div>
 <div class="ledger err"><article class="row" data-status="review">
   <div class="yr">2026</div>
   <div class="bd">
-    <h3>Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities</h3>
-    <p class="who">C.-W. Lee (co-first author) et al.</p>
-    <p class="where">Preprint · under submission</p>
-    <p class="note"><span class="en">Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.</span><span class="zh">把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。</span></p>
+    <h3 lang="en">Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities</h3>
+    <p class="who" lang="en">C.-W. Lee (co-first author) et al.</p>
+    <p class="where" lang="en">Preprint · under review</p>
+    <p class="note"><span class="en">Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE by 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.</span><span class="zh">把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上，後驗模式涵蓋率從 19.4% 提升到 71.3%（3.67 倍），預測 MAE 降低 16.7%（在本質上呈多峰分布的任務中降低 22.3%）。</span></p>
   </div>
   <div class="rt"><span class="chip p"><span class="en">Under review</span><span class="zh">審查中</span></span></div>
 </article><article class="row" data-status="review">
   <div class="yr">2026</div>
   <div class="bd">
-    <h3>Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser</h3>
-    <p class="who">C.-W. Lee (co-first author) et al.</p>
-    <p class="where">Preprint · under submission</p>
-    <p class="note"><span class="en">A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.</span><span class="zh">以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。</span></p>
+    <h3 lang="en">Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser</h3>
+    <p class="who" lang="en">C.-W. Lee (co-first author) et al.</p>
+    <p class="where" lang="en">Preprint · under review</p>
+    <p class="note"><span class="en">A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. It outperforms predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.</span><span class="zh">以 Tweedie–Hopfield 對應關係指出，聯想記憶就是預測編碼所需的貝氏去噪器，並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過兩類基準模型，而且只使用局部 Hebbian 更新——不需 BPTT，也不需權重傳輸。</span></p>
   </div>
   <div class="rt"><span class="chip p"><span class="en">Under review</span><span class="zh">審查中</span></span></div>
 </article><article class="row" data-status="service">
   <div class="yr">2025</div>
   <div class="bd">
-    <h3>Building Machine Learning Challenges for Anomaly Detection in Science</h3>
-    <p class="who">E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)</p>
-    <p class="where">arXiv:2503.02112 · preprint, under submission</p>
-    <p class="note"><span class="en">A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.</span><span class="zh">源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。</span></p>
+    <h3 lang="en">Building Machine Learning Challenges for Anomaly Detection in Science</h3>
+    <p class="who" lang="en">E. G. Campolongo, Y.-T. Chou, E. Govorkova, … C.-W. Lee … (150+ authors)</p>
+    <p class="where" lang="en">arXiv:2503.02112 · preprint, under submission</p>
+    <p class="note"><span class="en">A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.</span><span class="zh">源自 NSF HDR ML Challenge 的社群基準論文。核心組織者之後的貢獻者依姓氏字母排序，因此作者順序不代表貢獻程度。我的貢獻是針對基準定位、基準模型、評估指標與表述清晰度提供意見。</span></p>
   </div>
   <div class="rt"><span class="chip i"><span class="en">Co-author</span><span class="zh">共同作者</span></span><a class="chip s" href="https://arxiv.org/abs/2503.02112" rel="noopener">arXiv ↗</a></div>
 </article><article class="row" data-status="accepted">
   <div class="yr">2025</div>
   <div class="bd">
-    <h3>MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation</h3>
-    <p class="who">C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen</p>
-    <p class="where">TAAI 2025</p>
+    <h3 lang="en">MatrixQR: Matrix-Guided Refinement for Decoupling Reliability Control from Creative Edits in QR Code Generation</h3>
+    <p class="who" lang="en">C.-W. Lee, Y.-H. Hsueh, J.-A. Guo, J.-W. Liao, P.-Y. Chiu, J.-C. Chen</p>
+    <p class="where" lang="en">TAAI 2025</p>
     <p class="note"><span class="en">Extended abstract. Full paper in preparation.</span><span class="zh">延伸摘要。完整論文撰寫中。</span></p>
   </div>
   <div class="rt"><span class="chip s"><span class="en">Accepted · poster</span><span class="zh">已接受 · 海報</span></span></div>
 </article><article class="row" data-status="published">
   <div class="yr">2024</div>
   <div class="bd">
-    <h3>Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods</h3>
-    <p class="who">X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee</p>
-    <p class="where">Journal of Modern Physics 15(12)</p>
+    <h3 lang="en">Classifying Vibration Modes Generated by the Michelson Interferometer Using Machine Learning Methods</h3>
+    <p class="who" lang="en">X.-H. Tsai, A. A.-C. Yeh, C.-H. Lu, S.-Y. Chou, S.-W. Wang, C.-W. Lee, P.-H. Lee</p>
+    <p class="where" lang="en">Journal of Modern Physics 15(12)</p>
     
   </div>
   <div class="rt"><span class="chip s"><span class="en">Published</span><span class="zh">已發表</span></span><a class="chip s" href="https://doi.org/10.4236/jmp.2024.1512087" rel="noopener">DOI ↗</a></div>
@@ -113,36 +113,21 @@
   <span class="en">SHOWING <b data-filter-count style="color:var(--sig)">05</b> OF 05</span>
   <span class="zh">顯示 <b data-filter-count style="color:var(--sig)">05</b> / 05 筆</span>
 </p>
-<p class="err" style="margin-top:var(--s5);max-width:62ch;color:var(--muted);font-size:var(--t-sm)">
-  <span class="en">Two entries are under anonymous review, so the author list and the venue stay unnamed until the process permits disclosure. Nothing here is stated at a status it has not reached.</span>
-  <span class="zh">其中兩筆正在匿名審查，因此在流程允許揭露之前，作者名單與發表場域維持不具名。此處沒有任何一筆被寫成它尚未達到的狀態。</span>
+<p class="err publication-note">
+  <span class="en">Two manuscripts are in anonymous review; full author lists and target venues remain withheld until disclosure is permitted.</span>
+  <span class="zh">兩篇手稿正處於匿名審查；完整作者名單與投稿場域將於允許揭露後補上。</span>
 </p></section>
     <footer class="foot">
-      <span><span class="en">Chi-Wei Lee · Hsinchu, Taiwan</span><span class="zh">李騏維 · 台灣新竹</span></span>
+      <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
       <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
-      <span class="r"><span class="en">Hand-written. No frameworks, no libraries.</span><span class="zh">手寫。無框架、無函式庫。</span></span>
+      <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
-  <aside class="rail" aria-hidden="true">
-    <div class="track"></div>
-    <canvas class="spikes"></canvas>
-    <div class="head" data-pct="0%"></div>
-  </aside>
 </div>
 
-<div class="hud" aria-hidden="true">
-  <span class="grp rec"><span class="dot"></span><span data-t-en="REC" data-t-zh="錄製中">REC</span></span>
-  <span class="grp opt"><span class="en">FRAME-LFP</span><span class="zh">畫格場電位</span></span>
-  <canvas></canvas>
-  <span class="grp opt"><span class="en">FPS</span><span class="zh">FPS</span> <b class="sig" data-v="fps">60</b></span>
-  <span class="grp"><span class="en">DEPTH</span><span class="zh">深度</span> <b data-v="layer">L1</b></span>
-  <span class="grp"><span class="en">POS</span><span class="zh">位置</span> <b data-v="pos">000%</b></span>
-  <span class="grp opt"><span class="en">TPE</span><span class="zh">台北</span> <b data-v="clock">--:--:--</b></span>
-</div>
-
-<div id="drawer"><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html" aria-current="page"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></div>
+<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert><a href="index.html"><span class="ch">CH.01</span><span class="en">Home</span><span class="zh">首頁</span></a><a href="research.html"><span class="ch">CH.02</span><span class="en">Research</span><span class="zh">研究</span></a><a href="publications.html" aria-current="page"><span class="ch">CH.03</span><span class="en">Papers</span><span class="zh">論文</span></a><a href="field.html"><span class="ch">CH.04</span><span class="en">Field</span><span class="zh">現場</span></a><a href="record.html"><span class="ch">CH.05</span><span class="en">Record</span><span class="zh">紀錄</span></a><a href="about.html"><span class="ch">CH.06</span><span class="en">About</span><span class="zh">關於</span></a></nav>
 
 <dialog id="console" aria-label="Command console">
   <div class="box">
@@ -154,11 +139,12 @@
 
 <dialog id="lightbox" aria-label="Photograph">
   <div class="lb">
-    <img alt="" data-lb-img>
+    <div class="lb-media" data-lb-media></div>
     <div class="lbar">
       <span class="n">01 / 01</span>
       <span class="cap"></span>
       <span class="sp">
+        <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
         <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
         <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
       </span>
@@ -166,24 +152,11 @@
   </div>
 </dialog>
 
-<div id="boot" aria-hidden="true">
-  <div class="b">
-    <div class="l"><span>ELECTRODE</span><b>LOWERED</b></div>
-    <div class="l"><span>BASELINE</span><b>ACQUIRED</b></div>
-    <div class="l"><span>LAMINAE</span><b>L1–L6</b></div>
-    <div class="l"><span>PREDICTION</span><b>DESCENDING</b></div>
-    <div class="l"><span>EVIDENCE</span><b>ASCENDING</b></div>
-    <div class="l"><span>RESIDUAL</span><b>RECORDING</b></div>
-    <div class="track"><i></i></div>
-  </div>
-</div>
-
 <noscript>
   <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
-<script src="assets/runtime.js?v=b63cbb9a" defer></script>
-<script src="assets/substrate.js?v=18bb692a" defer></script>
-<script src="assets/instruments.js?v=56b1c252" defer></script>
+<script src="assets/runtime.js?v=2e543db0" defer></script>
+<script src="assets/substrate.js?v=4ae11a11" defer></script>
 </body>
 </html>
