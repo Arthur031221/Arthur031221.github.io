@@ -707,9 +707,9 @@
     PE.on('langchange', function () { if (dlg.open) show(i); });
   }
 
-  /* ── 21b. plates resolve onto their own placeholder ─────── */
+  /* ── 21b. photographic plates resolve before ink starts flowing ── */
   function plates() {
-    document.querySelectorAll('.plate img').forEach(function (im) {
+    document.querySelectorAll('.plate img,.memory-frame img,.trip-card-media img,.chron-thumb img,.press-image img').forEach(function (im) {
       if (im.complete && im.naturalWidth) { im.classList.add('in'); return; }
       im.addEventListener('load', function () { im.classList.add('in'); }, { once: true });
       im.addEventListener('error', function () { im.classList.add('in'); }, { once: true });
