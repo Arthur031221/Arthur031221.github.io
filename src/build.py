@@ -108,6 +108,18 @@ def webp_size(path):
     return None
 
 
+def media_format(dim):
+    """Name the native frame direction without confusing it with layout roles."""
+    if not dim or not dim[1]:
+        return "standard"
+    ratio = dim[0] / dim[1]
+    if ratio >= 1.25:
+        return "wide"
+    if ratio <= .84:
+        return "portrait"
+    return "standard"
+
+
 def img(src, alt, cls="", sizes="100vw", loading="lazy", position=""):
     """<img> with real derivatives in the srcset, intrinsic size, bilingual alt."""
     alt_en = alt.get("en", "") if isinstance(alt, dict) else alt
@@ -130,13 +142,14 @@ def img(src, alt, cls="", sizes="100vw", loading="lazy", position=""):
 
 def plate(photo, cls="", sizes="100vw", loading="lazy", lightbox=False, group="page"):
     dim = webp_size(os.path.join(ROOT, photo["src"] + ".webp"))
+    fmt = media_format(dim)
     lb_dim = f' data-lb-width="{dim[0]}" data-lb-height="{dim[1]}"' if dim else ""
     lb = (f' data-lb="{e(photo["src"])}.webp" data-lb-group="{e(group)}"{lb_dim} {attr_bi("cap", photo["cap"])}'
           if lightbox else "")
     slug = f'<span class="slug">{e(photo.get("slug",""))}</span>' if photo.get("slug") else ""
     lqip = f' style="background-image:url({e(photo["src"])}.thumb.webp)"'
     position = f'{photo.get("fx", "50%")} {photo.get("fy", "50%")} '
-    return (f'<figure class="plate {cls}"{lqip}{lb}>'
+    return (f'<figure class="plate {cls}" data-format="{fmt}"{lqip}{lb}>'
             f'{img(photo["src"], photo["cap"], sizes=sizes, loading=loading, position=position.strip())}'
             f'{slug}'
             f'<figcaption class="cap">{bi(photo["cap"])}</figcaption>'
@@ -159,6 +172,7 @@ def memory_frame(key, cls="", sizes="100vw", loading="lazy", lightbox=False,
     photo = medium(key)
     src = photo["src"]
     dim = webp_size(os.path.join(ROOT, src + ".webp"))
+    fmt = media_format(dim)
     wh = f' data-lb-width="{dim[0]}" data-lb-height="{dim[1]}"' if dim else ""
     ratio = f' style="--media-ratio:{dim[0]} / {dim[1]}"' if dim else ""
     lb = (f' data-lb="{e(src)}.webp" data-lb-group="{e(group)}"{wh} '
@@ -172,7 +186,7 @@ def memory_frame(key, cls="", sizes="100vw", loading="lazy", lightbox=False,
     }
     no = f'<span class="memory-no">{e(index)}</span>' if index else ""
     pos = f'{photo.get("fx", "50%")} {photo.get("fy", "50%")} '
-    fig = (f'<figure class="memory-frame {e(cls)}" data-treatment="{e(treatment)}" '
+    fig = (f'<figure class="memory-frame {e(cls)}" data-treatment="{e(treatment)}" data-format="{fmt}" '
            f'data-event="{e(event)}"{ratio}{lb}>'
            f'<div class="memory-media">'
            f'{img(src, photo["cap"], sizes=sizes, loading=loading, position=pos.strip())}'
@@ -536,8 +550,10 @@ def p_field():
         t = lr[key]
         keys = C["collections"][key]
         hero = medium(keys[0])
+        hero_dim = webp_size(os.path.join(ROOT, hero["src"] + ".webp"))
+        hero_fmt = media_format(hero_dim)
         cards.append(f'''<a class="unit trip-card err" href="{href}" data-event="{e(hero.get("event", ""))}">
-  <div class="trip-card-media" data-treatment="{e(hero.get("treatment", "natural"))}">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="lazy", position=f'{hero.get("fx", "50%")} {hero.get("fy", "50%")}')}<span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div>
+  <div class="trip-card-media" data-treatment="{e(hero.get("treatment", "natural"))}" data-format="{hero_fmt}">{img(hero["src"], hero["cap"], sizes="(max-width:900px) 100vw, 50vw", loading="lazy", position=f'{hero.get("fx", "50%")} {hero.get("fy", "50%")}')}<span class="memory-ink" aria-hidden="true"></span><span class="memory-register" aria-hidden="true"></span></div>
   <div class="trip-card-copy">
     <div class="idx"><span class="n">{e(t["date"])}</span>{e(t["place"])}</div>
     <h3>{bi(t["title"])}</h3>
@@ -649,7 +665,8 @@ def p_record():
         if media_key:
             ph = medium(media_key)
             pos = f'{ph.get("fx", "50%")} {ph.get("fy", "50%")} '
-            thumb = (f'<span class="chron-thumb" data-treatment="{e(ph.get("treatment", "natural"))}">'
+            dim = webp_size(os.path.join(ROOT, ph["src"] + ".webp"))
+            thumb = (f'<span class="chron-thumb" data-treatment="{e(ph.get("treatment", "natural"))}" data-format="{media_format(dim)}">'
                      f'{img(ph["src"], ph["cap"], sizes="(max-width:760px) calc(100vw - 64px), (max-width:1100px) 40vw, 36vw", position=pos.strip())}'
                      f'<span class="chron-ink" aria-hidden="true"></span></span>')
         thumb_line = f"    {thumb}\n" if thumb else ""
@@ -742,10 +759,11 @@ def p_record():
     for p in C["press"]:
         photo = medium(p["media"])
         position = f'{photo.get("fx", "50%")} {photo.get("fy", "50%")} '
+        photo_dim = webp_size(os.path.join(ROOT, photo["src"] + ".webp"))
         quote = f'<blockquote>{bi(p["quote"])}</blockquote>' if p.get("quote") else ""
         quote_line = f'    {quote}\n' if quote else ""
         press_cards.append(f'''<a class="press-card err" href="{e(p["url"])}" rel="noopener">
-  <span class="press-image" data-treatment="{e(photo.get("treatment", "natural"))}">
+  <span class="press-image" data-treatment="{e(photo.get("treatment", "natural"))}" data-format="{media_format(photo_dim)}">
     {img(photo["src"], photo["cap"], sizes="(max-width:760px) 100vw, 50vw", position=position.strip())}
     <span class="press-wave" aria-hidden="true"></span>
   </span>

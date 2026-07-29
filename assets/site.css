@@ -1969,3 +1969,200 @@ html[lang="zh-Hant"] .prose p.lead::first-letter{font-size:3.6em;padding-top:.16
 @media (max-width:980px){.contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.contact-grid{grid-template-columns:minmax(0,1fr)}}
 @media (hover:none){.memory-frame.event-hot::after{display:none}}
+
+/* ═══════════════════════════════════════════════════════════════
+   38. 流墨畫境 — generated ukiyo-e ink frames
+
+   Three hand-painted, non-repeating RGBA plates replace the old tiled
+   semicircles, hatch marks and registration corners.  The photographs stay
+   documentary; pigment moves only around their edges.  A slow under-current
+   and a quicker splatter current keep the border alive without a canvas loop.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  --ink-frame-land:url("../img/ornaments/ukiyo-frame-landscape.webp");
+  --ink-frame-portrait:url("../img/ornaments/ukiyo-frame-portrait.webp");
+  --ink-frame-splash:url("../img/ornaments/ukiyo-frame-splash.webp")
+}
+
+/* Retire the small repeated motifs around photographic media. */
+.memory-ink::before,.memory-ink::after,
+.memory-register::before,.memory-register::after,
+.chron-ink::before,.chron-ink::after{content:none!important;display:none!important}
+.trip-card,.chron-event--visual{background-image:none}
+.trip-card-copy{background-image:none}
+.press-copy::after,.honour-dossier::before{display:none}
+
+/* Full generated plates.  Negative inset pushes the dense painted perimeter
+   beyond the crop, leaving faces and documentary detail in the clear window. */
+:is(.memory-frame,.trip-card-media) .memory-ink{
+  display:block;inset:-7%;z-index:2;clip-path:none;
+  background-image:var(--ink-frame-land);background-repeat:no-repeat;
+  background-position:center;background-size:100% 100%;
+  opacity:.88;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-deep 14s cubic-bezier(.45,.04,.3,1) infinite alternate;
+  animation-play-state:paused
+}
+:is(.memory-frame,.trip-card-media) .memory-register{
+  display:block;inset:-2.5%;z-index:2;
+  background:var(--ink-frame-splash) center/100% 100% no-repeat;
+  opacity:.42;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-surface 9s cubic-bezier(.37,.05,.28,1) infinite alternate;
+  animation-play-state:paused
+}
+:is(.memory-frame,.trip-card-media):has(img.in) :is(.memory-ink,.memory-register){animation-play-state:running}
+
+/* Hanga frames reverse the hierarchy: action ink first, carved wave second. */
+:is(.memory-frame,.trip-card-media)[data-treatment="hanga"] .memory-ink{
+  background-image:var(--ink-frame-splash);opacity:.78
+}
+:is(.memory-frame,.trip-card-media)[data-treatment="hanga"] .memory-register{
+  background-image:var(--ink-frame-land);opacity:.38;animation-direction:alternate-reverse
+}
+:is(.memory-frame,.trip-card-media)[data-treatment="aizuri"] .memory-register{opacity:.52}
+
+/* Native portrait media receives a vertical scroll rather than a stretched
+   landscape border.  The splash current stays separate and deliberately loose. */
+:is(.memory-frame,.trip-card-media)[data-format="portrait"] .memory-ink{
+  inset:-5%;background-image:var(--ink-frame-portrait);opacity:.86
+}
+:is(.memory-frame,.trip-card-media)[data-format="portrait"] .memory-register{
+  inset:-4%;background-image:var(--ink-frame-portrait);opacity:.24;
+  animation-name:ink-current-portrait;animation-duration:12s
+}
+
+/* Certificates keep their colour, scale and complete page.  Pigment remains
+   at the paper edge and is quieter than it is around event photography. */
+.proof-frame[data-treatment="certificate"] .memory-ink{
+  display:block;inset:-9%;opacity:.58;mix-blend-mode:multiply;
+  background-image:var(--ink-frame-land)
+}
+.proof-frame[data-treatment="certificate"][data-format="portrait"] .memory-ink{
+  inset:-8%;background-image:var(--ink-frame-portrait)
+}
+.proof-frame[data-treatment="certificate"] .memory-register{display:block;inset:-7%;opacity:.16}
+
+/* One continuous painted current encloses the home contact sheet, preserving
+   its single-river composition instead of turning six moments back into cards. */
+.memory-river--home::before,.memory-river--home::after{
+  content:"";position:absolute;z-index:6;pointer-events:none;transform-origin:center;
+  background-repeat:no-repeat;background-position:center;background-size:100% 100%;
+  mix-blend-mode:multiply
+}
+.memory-river--home::before{
+  inset:-6%;background-image:var(--ink-frame-land);opacity:.90;
+  animation:ink-current-deep 16s cubic-bezier(.45,.04,.3,1) infinite alternate
+}
+.memory-river--home::after{
+  inset:-1.5%;background-image:var(--ink-frame-splash);opacity:.44;
+  animation:ink-current-surface 10s cubic-bezier(.37,.05,.28,1) infinite alternate-reverse
+}
+.memory-river--home :is(.memory-ink,.memory-register){opacity:.12}
+
+/* About portrait uses the existing iris for reveal and a generated hanging-
+   scroll edge above it. */
+.plate::after{
+  content:"";position:absolute;z-index:3;inset:-5%;pointer-events:none;
+  background:var(--ink-frame-land) center/100% 100% no-repeat;
+  opacity:.84;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-deep 14s cubic-bezier(.45,.04,.3,1) infinite alternate
+}
+.plate[data-format="portrait"]::after{inset:-4%;background-image:var(--ink-frame-portrait)}
+.plate .slug,.plate .cap{z-index:4}
+
+/* Compact chronology, journey cards and press imagery use the same paintings
+   at restrained depth; no radial wave strip survives at the image edge. */
+.chron-ink{
+  display:block!important;inset:-10%;background:var(--ink-frame-splash) center/100% 100% no-repeat;
+  opacity:.50;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-surface 12s cubic-bezier(.37,.05,.28,1) infinite alternate
+}
+.chron-thumb[data-format="portrait"] .chron-ink{background-image:var(--ink-frame-portrait);opacity:.42}
+.chron-thumb[data-treatment="certificate"] .chron-ink{inset:-14%;opacity:.28}
+.press-wave{
+  display:block;position:absolute;z-index:2;inset:-3%;height:auto;
+  background:var(--ink-frame-splash) center/100% 100% no-repeat;
+  opacity:.48;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-surface 10s cubic-bezier(.37,.05,.28,1) infinite alternate
+}
+.press-image::after{
+  content:"";position:absolute;z-index:2;inset:-8%;pointer-events:none;
+  background:var(--ink-frame-land) center/100% 100% no-repeat;
+  opacity:.68;mix-blend-mode:multiply;transform-origin:center;
+  animation:ink-current-deep 15s cubic-bezier(.45,.04,.3,1) infinite alternate-reverse
+}
+.press-image[data-format="portrait"]::after{inset:-6%;background-image:var(--ink-frame-portrait)}
+.press-image[data-treatment="certificate"] :is(img){padding:16px}
+.press-image[data-treatment="certificate"]::after{inset:-11%;opacity:.46}
+.press-image[data-treatment="certificate"] .press-wave{inset:-10%;opacity:.14}
+
+@keyframes ink-current-deep{
+  0%{transform:translate3d(calc(var(--px,0px) - 1.1%),calc(var(--py,0px) + .5%),0) scale(1.014) rotate(-.18deg)}
+  48%{transform:translate3d(calc(var(--px,0px) + .8%),calc(var(--py,0px) - .7%),0) scale(1.028) rotate(.12deg)}
+  100%{transform:translate3d(calc(var(--px,0px) - .2%),calc(var(--py,0px) + .9%),0) scale(1.018) rotate(.24deg)}
+}
+@keyframes ink-current-surface{
+  0%{transform:translate3d(calc(var(--px,0px) + 1.2%),calc(var(--py,0px) - .6%),0) scale(1.022) rotate(.22deg)}
+  52%{transform:translate3d(calc(var(--px,0px) - .9%),calc(var(--py,0px) + .8%),0) scale(1.04) rotate(-.16deg)}
+  100%{transform:translate3d(calc(var(--px,0px) + .3%),calc(var(--py,0px) - .2%),0) scale(1.026) rotate(-.28deg)}
+}
+@keyframes ink-current-portrait{
+  0%{transform:translate3d(calc(var(--px,0px) - .5%),calc(var(--py,0px) - 1.1%),0) scale(1.016) rotate(-.12deg)}
+  55%{transform:translate3d(calc(var(--px,0px) + .7%),calc(var(--py,0px) + .9%),0) scale(1.032) rotate(.18deg)}
+  100%{transform:translate3d(calc(var(--px,0px) - .4%),calc(var(--py,0px) + .2%),0) scale(1.022) rotate(-.24deg)}
+}
+
+:is(.memory-frame,.trip-card-media):hover .memory-ink,
+.memory-link:focus-visible .memory-ink,.trip-card:focus-visible .memory-ink{animation-duration:7s;opacity:.94}
+:is(.memory-frame,.trip-card-media):hover .memory-register,
+.memory-link:focus-visible .memory-register,.trip-card:focus-visible .memory-register{animation-duration:5s;opacity:.58}
+
+/* In vivo uses luminous pigment; fixed/day mode reads as ink on warm paper. */
+:root[data-mode="vivo"] :is(.memory-frame,.trip-card-media) :is(.memory-ink,.memory-register),
+:root[data-mode="vivo"] .memory-river--home::before,
+:root[data-mode="vivo"] .memory-river--home::after,
+:root[data-mode="vivo"] .plate::after,
+:root[data-mode="vivo"] .chron-ink,
+:root[data-mode="vivo"] .press-wave,
+:root[data-mode="vivo"] .press-image::after{
+  mix-blend-mode:screen;filter:saturate(.72) brightness(1.06);opacity:.31
+}
+:root[data-mode="vivo"] .memory-river--home::before{opacity:.38}
+:root[data-mode="vivo"] .proof-frame[data-treatment="certificate"] .memory-ink{opacity:.24}
+
+@media (max-width:760px){
+  :is(.memory-frame,.trip-card-media) .memory-ink{inset:-10%;opacity:.78}
+  :is(.memory-frame,.trip-card-media) .memory-register{inset:-6%;opacity:.32;animation-duration:12s}
+  :is(.memory-frame,.trip-card-media)[data-format="portrait"] .memory-ink{inset:-8%}
+  .memory-river--home::before{inset:-8%}
+  .memory-river--home::after{inset:-4%;opacity:.34}
+  .chron-ink{inset:-15%;opacity:.36}
+  .press-image::after{inset:-11%}
+  .press-wave{inset:-7%;opacity:.38}
+}
+
+@media (prefers-reduced-motion:reduce){
+  :is(.memory-frame,.trip-card-media) :is(.memory-ink,.memory-register),
+  .memory-river--home::before,.memory-river--home::after,
+  .plate::after,.chron-ink,.press-wave,.press-image::after{
+    animation:none!important;transform:none!important;transition:none!important
+  }
+}
+
+@media print{
+  .memory-river--home::before,.memory-river--home::after,
+  .plate::after,.press-wave,.press-image::after{display:none!important}
+}
+
+/* Composition safeguards found in the final visual pass.  Home remains one
+   continuous scroll, while the badge photograph keeps pigment away from the
+   face nearest its left edge. */
+:root[data-mode="fixed"] .memory-river--home .memory-frame :is(.memory-ink,.memory-register){opacity:.10}
+:root[data-mode="vivo"] .memory-river--home .memory-frame :is(.memory-ink,.memory-register){opacity:.07}
+#nsf-frames .memory-river>:nth-child(5) :is(.memory-ink,.memory-register){
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 82%,94% 82%,94% 15%,0 15%)
+}
+#nsf-frames .memory-river>:nth-child(5) .memory-ink{inset:-9%;opacity:.68}
+#nsf-frames .memory-river>:nth-child(5) .memory-register{inset:-6%;opacity:.30}
+:root[data-mode="vivo"] #nsf-frames .memory-river>:nth-child(5) .memory-ink{opacity:.24}
+:root[data-mode="vivo"] #nsf-frames .memory-river>:nth-child(5) .memory-register{opacity:.11}
