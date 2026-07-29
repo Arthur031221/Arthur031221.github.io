@@ -892,25 +892,31 @@
     var ctx, W, H, y0 = 9999, y1 = -9999, scan = 0, hot = -1, place = [];
     events.forEach(function (e2) { y0 = Math.min(y0, e2.year); y1 = Math.max(y1, e2.year); });
 
-    /* same year, same kind: fan them out around the year, not off to one side */
+    /* an annotated timeline, not a bare raster: every event gets its
+       marker, its stem, and its own short label, staggered into rows so
+       twelve events over four years read as a composed plate rather
+       than a sparse afterthought */
+    var PAD = 56, ARM0 = 34, ROWH = 26;
+
     function layout() {
-      var pad = 42, w = W - pad * 2, span = Math.max(1, y1 - y0), group = {};
+      var w = W - PAD * 2, span = Math.max(1, y1 - y0), group = {};
       events.forEach(function (e2, i) {
         var k = e2.year + '|' + e2.kind;
         (group[k] || (group[k] = [])).push(i);
       });
       place = new Array(events.length);
       Object.keys(group).forEach(function (k) {
-        var ids = group[k], n = ids.length;
-        ids.forEach(function (i, j) {
-          var yr = events[i].year;
-          place[i] = pad + ((yr - y0) / span) * w + (j - (n - 1) / 2) * 9;
+        group[k].forEach(function (i, j) {
+          place[i] = {
+            x: PAD + ((events[i].year - y0) / span) * w + (j - (group[k].length - 1) / 2) * 10,
+            row: j
+          };
         });
       });
     }
     function size() {
       var w = cv.clientWidth; if (!w) return false;
-      W = w; H = Math.max(210, Math.min(280, w * 0.30));
+      W = w; H = Math.max(240, Math.min(300, w * 0.30));
       ctx = fit(cv, H); if (!ctx) return false;
       layout(); return true;
     }
@@ -918,80 +924,113 @@
     function frame(dt) {
       if (!ctx && !size()) return;
       var c = G(), L = PE.lang() === 'zh';
-      scan = Math.min(1, scan + (dt || 16.7) / 1600);
+      scan = Math.min(1, scan + (dt || 16.7) / 1400);
       ctx.clearRect(0, 0, W, H);
-      var pad = 42, w = W - pad * 2, mid = H * 0.50, arm = 38;
+      var w = W - PAD * 2, mid = H * 0.52, span = Math.max(1, y1 - y0);
 
-      /* the axis, and the years on it */
-      ctx.strokeStyle = rgb(c.muted, 0.42); ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad - 12, mid); ctx.lineTo(pad + w + 12, mid); ctx.stroke();
-      ctx.font = '600 9px "Martian Mono",monospace';
-      ctx.textAlign = 'center';
-      var span = Math.max(1, y1 - y0);
+      /* alternating year fields, the way a print lays flat colour */
       for (var yy = y0; yy <= y1; yy++) {
-        var x = pad + ((yy - y0) / span) * w;
-        ctx.strokeStyle = rgb(c.muted, 0.22);
-        ctx.beginPath(); ctx.moveTo(x, mid - 3); ctx.lineTo(x, mid + 3); ctx.stroke();
-        ctx.fillStyle = rgb(c.muted, 0.85);
-        ctx.fillText(String(yy), x, H - 7);
+        if ((yy - y0) % 2) continue;
+        var xa = PAD + ((yy - y0) / span) * w - w / span / 2;
+        ctx.fillStyle = rgb(c.muted, 0.055);
+        ctx.fillRect(Math.max(8, xa), 16, w / span, H - 44);
       }
-      ctx.textAlign = 'left';
 
+      /* the keyblock axis, ending in the wave curl */
+      ctx.strokeStyle = rgb(c.ink, 0.55); ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(10, mid); ctx.lineTo(PAD + w + 4, mid);
+      /* the curl: a tightening spiral at the line's end */
+      var sx = PAD + w + 4, sy = mid;
+      for (var t = 0; t <= 1.001; t += 0.05) {
+        var th = t * 4.4, r = 11 * (1 - t * 0.82);
+        ctx.lineTo(sx + Math.sin(th) * r, sy - 11 + Math.cos(th + 3.14) * r + r * 0);
+      }
+      ctx.stroke();
+
+      /* years */
+      ctx.font = '600 10px "Martian Mono",monospace';
+      ctx.textAlign = 'center';
+      for (yy = y0; yy <= y1; yy++) {
+        var x = PAD + ((yy - y0) / span) * w;
+        ctx.strokeStyle = rgb(c.muted, 0.5); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, mid - 4); ctx.lineTo(x, mid + 4); ctx.stroke();
+        ctx.fillStyle = rgb(c.muted, 0.95);
+        ctx.fillText(String(yy), x, H - 8);
+      }
+
+      /* events: marker + stem + label, staggered */
+      ctx.font = '500 9px "Martian Mono","Noto Sans TC",monospace';
       events.forEach(function (e2, i) {
-        var x = place[i];
-        if (x == null || (x - pad) / w > scan) return;
+        var pl = place[i];
+        if (!pl || (pl.x - PAD) / w > scan) return;
         var lit = hot < 0 || hot === i;
+        var label = PE.t(e2.short || e2.label);
+
         if (e2.kind === 'trip') {
-          /* field work is neither a paper nor an award — it sits on the axis,
-             because it is what the other two came out of */
-          ctx.fillStyle = rgb(c.inh, lit ? 0.95 : 0.20);
+          /* field work sits on the axis it produced */
+          ctx.fillStyle = rgb(c.pre, lit ? 0.95 : 0.25);
           ctx.beginPath();
-          ctx.moveTo(x, mid - 6); ctx.lineTo(x + 6, mid); ctx.lineTo(x, mid + 6); ctx.lineTo(x - 6, mid);
+          ctx.moveTo(pl.x, mid - 6); ctx.lineTo(pl.x + 6, mid); ctx.lineTo(pl.x, mid + 6); ctx.lineTo(pl.x - 6, mid);
           ctx.closePath(); ctx.fill();
+          ctx.fillStyle = rgb(c.ink, lit ? 0.75 : 0.2);
+          ctx.textAlign = 'center';
+          ctx.fillText(label, pl.x, mid + 20);
           return;
         }
+
         var up = e2.kind === 'paper';
-        ctx.strokeStyle = rgb(up ? c.sig : c.pre, lit ? 0.95 : 0.18);
-        ctx.lineWidth = (lit && hot >= 0) ? 3 : 2;
-        ctx.beginPath();
-        ctx.moveTo(x, mid + (up ? -4 : 4));
-        ctx.lineTo(x, up ? mid - arm : mid + arm);
-        ctx.stroke();
+        var col = up ? c.sig : c.pre;
+        var ey = up ? mid - ARM0 - pl.row * ROWH : mid + ARM0 + pl.row * ROWH;
+
+        ctx.strokeStyle = rgb(col, lit ? 0.6 : 0.15); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(pl.x, mid + (up ? -5 : 5)); ctx.lineTo(pl.x, ey + (up ? 5 : -5)); ctx.stroke();
+
+        if (up) {
+          /* papers: the open circle of the keyblock */
+          ctx.strokeStyle = rgb(col, lit ? 0.95 : 0.25); ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(pl.x, ey, 4.5, 0, 6.2832); ctx.stroke();
+        } else {
+          /* awards: the filled diamond */
+          ctx.fillStyle = rgb(col, lit ? 0.95 : 0.25);
+          ctx.beginPath();
+          ctx.moveTo(pl.x, ey - 5.5); ctx.lineTo(pl.x + 5.5, ey); ctx.lineTo(pl.x, ey + 5.5); ctx.lineTo(pl.x - 5.5, ey);
+          ctx.closePath(); ctx.fill();
+        }
+        ctx.fillStyle = rgb(c.ink, lit ? 0.85 : 0.22);
+        ctx.textAlign = 'center';
+        ctx.fillText(label, pl.x, up ? ey - 10 : ey + 16);
       });
+      ctx.textAlign = 'left';
 
-      if (scan < 1) {
-        var sx = pad + scan * w;
-        ctx.strokeStyle = rgb(c.ink, 0.30); ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(sx, 22); ctx.lineTo(sx, H - 22); ctx.stroke();
-      }
-
-      /* one legend row, so nothing collides with the plot */
+      /* legend, one quiet row */
       ctx.font = '600 9px "Martian Mono",monospace';
-      var lx = pad - 12;
-      ctx.fillStyle = rgb(c.sig, 0.92); ctx.fillText(L ? '↑ 論文' : '↑ PAPERS', lx, 14);
-      lx += L ? 46 : 66;
-      ctx.fillStyle = rgb(c.inh, 0.92); ctx.fillText(L ? '◆ 現場' : '◆ FIELD', lx, 14);
-      lx += L ? 46 : 58;
-      ctx.fillStyle = rgb(c.pre, 0.92); ctx.fillText(L ? '↓ 獎項' : '↓ AWARDS', lx, 14);
+      var lx = 12;
+      ctx.strokeStyle = rgb(c.sig, 0.9); ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(lx + 4, 12, 3.5, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = rgb(c.sig, 0.92); ctx.fillText(L ? '論文' : 'PAPERS', lx + 13, 15);
+      lx += L ? 52 : 68;
+      ctx.fillStyle = rgb(c.pre, 0.92);
+      ctx.beginPath(); ctx.moveTo(lx + 4, 8); ctx.lineTo(lx + 8, 12); ctx.lineTo(lx + 4, 16); ctx.lineTo(lx, 12);
+      ctx.closePath(); ctx.fill();
+      ctx.fillText(L ? '獎項 · 現場' : 'AWARDS · FIELD', lx + 13, 15);
 
       if (outEl && hot < 0) {
         outEl.textContent = events.length + (L ? ' 個事件 · ' : ' events · ') + y0 + '–' + y1;
       }
     }
 
-    /* the ticks answer for themselves */
-    function hit(mx, my) {
-      var best = -1, bd = 14;
+    function hit(mx) {
+      var best = -1, bd = 15;
       for (var i = 0; i < place.length; i++) {
-        if (place[i] == null) continue;
-        var d = Math.abs(mx - place[i]);
+        if (!place[i]) continue;
+        var d = Math.abs(mx - place[i].x);
         if (d < bd) { bd = d; best = i; }
       }
       return best;
     }
     cv.addEventListener('pointermove', function (ev) {
       var r = cv.getBoundingClientRect();
-      var i = hit(ev.clientX - r.left, ev.clientY - r.top);
+      var i = hit(ev.clientX - r.left);
       if (i === hot) return;
       hot = i;
       if (outEl) {

@@ -333,12 +333,26 @@ def p_research():
 </div>
 {art("research", {"en": "Ink artwork", "zh": "墨圖"})}''']
 
+    ART_ALT = {
+        "pc":        {"en": "Two currents of ink meeting", "zh": "兩股墨流相會"},
+        "langevin":  {"en": "Ink circling a ring of wells", "zh": "墨繞著八個勢阱迴旋"},
+        "fmri":      {"en": "Threads of ink pulled into a loose lattice", "zh": "墨絲被拉成疏鬆的網格"},
+        "diffusion": {"en": "Ink drifting from crisp to diffuse", "zh": "墨由清晰漂向瀰散"},
+    }
+    cards = []
     for i, t in enumerate(C["threads"]):
-        body = f'''<div class="reading err">
-  <p class="lede" style="max-width:66ch;color:var(--ink-dim);font-size:var(--t-md)">{bi(t["body"])}</p>
-</div>'''
-        o.append(section(t["id"], LAMINAE[i + 1][0], t["title"], body,
-                         rail=t["id"].upper(), note=t["tag"]))
+        cards.append(f'''<article class="unit thread-card err" id="{e(t["id"])}">
+  <div class="plate">{img("img/art/thread-" + t["id"], ART_ALT[t["id"]], sizes="(max-width:900px) 100vw, 50vw")}</div>
+  <div class="tc-body">
+    <div class="idx"><span class="n">{i+1:02d}</span>{bi(t["tag"])}</div>
+    <h3>{bi(t["title"])}</h3>
+    <p>{bi(t["body"])}</p>
+  </div>
+</article>''')
+    o.append(section("threads", "L2/3",
+                     {"en": "Four threads", "zh": "四條線"},
+                     f'<div class="grid c2 thread-deck">{"".join(cards)}</div>',
+                     rail="THREADS"))
 
     o.append(section("papers-link", "L6",
                      {"en": "Where the threads are written down", "zh": "這些線寫在哪裡"},
@@ -495,18 +509,35 @@ def p_record():
     above the axis and not as a second list."""
     lr = C["longreads"]
 
+    AWARD_SHORT = {
+        "Mei Yi-Chi Memorial Medal":        {"en": "Mei Yi-Chi Medal", "zh": "梅貽琦獎章"},
+        "2nd worldwide — NSF HDR ML Challenge": {"en": "NSF HDR · 2nd", "zh": "NSF HDR · 第二"},
+        "3rd worldwide — NSF HDR ML Challenge": {"en": "NSF HDR · 3rd", "zh": "NSF HDR · 第三"},
+        "1st place — Mei-Chu Hackathon":    {"en": "Mei-Chu · 1st", "zh": "梅竹 · 冠軍"},
+        "Gold Medal — iGEM":                {"en": "iGEM · Gold", "zh": "iGEM · 金牌"},
+    }
+    def venue_short(v):
+        if "Preprint" in v: return {"en": "Under review", "zh": "審查中"}
+        if "TAAI" in v: return {"en": "TAAI 2025", "zh": "TAAI 2025"}
+        if "Modern Physics" in v: return {"en": "JMP 15(12)", "zh": "JMP 15(12)"}
+        if "arXiv" in v: return {"en": "arXiv 2503", "zh": "arXiv 2503"}
+        return {"en": v[:14], "zh": v[:14]}
     events = []
     for a in C["awards"]:
-        events.append({"year": int(a["year"]), "kind": "award", "label": a["title"]})
+        events.append({"year": int(a["year"]), "kind": "award", "label": a["title"],
+                       "short": AWARD_SHORT.get(a["title"]["en"], a["title"])})
     for pub in C["publications"]:
         # the axis needs the date and the kind; the title is set on `papers`
         # and on the front page, and this would be the third printing
         events.append({"year": int(pub["year"]), "kind": "paper",
-                       "label": {"en": "Paper · " + pub["venue"], "zh": "論文 · " + pub["venue"]}})
+                       "label": {"en": "Paper · " + pub["venue"], "zh": "論文 · " + pub["venue"]},
+                       "short": venue_short(pub["venue"])})
     for key in ("nsf", "igem"):
         t = lr[key]
         events.append({"year": int(t["date"][:4]), "kind": "trip",
-                       "label": {"en": t["place"], "zh": t["place"]}})
+                       "label": {"en": t["place"], "zh": t["place"]},
+                       "short": {"en": "Philadelphia" if key == "nsf" else "Paris",
+                                 "zh": "費城" if key == "nsf" else "巴黎"}})
     raster = ('<script type="application/json" id="fig-career">'
               + json.dumps(events, ensure_ascii=False) + "</script>")
 
