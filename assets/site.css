@@ -351,7 +351,13 @@ html.drawer-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45
 .sec{margin:var(--s9) 0;position:relative;scroll-margin-top:120px}
 .sec:first-child{margin-top:0}
 .sec-h{display:flex;align-items:baseline;gap:var(--s4);flex-wrap:wrap;
-  padding-bottom:var(--s3);border-bottom:1px solid var(--line);margin-bottom:var(--s6)}
+  padding-bottom:var(--s4);margin-bottom:var(--s6);position:relative}
+.sec-h::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:15px;
+  background:var(--line-3);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 16' preserveAspectRatio='xMaxYMid meet'%3E%3Cpath d='M-800 14.5 H438 C458 14.5 469 11 469 6.5 C469 2.5 464 0.8 460 3.2 C457 5.2 458 9.5 463 10' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right center / auto 15px;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 16' preserveAspectRatio='xMaxYMid meet'%3E%3Cpath d='M-800 14.5 H438 C458 14.5 469 11 469 6.5 C469 2.5 464 0.8 460 3.2 C457 5.2 458 9.5 463 10' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right center / auto 15px;
+}
 .sec-h .lay{
   font-family:var(--f-mono);font-size:var(--t-2xs);font-weight:600;letter-spacing:.18em;
   color:var(--sig);text-transform:uppercase;padding:3px 8px;border:1px solid var(--sig-line);
@@ -414,7 +420,7 @@ html[lang="zh-Hant"] .unit h3{letter-spacing:.03em;font-size:var(--t-md)}
 
 /* card: a specimen with corner fiducials */
 .card{
-  position:relative;border:1px solid var(--line);background:var(--panel);
+  position:relative;border:1.5px solid var(--line-2);background:var(--panel);
   backdrop-filter:blur(8px);padding:var(--s5);
   transition:border-color var(--d2) var(--ease),transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
 }
@@ -442,7 +448,7 @@ html[lang="zh-Hant"] .unit h3{letter-spacing:.03em;font-size:var(--t-md)}
 .act{
   position:relative;display:inline-flex;align-items:center;gap:var(--s2);overflow:hidden;
   font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink);border:1px solid var(--line-2);padding:11px 20px;
+  color:var(--ink);border:1.5px solid var(--line-3);padding:11px 20px;
   transition:color var(--d2) var(--ease),border-color var(--d2) var(--ease);
 }
 .act>*{position:relative;z-index:1}
@@ -492,7 +498,8 @@ html[lang="zh-Hant"] .masthead h1{letter-spacing:.05em;font-weight:600;line-heig
 .cartouche{
   position:absolute;top:4px;right:0;z-index:1;
   display:flex;flex-direction:column;align-items:center;gap:10px;
-  padding:14px 9px 10px;border:1px solid var(--line-2);
+  padding:14px 9px 10px;border:1.5px solid var(--line-3);
+  outline:1px solid var(--line);outline-offset:3px;
   background:var(--panel);backdrop-filter:blur(3px);
 }
 .cartouche span{
@@ -571,7 +578,7 @@ html[lang="zh-Hant"] .prose{line-height:1.95;font-size:1.125rem}
 .reading{position:relative}
 
 /* ─── 16. plates (photographs as specimen plates) ──────────── */
-.plate{position:relative;overflow:hidden;border:1px solid var(--line);
+.plate{position:relative;overflow:hidden;border:1.5px solid var(--line-3);
   background-color:var(--bg1);background-size:cover;background-position:center;background-repeat:no-repeat}
 .plate img{width:100%;filter:var(--img-filter);opacity:0;
   transition:opacity .7s var(--ease),transform var(--d4) var(--ease),filter var(--d4) var(--ease)}
@@ -721,7 +728,16 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border:0;background:v
 }
 
 /* ─── 23. footer ───────────────────────────────────────────── */
-.foot{margin-top:var(--s9);padding-top:var(--s5);border-top:1px solid var(--line);
+.foot{margin-top:var(--s9);padding-top:calc(var(--s5) + 26px);border-top:0;position:relative}
+.foot::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:22px;opacity:.5;
+  background:
+    radial-gradient(circle at 50% 130%, transparent 42%, var(--line) 43%, var(--line) 46%, transparent 47%,
+      transparent 62%, var(--line) 63%, var(--line) 66%, transparent 67%) 0 0/36px 18px repeat-x,
+    radial-gradient(circle at 50% 130%, transparent 42%, var(--line) 43%, var(--line) 46%, transparent 47%,
+      transparent 62%, var(--line) 63%, var(--line) 66%, transparent 67%) 18px 9px/36px 18px repeat-x;
+}
+.foot{
   display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);align-items:baseline;
   font-family:var(--f-mono);font-size:var(--t-2xs);letter-spacing:.13em;
   text-transform:uppercase;color:var(--muted)}

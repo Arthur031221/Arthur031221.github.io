@@ -72,13 +72,14 @@
     'uniform float uAspect, uTime, uStir;',
     'uniform vec4 uTouch[' + MAXTOUCH + '];',   /* x, y, radius, amount */
     'uniform vec4 uDye[' + MAXTOUCH + '];',     /* rgb weights, ring flag */
+    'uniform vec4 uVort[4];',                   /* x, y, radius, signed strength */
     NOISE,
 
     /* one large slow octave carries the marble; a faint finer one
        creases it — ≥75% of the energy stays in the largest scale */
     'float psi(vec2 p){',
-    '  return fbm2(p * 0.85 + vec2(0.0, uTime * 0.011))',
-    '       + fbm2(p * 2.60 + vec2(31.7, uTime * 0.019)) * 0.28;',
+    '  return fbm2(p * 0.85 + vec2(0.0, uTime * 0.030))',
+    '       + fbm2(p * 2.60 + vec2(31.7, uTime * 0.052)) * 0.46;',
     '}',
     'vec2 curl(vec2 p){',
     '  vec2 e = vec2(0.030, 0.0);',
@@ -94,9 +95,17 @@
     '  vec2 v = curl(p) * 0.62;',
     '  v.y += uStir * 0.22;',
 
+    /* the vortices — each one rolls the dye up into a spiral */
+    '  for (int k = 0; k < 4; k++) {',
+    '    vec4 vt = uVort[k];',
+    '    vec2 dv = vec2((uv.x - vt.x) * uAspect, uv.y - vt.y);',
+    '    float d2 = dot(dv, dv);',
+    '    v += vec2(-dv.y, dv.x) * vt.w * exp(-d2 / max(1e-5, vt.z * vt.z));',
+    '  }',
+
     /* semi-Lagrangian advection of all three dyes together —
        floated ink shares the surface it rides on */
-    '  vec2 back = uv - v * 0.00105;',
+    '  vec2 back = uv - v * 0.00165;',
     '  vec3 dye = texture2D(uState, back).rgb;',
 
     /* a touch of diffusion: sharpening at 8 bits breeds scanlines, so
@@ -104,7 +113,7 @@
     '  vec2 tx = vec2(uTexel.x, 0.0), ty = vec2(0.0, uTexel.y);',
     '  vec3 avg = (texture2D(uState, back - tx).rgb + texture2D(uState, back + tx).rgb',
     '            + texture2D(uState, back - ty).rgb + texture2D(uState, back + ty).rgb) * 0.25;',
-    '  dye = mix(dye, avg, 0.045);',
+    '  dye = mix(dye, avg, 0.028);',
 
     /* 破墨 — where crimson and blue ride together they bleed into
        sumi: prediction and evidence annihilating into ash */
@@ -116,7 +125,7 @@
     /* suminagashi persists; only the faintest dithered clearing, so
        8-bit dye still fades instead of freezing */
     '  float dth = hash(uv * 137.0 + fract(uTime * 7.31));',
-    '  dye = max(vec3(0.0), dye * 0.99985 - dth * 0.00045);',
+    '  dye = max(vec3(0.0), dye * 0.99990 - dth * 0.00028);',
 
     /* the brush touches the surface: a ring of one dye */
     '  for (int i = 0; i < ' + MAXTOUCH + '; i++) {',
@@ -251,7 +260,7 @@
     }
     return {
       gl: gl, target: target, pSim: pSim, pDraw: pDraw,
-      uSim: uni(pSim, ['uState', 'uTexel', 'uAspect', 'uTime', 'uStir', 'uTouch', 'uDye']),
+      uSim: uni(pSim, ['uState', 'uTexel', 'uAspect', 'uTime', 'uStir', 'uTouch', 'uDye', 'uVort']),
       uDraw: uni(pDraw, ['uState', 'uRes', 'uTexel', 'uAspect', 'uMode', 'uInt', 'uLevels',
         'uCrimson', 'uBlue', 'uSumi', 'uBg', 'uBokashi'])
     };
@@ -415,6 +424,41 @@
     touch(b.x, b.y, 0.045 + rnd() * 0.065, 0.6 + rnd() * 0.35, DYES[stroke++ % DYES.length]);
   }
 
+  /* ── the vortices ──────────────────────────────────────────
+     Four of them, alternating spin, wandering with the water and
+     breathing over tens of seconds. When one dies it is reborn
+     somewhere else with the opposite hand. */
+  var vorts = [], vortBuf = new Float32Array(16), spin = 1;
+  function spawnVort() {
+    spin = -spin;
+    return {
+      x: 0.12 + rnd() * 0.76,
+      y: 0.15 + rnd() * 0.70,
+      r: 0.10 + rnd() * 0.14,
+      s: spin * (11.0 + rnd() * 9.0),
+      age: 0,
+      life: 900 + rnd() * 900,      /* 15–30 s at 60 fps */
+      wx: rnd() * 100, wy: rnd() * 100
+    };
+  }
+  for (var vi = 0; vi < 4; vi++) { var v0 = spawnVort(); v0.age = (rnd() * v0.life) | 0; vorts.push(v0); }
+
+  function stepVorts() {
+    for (var i = 0; i < 4; i++) {
+      var vt = vorts[i];
+      vt.age++;
+      if (vt.age >= vt.life) { vorts[i] = spawnVort(); vt = vorts[i]; }
+      /* wander on slow noise, so the roll-up travels */
+      vt.x += (nz(time * 0.05 + vt.wx, 11) - 0.5) * 0.0016;
+      vt.y += (nz(time * 0.05 + vt.wy, 23) - 0.5) * 0.0016;
+      vt.x = Math.max(0.05, Math.min(0.95, vt.x));
+      vt.y = Math.max(0.08, Math.min(0.92, vt.y));
+      var env = Math.sin(Math.PI * vt.age / vt.life);
+      vortBuf[i * 4] = vt.x; vortBuf[i * 4 + 1] = vt.y;
+      vortBuf[i * 4 + 2] = vt.r; vortBuf[i * 4 + 3] = vt.s * env;
+    }
+  }
+
   /* ── run ──────────────────────────────────────────────────── */
   var touchBuf = new Float32Array(MAXTOUCH * 4);
   var dyeBuf = new Float32Array(MAXTOUCH * 4);
@@ -437,11 +481,13 @@
       var t = touches[i];
       touchBuf[i * 4] = t.x; touchBuf[i * 4 + 1] = t.y;
       touchBuf[i * 4 + 2] = t.r;
-      touchBuf[i * 4 + 3] = t.amt * 0.30 * (t.life / 10);
+      touchBuf[i * 4 + 3] = t.amt * 0.42 * (t.life / 10);
       dyeBuf[i * 4] = t.dye[0]; dyeBuf[i * 4 + 1] = t.dye[1]; dyeBuf[i * 4 + 2] = t.dye[2];
     }
+    stepVorts();
     gl.uniform4fv(u.uTouch, touchBuf);
     gl.uniform4fv(u.uDye, dyeBuf);
+    gl.uniform4fv(u.uVort, vortBuf);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     for (i = touches.length - 1; i >= 0; i--) { if (--touches[i].life <= 0) touches.splice(i, 1); }
@@ -482,7 +528,7 @@
 
   function settle() {
     if (!G) { if (cpu) drawCPU(); return; }
-    seedMarble(16, 44);
+    seedMarble(16, 22);
     present();
   }
 
@@ -543,8 +589,8 @@
         }, 400);
         return;
       }
-      time += dt * (mode ? 0.00048 : 0.001);   /* the day's water is slower */
-      if (seeded < 1) { seeded = 1; seedMarble(14, 36); }
+      time += dt * (mode ? 0.0011 : 0.0019);   /* the day's water is slower */
+      if (seeded < 1) { seeded = 1; seedMarble(14, 18); }
       ambient(dt);
       step();
       present();
