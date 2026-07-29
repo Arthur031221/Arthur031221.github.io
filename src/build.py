@@ -170,7 +170,7 @@ def art(name, alt, cls="wide", sizes="100vw", loading="lazy"):
         return ""
     dim = webp_size(path)
     wh = f' width="{dim[0]}" height="{dim[1]}"' if dim else ""
-    return (f'<figure class="plate artwork {cls} err">'
+    return (f'<figure class="plate artwork {cls}">'
             f'<img src="img/art/{e(name)}.webp"{wh} alt="{e(alt.get("en", ""))}" '
             f'{attr_bi("alt", alt)} loading="{loading}" decoding="async">'
             f'</figure>')
@@ -563,7 +563,7 @@ def p_record():
   <p class="lede err"><span class="en">Every honour with its citation, the field work, and all of it on one axis. The papers are plotted here but written out on <a href="publications.html">papers</a> — nothing on this site is set out twice.</span><span class="zh">每一項獎項連同事由、現場工作，以及把這一切放上同一條軸。論文在這裡以刻度呈現，內容則寫在<a href="publications.html">論文</a>頁——這個網站不把同一件事寫兩次。</span></p>
 </div>
 {art("record", {"en": "Ink artwork", "zh": "墨圖"})}
-{section("raster", "L4", {"en": "The whole record as a spike train", "zh": "把整份紀錄畫成尖峰序列"},
+{section("raster", "L4", {"en": "Every dated event, one axis", "zh": "所有事件，同一條軸"},
          '<div class="fig err" data-fig="career"><div class="fh">'
          '<span class="t"><span class="en">Papers above the axis, awards below, field on it</span>'
          '<span class="zh">論文在軸上方，獎項在下方，現場在軸上</span></span>'
