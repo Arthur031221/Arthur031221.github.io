@@ -10,42 +10,40 @@
    "zh": "腦神經 × 機器學習研究者"
   },
   "tagline": {
-   "en": "Predictive coding, associative memory, and Bayesian inference — in brains and in machines.",
-   "zh": "預測編碼、聯想記憶,以及大腦與機器中的貝氏推論。"
+   "en": "I study inference under uncertainty in brains and machines through predictive coding, associative memory, and Bayesian methods.",
+   "zh": "我以預測編碼、聯想記憶與貝氏方法，研究大腦與機器如何在不確定性下推論。"
   },
   "email": "levi74108520963@gmail.com",
   "github": "https://github.com/Arthur031221",
   "site": "https://arthur031221.github.io/",
   "cv": "Chi-Wei_Lee_CV.pdf",
   "location": {
-   "en": "Hsinchu, Taiwan · currently at UCLA",
-   "zh": "台灣新竹 · 現於 UCLA"
+   "en": "Taiwan · currently visiting UCLA",
+   "zh": "台灣 · 現於 UCLA 訪問"
   }
  },
  "about": {
   "lead": {
-   "en": "I work on how brains and machines perform inference under uncertainty — and on the shared limits of both.",
-   "zh": "我研究大腦與機器如何在不確定下做推論,以及兩者共同的極限。"
+   "en": "I study how brains and machines represent uncertainty, retrieve memory, and turn noisy evidence into a useful belief.",
+   "zh": "我研究大腦與機器如何表徵不確定性、提取記憶，並把帶有雜訊的證據轉成可用的信念。"
   },
   "body": {
    "en": [
-    "I am a B.S. graduate of National Tsing Hua University, where I double-majored in Physics and Electrical Engineering & Computer Science (AI Track).",
-    "My theory work asks what predictive coding needs in order to remember. Two first-co-authored manuscripts are under review: one establishes a Tweedie–Hopfield correspondence identifying associative memory as the Bayesian denoiser that predictive coding implicitly requires; the other replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics, so the filtering posterior becomes the flow's unique stationary density.",
-    "My empirical work points the same machinery at real neural data: I am reconstructing 3D spatial representations from fMRI signals with generative decoding models at the Human-Centered Machine Intelligence Lab, under Prof. Po-Chih Kuo.",
-    "Before that I worked on diffusion models and robustness — controllable generation at Academia Sinica, and subgroup generalisation in chest X-ray classification."
+    "I graduated from National Tsing Hua University with a double major in Physics and Electrical Engineering & Computer Science (AI Track).",
+    "My theory work connects predictive coding, associative memory, and Bayesian inference. Two co-first-author manuscripts are under review: one identifies associative memory as the denoiser predictive coding requires; the other replaces point-estimate inference with preconditioned Langevin sampling.",
+    "At NTHU's Human-Centered Machine Intelligence Lab, I use generative models to decode 3D spatial representations from fMRI. In parallel, I have worked on controllable diffusion at Academia Sinica and robustness in chest X-ray classification. I am currently visiting UCLA and looking for NeuroAI PhD positions for 2027 entry."
    ],
    "zh": [
-    "我畢業於國立清華大學,雙主修物理系與電機資訊學院學士班(AI 組)。",
-    "理論方面,我在問一個問題:預測編碼要能夠「記憶」,需要什麼?兩篇共同第一作者的論文正在 審查中——一篇建立 Tweedie–Hopfield 對應關係,指認出聯想記憶正是預測編碼在推論時暗中需要的貝氏去噪器;另一篇把時間預測編碼的確定性 MAP 推論換成加了 preconditioner 的 Langevin 動力學,讓濾波後驗成為該流的唯一穩態分佈。",
-    "實證方面,我把同一套機制指向真實的神經資料:在郭柏志老師的 Human-Centered Machine Intelligence Lab,用生成式解碼模型從 fMRI 訊號重建三維空間表徵。",
-    "在那之前,我做的是 diffusion 模型與穩健性——中研院的可控生成研究,以及胸腔 X 光分類的子群泛化問題。"
+    "我畢業於國立清華大學，雙主修物理系與電機資訊學院學士班（AI 組）。",
+    "我的理論研究連結預測編碼、聯想記憶與貝氏推論。兩篇共同第一作者手稿正在審查：一篇指出聯想記憶正是預測編碼所需的去噪器；另一篇以 preconditioned Langevin sampling 取代只回傳單一點估計的推論。",
+    "在清華 HMI Lab，我以生成模型從 fMRI 解碼三維空間表徵；同時也曾在中研院研究可控 diffusion，並投入胸腔 X 光分類的穩健性問題。目前於 UCLA 訪問，並尋找 2027 年入學的 NeuroAI 博士班機會。"
    ]
   },
   "facts": [
    {
     "k": {
-     "en": "University",
-     "zh": "學校"
+     "en": "Alma mater",
+     "zh": "母校"
     },
     "v": {
      "en": "National Tsing Hua University",
@@ -59,7 +57,7 @@
     },
     "v": {
      "en": "Physics × EECS (AI Track), double major",
-     "zh": "物理系 × 電資學士班(AI 組),雙主修"
+     "zh": "物理系 × 電資學士班（AI 組），雙主修"
     }
    },
    {
@@ -79,7 +77,7 @@
     },
     "v": {
      "en": "PhD positions in NeuroAI, 2027 entry",
-     "zh": "NeuroAI 博士班,2027 入學"
+     "zh": "NeuroAI 博士班，2027 入學"
     }
    }
   ]
@@ -96,8 +94,8 @@
     "zh": "預測編碼需要記憶"
    },
    "body": {
-    "en": "Predictive coding gives you a generative hierarchy but no content-addressable memory; modern Hopfield networks give you retrieval but no hierarchy. Both, it turns out, implicitly require the same object — a Bayesian denoiser. Making that precise yields HOPE, a single energy over hierarchical inference, temporal prediction and layer-wise memory, learned with local Hebbian updates alone.",
-    "zh": "預測編碼給你一個生成式階層,但沒有內容定址的記憶;modern Hopfield 網路給你檢索,但沒有階層。結果是,兩者暗中需要的是同一個東西——一個貝氏去噪器。把這件事講精確,就導出 HOPE:一個同時涵蓋階層推論、時間預測與逐層記憶的能量函數,而且只用局部 Hebbian 更新就能學習。"
+    "en": "Predictive coding supplies a generative hierarchy; modern Hopfield networks supply content-addressable retrieval. A Tweedie–Hopfield correspondence shows that both rely on the same Bayesian denoiser. HOPE combines hierarchical inference, temporal prediction, and layer-wise memory in one energy trained with local Hebbian updates.",
+    "zh": "預測編碼提供生成式階層，現代 Hopfield 網路提供內容定址檢索。Tweedie–Hopfield 對應關係顯示，兩者依賴同一個貝氏去噪器。HOPE 以單一能量函數整合階層推論、時間預測與逐層記憶，並以局部 Hebbian 更新學習。"
    }
   },
   {
@@ -107,12 +105,12 @@
     "zh": "理論"
    },
    "title": {
-    "en": "Inference should sample, not just peak",
-    "zh": "推論應該取樣,而不只是找峰"
+    "en": "Inference should sample, not just find a mode",
+    "zh": "推論應該取樣，而不只尋找峰值"
    },
    "body": {
-    "en": "Temporal predictive coding descends the energy deterministically, so it returns only the posterior's MAP mode — and throws away every other explanation the data admits. Pairing overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation makes the filtering posterior the flow's unique stationary density: the inference now carries the whole shape of the belief.",
-    "zh": "時間預測編碼是在能量上做確定性的梯度下降,所以只會回傳後驗的 MAP 峰值——並且丟掉資料容許的其他所有解釋。把 overdamped Langevin 動力學透過漲落–耗散關係與 preconditioner 配對,能讓濾波後驗成為該流的唯一穩態分佈:推論從此帶著信念的完整形狀。"
+    "en": "Deterministic temporal predictive coding returns only a posterior mode. Coupling overdamped Langevin dynamics to a preconditioner through the fluctuation–dissipation relation instead makes the full filtering posterior the flow's stationary density, preserving multiple plausible explanations.",
+    "zh": "確定性的時間預測編碼只回傳後驗的一個峰值。將 overdamped Langevin 動力學與 preconditioner 透過漲落–耗散關係配對，能讓完整的濾波後驗成為流的穩態分佈，保留多個合理解釋。"
    }
   },
   {
@@ -126,8 +124,8 @@
     "zh": "從大腦裡讀出空間"
    },
    "body": {
-    "en": "At the HMI Lab I am building generative decoding models that reconstruct 3D spatial representations from fMRI. The theory above is not decoration here — the same question about what a posterior should carry decides what a decoder is allowed to claim it has recovered.",
-    "zh": "在 HMI Lab,我在建生成式解碼模型,從 fMRI 訊號重建三維空間表徵。上面的理論在這裡不是裝飾——「後驗應該承載什麼」這個問題,直接決定了一個解碼器可以宣稱自己還原了什麼。"
+    "en": "At the HMI Lab, I build generative decoders that reconstruct 3D spatial representations from fMRI. The goal is not just to predict a coordinate, but to quantify what the neural signal supports and how uncertain that reconstruction remains.",
+    "zh": "在 HMI Lab，我建立生成式解碼器，從 fMRI 訊號重建三維空間表徵。目標不只是預測一個座標，還要量化神經訊號支持哪些重建，以及重建仍帶有多少不確定性。"
    }
   },
   {
@@ -141,8 +139,8 @@
     "zh": "在不失去畫面的前提下控制"
    },
    "body": {
-    "en": "MatrixQR decouples scan reliability from creative editing in QR-code generation, so aesthetics and function stop fighting each other. Langevin dynamics is the mathematical core of score-based diffusion — this line of work and the theory above are the same mathematics wearing different clothes.",
-    "zh": "MatrixQR 把掃描可靠性與創意編輯解耦,讓 QR code 的美觀與功能不再互相打架。Langevin 動力學正是 score-based diffusion 的數學核心——這條線和上面的理論,其實是同一套數學換了身衣服。"
+    "en": "MatrixQR separates scan reliability from creative editing in generated QR codes. The method preserves machine readability while giving the image model room to change appearance, turning a visual constraint into an explicit optimisation target.",
+    "zh": "MatrixQR 將生成式 QR 碼的掃描可靠性與創意編輯解耦。在保留機器可讀性的同時，也讓影像模型有調整外觀的空間，將視覺限制轉成明確的最佳化目標。"
    }
   }
  ],
@@ -151,30 +149,30 @@
    "status": "review",
    "title": "Predictive Coding with a Sequential Memory-Driven Bayesian Denoiser",
    "authors": "C.-W. Lee (co-first author) et al.",
-   "venue": "Preprint · under submission",
+   "venue": "Preprint · under review",
    "badge": {
     "en": "Under review",
     "zh": "審查中"
    },
    "year": "2026",
    "note": {
-    "en": "A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. Beats predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.",
-    "zh": "以 Tweedie–Hopfield 對應關係指認出聯想記憶就是預測編碼暗中需要的貝氏去噪器,並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過雙方 baseline,而且只用局部 Hebbian 更新——不需 BPTT,不需權重傳輸。"
+    "en": "A Tweedie–Hopfield correspondence identifies associative memory as the Bayesian denoiser predictive coding implicitly requires, yielding HOPE. It outperforms predictive-coding and Hopfield baselines on Bouncing Moving-MNIST and UCF-101 recall using only local Hebbian updates — no BPTT, no weight transport.",
+    "zh": "以 Tweedie–Hopfield 對應關係指出，聯想記憶就是預測編碼所需的貝氏去噪器，並由此導出 HOPE。在 Bouncing Moving-MNIST 與 UCF-101 的序列回憶上勝過兩類基準模型，而且只使用局部 Hebbian 更新——不需 BPTT，也不需權重傳輸。"
    }
   },
   {
    "status": "review",
    "title": "Langevin Temporal Predictive Coding Lifts Modes to Multimodal Densities",
    "authors": "C.-W. Lee (co-first author) et al.",
-   "venue": "Preprint · under submission",
+   "venue": "Preprint · under review",
    "badge": {
     "en": "Under review",
     "zh": "審查中"
    },
    "year": "2026",
    "note": {
-    "en": "Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.",
-    "zh": "把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上,後驗模式涵蓋率從 19.4% 提升到 71.3%(3.67 倍),預測 MAE 降低 16.7%(天生多峰的任務上降 22.3%)。"
+    "en": "Replaces the deterministic MAP inference of temporal predictive coding with preconditioned Langevin dynamics. Lifts posterior mode coverage from 19.4% to 71.3% (3.67×) and cuts predictive MAE by 16.7% (22.3% on naturally multimodal tasks) over twelve UCI benchmarks.",
+    "zh": "把時間預測編碼的確定性 MAP 推論換成 preconditioned Langevin 動力學。在十二個 UCI benchmark 上，後驗模式涵蓋率從 19.4% 提升到 71.3%（3.67 倍），預測 MAE 降低 16.7%（在本質上呈多峰分布的任務中降低 22.3%）。"
    }
   },
   {
@@ -221,7 +219,7 @@
    "doi": "https://arxiv.org/abs/2503.02112",
    "note": {
     "en": "A community benchmark paper arising from the NSF HDR ML Challenge. Contributors are listed alphabetically after the organising authors, so position carries no seniority. My contribution was feedback on benchmark positioning, baselines, metrics and clarity.",
-    "zh": "源自 NSF HDR ML Challenge 的社群 benchmark 論文。核心組織者之後的貢獻者依姓氏字母排序,因此作者順序不代表貢獻程度。我的貢獻是對 benchmark 定位、baseline、評估指標與表述清晰度提供意見。"
+    "zh": "源自 NSF HDR ML Challenge 的社群基準論文。核心組織者之後的貢獻者依姓氏字母排序，因此作者順序不代表貢獻程度。我的貢獻是針對基準定位、基準模型、評估指標與表述清晰度提供意見。"
    }
   }
  ],
@@ -238,40 +236,43 @@
    },
    "hero": true,
    "note": {
-    "en": "NTHU's highest honour for graduating students — 1 of 8 university-wide, sole recipient in the College of Science, and the only Physics recipient in nine years.",
-    "zh": "清華大學畢業生最高榮譽——全校僅 8 位獲獎者,理學院唯一獲獎者,亦是物理系近九年來唯一獲獎者。"
-   }
+    "en": "NTHU's highest honour for graduating students — one of eight recipients university-wide and the sole recipient from the College of Science.",
+    "zh": "清華大學畢業生最高榮譽——全校八位獲獎者之一，也是理學院唯一獲獎者。"
+   },
+   "url": "https://dsa.site.nthu.edu.tw/p/404-1266-142677.php?Lang=zh-tw"
   },
   {
    "year": "2025",
    "title": {
-    "en": "2nd worldwide — NSF HDR ML Challenge",
-    "zh": "全球第二 — NSF HDR ML Challenge"
+    "en": "2nd overall — NSF HDR ML Challenge",
+    "zh": "總排名第二 — NSF HDR ML Challenge"
    },
    "org": {
-    "en": "U.S. National Science Foundation · Overall Track",
-    "zh": "美國國家科學基金會 · 總積分"
+    "en": "NSF HDR ML Challenge · Year 1",
+    "zh": "NSF HDR ML Challenge · 首屆"
    },
    "hero": true,
    "note": {
-    "en": "2nd of 600+ teams worldwide. Team lead of six. Invited to present at the AAAI-25 Workshop in Philadelphia.",
-    "zh": "全球 600 支以上隊伍中排名第二。六人團隊隊長。受邀於費城 AAAI-25 Workshop 發表。"
-   }
+    "en": "Led a six-person team to second place in the Year 1 overall competition. The challenge drew more than 600 participating teams across its three datasets; we were invited to present at the AAAI-25 Workshop in Philadelphia.",
+    "zh": "帶領六人團隊獲首屆總排名第二。該賽事三項資料集合計吸引 600 支以上參賽隊伍；團隊並受邀於費城 AAAI-25 Workshop 發表。"
+   },
+   "url": "https://www.nsfhdr.org/html/mlchallenge-y1/leaderboard.html"
   },
   {
    "year": "2026",
    "title": {
-    "en": "3rd worldwide — NSF HDR ML Challenge",
-    "zh": "全球第三 — NSF HDR ML Challenge"
+    "en": "2nd — Imageomics: Sentinel Beetles",
+    "zh": "第二名 — Imageomics：哨兵甲蟲"
    },
    "org": {
-    "en": "Climate Prediction Track",
-    "zh": "氣候預測賽道"
+    "en": "NSF HDR Scientific-MOOD Challenge · Year 2",
+    "zh": "NSF HDR Scientific-MOOD Challenge · 第二屆"
    },
    "note": {
-    "en": "Attention-based models with specialised preprocessing for drought prediction, focused on out-of-distribution generalisation.",
-    "zh": "以注意力模型搭配特化前處理進行乾旱預測,聚焦於分佈外泛化。"
-   }
+    "en": "Team 20iterations placed second in Imageomics: Sentinel Beetles and tied fourth overall.",
+    "zh": "20iterations 團隊於 Imageomics: Sentinel Beetles 項目獲第二名，總排名並列第四。"
+   },
+   "url": "https://www.nsfhdr.org/html/mlchallenge-y2/winners.html"
   },
   {
    "year": "2025",
@@ -285,7 +286,7 @@
    },
    "note": {
     "en": "A wearable-and-app system modelling walking trajectories for dementia safety monitoring.",
-    "zh": "穿戴裝置結合行動應用,建模失智症患者行走軌跡以進行安全監測。"
+    "zh": "以穿戴裝置結合行動應用，建模失智症患者的行走軌跡並進行安全監測。"
    }
   },
   {
@@ -300,7 +301,7 @@
    },
    "note": {
     "en": "Machine-learning colorectal-cancer screening with an Arduino-integrated diagnostic device. Presented in Paris.",
-    "zh": "以機器學習進行大腸癌篩檢,並整合 Arduino 自動化診斷裝置。於巴黎發表。"
+    "zh": "以機器學習進行大腸癌篩檢，並整合 Arduino 自動化診斷裝置；成果於巴黎發表。"
    }
   }
  ],
@@ -308,7 +309,7 @@
   "nsf": {
    "title": {
     "en": "20 days, 20 iterations",
-    "zh": "20 天,20 次迭代"
+    "zh": "20 天，20 次迭代"
    },
    "place": "Philadelphia · New York",
    "date": "2025.02.28 – 03.09",
@@ -322,7 +323,7 @@
      "slug": "PHL · 39.95 N, 75.16 W · 2025-03 · NSF HDR",
      "cap": {
       "en": "The six of us — team 20iterations",
-      "zh": "我們六個 —— 20iterations"
+      "zh": "我們六人——20iterations 團隊"
      }
     },
     {
@@ -341,53 +342,30 @@
      "fx": "50%",
      "fy": "40%",
      "role": "bleed",
-     "slug": "PHL · 2ND OF 600+ TEAMS · 2025-03",
+     "slug": "PHL · YEAR 1 OVERALL RUNNER-UP · 2025-03",
      "cap": {
-      "en": "Second worldwide, of 600+ teams",
-      "zh": "600 支以上隊伍中的全球第二"
+      "en": "Year 1 overall runner-up",
+      "zh": "首屆總排名第二"
      }
     }
    ],
    "zh": [
-    "美國 -- 一個我一直很想去的國家，隔著太平洋不知道什麼時候才能真正踏上這片土地，但就在一場不到一個月就截止，且幾乎不可能獲得優勝的競賽中，隨著凌晨收到的一封來自美國的郵件，這一天居然就這樣提早來了，讓我前往這只存在我想像中的世界。",
-    "NSF HDR ML Challenge 異常檢測黑客松，一場來自全球數百支隊伍參與的競賽，比賽的核心目標是透過機器學習的方法解決來自不同領域的異常任務：Anomalous gravitational wave signals（尋找宇宙中未知的重力波來源）、Butterfly hybrid detection （辨識突變與混種的蝴蝶品種）、Detecting sea level rise anomalous （在氣候變遷背景下，預測海平面上升的異常情況）當初看到說明簡章時，幾乎是衝著優勝隊伍可以被贊助受邀參與在費城舉辦的AAAI-25這一句話決定報名，抱著一絲優勝的希望開始拉著朋友一起參加，沒想到這看似幾乎不可能的機會，竟在兩個月後成真，得到重力波及總積分的第二名帶我們飛往美國，為在清華的第三年寫下不可思議的篇章。為了搶下總積分第一名，我們投入了所有的賽事，我們的隊名 -- 「20iterations」，20 次迭代，正如其名，報名時距離提交截止只剩 20 天，開會的頻率只能用「天」來計算，3 天一小咪、5 天一大咪，常常一討論就開到半夜，甚至出國、過年也不放過；電腦不能用就改用平板，平板不行就用手機，不知道在 Colab 上燒了幾百個運算單元",
-    "每次開會，絕對會聽到",
-    "「欸咦等一下讓我想一下」",
-    "「我覺得你說得很有道理，但是...」",
-    "「這次不可能錯了吧⋯⋯」",
-    "「真的沒有任何理由了，如果再是 0 那我也真的...」",
-    "「欸咦等一下...」",
-    "老實說，這幾句話在這一個月內，沒有 100 次也有幾十次了",
-    "這趟紐約與費城之旅，真的很神奇。",
-    "體驗了連續叫三次的Uber、在凌晨的費城街頭當起了無殼流浪漢、走進 UPenn 校園、觀戰NBA勇士對 76 人、在美術館前模仿洛基、在 Terminal Market 裡喝著熱量爆表的奶昔、時不時聞著街頭飄散的大麻味、還意外碰上川普的抗議現場。AAAI 的兩天裡，從 Agent 到 Quantum ML，見識了世界前沿的研究方向，也讓我重新思考未來可以投入的研究領域，然後看一堆台灣人硬要用英文溝通（真的很好笑，BTW我們還是優勝隊伍中唯一的大學組。接著我們抵達紐約，吃遍 Shake Shack 漢堡、煙燻牛肉三明治、塔可、龍蝦大餐，也在自由女神、華爾街銅牛、布魯克林大橋和中央公園留下足跡，時代廣場從大雨走到晴天，在 Top of the Rock 俯瞰夜晚的紐約，也唱了無數次的 I Want It That Way......",
-    "這趟如夢般的旅程，最想感謝的莫過於另外五位隊友。黑洞組最全能的鎮育與最王牌的嘉丞，沒有鎮育，許多關鍵的討論都無法延續，許多卡關的時刻也得不到解答，更不會有20iterations ，沒有嘉丞的CNN我們無法踏上美國的旅程；潮汐組最強的沂竣和點子最多的子辰，要不是題目沒有亂搞，我相信以潮汐組的成果算是模型設計裡面最縝密的，也最符合挑戰賽的宗旨，然後沂峻沒能去美國真的好可惜；蝴蝶組最挺的安楷，不只是最難的題目，而且從一開始就獨自扛起整組的重任，一路走來真的辛苦你了。或許我們沒有創造出全新的算法模型，或許只是幸運地剛好契合了測資，或許我們真正投注最多心力的不是建模，而是對規則的拆解與思辨，但即使如此，我依然深深享受每一次的推敲與突破，在每一個以為走到盡頭的時刻，總能在最後關頭迸現新的靈感與希望，不只是為了更高的成績，而是我們對真理的執著......",
-    "謝謝你們在寒假願意接下這場幾乎沒有勝算的挑戰，謝謝你們願意放下休息、在無數個爆肝深夜裡大家一起堅持到最後。從報名那刻只剩 20 天，到最後走到了費城，我們一步一步走過來，把一個看似不可能的夢想，一起變成了真實。",
-    "時間悄然流逝，時代匆匆更迭，那些曾一起經歷的日夜已化為過去，但卻也成為我心中永恆的記憶與光。",
-    "#20iterations"
+    "報名 NSF HDR ML Challenge 時，距離提交只剩 20 天。我找來五位隊友組成 20iterations，分頭處理重力波、蝴蝶雜交種與海平面異常偵測。主辦方指出，三項資料集合計有 600 支以上參賽隊伍；我們在完成全部三題的總排名中位居第二，並受邀前往費城的 AAAI-25 Workshop。",
+    "這 20 天的核心不是一次命中的模型，而是反覆拆解任務與評估規則：建立 baseline、檢查資料切分、追蹤錯誤，再把每次失敗變成下一輪實驗。身為六人團隊的隊長，我負責整合三個子題的進度與決策，確保每個結果都能被重現與說明。",
+    "在 AAAI 的兩天裡，我第一次近距離接觸從 AI agents 到 quantum machine learning 的研究，也開始更具體地思考自己想投入的 NeuroAI 問題。比賽帶來的不是單一名次，而是一個能把方法、團隊與研究判斷放在同一張桌上的經驗。",
+    "費城與紐約的十天，從清晨街頭、UPenn 到 Top of the Rock，讓這段高壓合作終於有了可以回望的距離。最重要的仍是五位隊友：我們沒有發明一個萬能演算法，但我們把二十天內每一個可驗證的選擇做到最好，並一起走到了費城。"
    ],
    "en": [
-    "The United States- a country I had always wanted to visit. Across the Pacific, I never knew when I would truly set foot on this land. Yet, through a competition that had less than a month before the deadline-and felt almost impossible to win-an email that arrived in the middle of the night suddenly made it real. That day came earlier than I ever imagined, taking me into a world that had existed only in my mind.",
-    "The NSF HDR ML Challenge is a global anomaly-detection hackathon with hundreds of teams. Its core goal is to tackle anomaly problems from different domains using machine learning: anomalous gravitational wave signals (searching for unknown sources in the universe), butterfly hybrid detection (identifying mutations and hybrid species), and detecting anomalous sea level rise (forecasting anomalies under climate change). When I first read the rules, I was almost entirely drawn by one sentence: winning teams would be sponsored and invited to AAAI-25 in Philadelphia. We signed up with a small hope-then, two months later, that \"impossible\" chance became reality. We placed 2nd overall  and earned a trip to the U.S., writing an unbelievable chapter in my third year at NTHU.",
-    "To chase the overall championship, we went all-in. Our team name-\"20iterations\"-said everything: there were only 20 days from registration to submission. Meetings were counted in days: a \"small meow\" every 3 days, a \"big meow\" every 5 days. Discussions often ran past midnight, even during travel and Lunar New Year. When the laptop failed, we used a tablet; when the tablet failed, we used a phone. I have no idea how many Colab compute units we burned through.",
-    "In every meeting, you would definitely hear:",
-    "\"Wait-hold on  let me think \"",
-    "\"You're totally right, but...\"",
-    "\"This time it can't be wrong... right...\"",
-    "\"There's literally no reason-if it's still 0, I'm going to...\"",
-    "\"Wait... hold on...\"",
-    "Honestly, in that one month, I heard these lines not 100 times, but at least dozens",
-    "The New York + Philadelphia trip was surreal: calling Uber three times in a row, becoming \"homeless wanderers\" on Philly streets at dawn, walking through UPenn, watching the Warriors vs. 76ers, imitating Rocky at the museum, drinking a calorie-bomb milkshake at Reading Terminal Market, occasionally catching the smell of weed in the air, and even bumping into a protest related to Trump. During the two days at AAAI, from Agents to Quantum ML, I saw frontier research directions and rethought what I want to pursue next. (And watching Taiwanese people insist on speaking English was genuinely hilarious-BTW, we were the only undergraduate team among the winners.)",
-    "Then we arrived in New York: Shake Shack, pastrami sandwiches, tacos, lobster feasts-and we left footprints at the Statue of Liberty, the Charging Bull, the Brooklyn Bridge, and Central Park. Times Square went from pouring rain to sunshine; we watched NYC at night from Top of the Rock; and we sang \"I Want It That Way\" countless times...",
-    "Above all, I want to thank my five teammates. Without them, there would be no \"20iterations,\" and there would be no trip to the U.S. Maybe we didn't invent a brand-new algorithm; maybe we were lucky that our approach fit the dataset. Maybe our biggest effort wasn't modeling, but dissecting the rules and thinking through the evaluation. Even so, I truly enjoyed every round of reasoning and every breakthrough-every moment when hope reappeared at the last minute. Not only for a higher score, but for our persistence toward truth.",
-    "Thank you for taking on a challenge that seemed unwinnable during winter break. Thank you for giving up rest and holding on together through countless exhausting nights. From \"20 days left\" at registration to standing in Philadelphia, we walked step by step and turned an impossible dream into reality.",
-    "Time flows quietly, and eras change quickly. Those days and nights have become the past-yet they remain an eternal memory and light in my heart.",
-    "#20iterations"
+    "When we entered the NSF HDR ML Challenge, only 20 days remained before submission. I brought together five teammates as 20iterations, splitting our work across gravitational-wave, hybrid-butterfly, and sea-level anomaly tasks. Organisers reported more than 600 participating teams across the three datasets; among teams completing all three, we placed second overall and were invited to present at the AAAI-25 Workshop in Philadelphia.",
+    "Those 20 days were not about finding one magic model. We built baselines, audited data splits, traced failures, and turned each result into the next experiment. As team lead, I coordinated decisions across the three task groups and made sure our results could be reproduced and explained.",
+    "Two days at AAAI exposed me to research ranging from AI agents to quantum machine learning, and made my interest in NeuroAI more concrete. The lasting result was not only a ranking; it was the experience of putting methods, teamwork, and scientific judgement under the same deadline.",
+    "Ten days across Philadelphia and New York—from early-morning streets and UPenn to the view from Top of the Rock—gave us distance from the sprint. What matters most is still the five teammates beside me. We did not invent a universal algorithm; we made every verifiable choice we could in 20 days, and reached Philadelphia together."
    ]
   },
   "igem": {
    "title": {
-    "en": "57 big meows, 45 small ones",
-    "zh": "57 次大咪,45 次小咪"
+    "en": "Sixteen people, one gold medal",
+    "zh": "十六個人，一面金牌"
    },
    "place": "Paris, France",
    "date": "2023.10.31 – 11.11",
@@ -401,7 +379,7 @@
      "slug": "CDG · 48.86 N, 2.35 E · 2023-11 · iGEM",
      "cap": {
       "en": "Sixteen people, one gold medal",
-      "zh": "十六個人,一面金牌"
+      "zh": "十六個人，一面金牌"
      }
     },
     {
@@ -439,19 +417,16 @@
     }
    ],
    "zh": [
-    "57次大咪、45次小咪，無數的研究、報告、拉贊、採訪、交流，在2023年的11月第一次來到這麼遠的國家，10099公里--巴黎，依舊不敢相信一年後的今天我們帶著無數日月累積的成果來到了iGEM比賽會場，並最終獲得金牌，回過頭看這一年我們真的一起完成了很多事情..",
-    "記得初次相見歡的時候，那時候的我對未來十分的迷茫，沒有像其他人一樣擁有一技之長，從一開始寒假的case study到後來二擇一的主題，接著尋找適合的教授，再到後來各組各司其職，開始尋找各式模擬軟體、找model、找文獻、建網頁、做模型、搞硬體、搞軟體，一切都恍如昨日，永遠無法忘記一個禮拜兩次的meeting、討論到凌晨的會議、修正再修正的model、一起拍promotion video 、一起去林口交流會、一起被wiki 追殺的日子、一起完成檢測早期大腸癌的研究。這一年中自己也初次嘗試了各式各樣的事情，好多的第一次，第一次當組長、第一次接觸合成生物學、第一次去校園拉票、第一次3D建模、第一次連續四天睡不到六個小時、第一次搭阿聯酋、第一次離開亞洲⋯真的真的好多的第一次，在這一年中也犧牲了學業、犧牲了練球、犧牲了暑假、犧牲了睡眠，但我卻覺得一切都很值得，能跟如此優秀的15個人一起共事，並在國際合成生物學的舞台上，與數百支來自世界各國的隊伍交流，短短一年間，不同背景的我們，16個人，拿到了Gold Medal，我真的很開心也無比自豪有一群這麼厲害的隊友！",
-    "在這16人的團隊中，身為Dry lab leader（後來才知道是組內年紀最小的），負責掌管DL大小事以及擔任與其他組溝通的橋樑，我們組內每個人都來自不同的學系，很感謝DL各位很包容我的想法，也會適時的給我這不成熟的組長建議，要感謝的人和事情實在太多了，忙前忙後最扛的隊長（無數次陪我到深夜甚至黎明）、最強最全能的學姊（完全不必多說，真的什麼都強）、最忙最多事的羿文（總是要被我要求一大堆工作還有被問一大堆問題）、最神的梓維（人不在但心都在，我們QA時的神），當然還有最無敵最無解人人書卷的WL各位，以及至關重要最堅強的後盾HP，真的很開心能跟你們一起共事，一起朝向共同的目標努力，雖然比賽已經過了快一年了，但過往的回憶如今仍如夢似幻、歷歷在目...",
-    "人生很長，總會遇到很多事情，也會遇到很多人，在19歲的這年，因為遇見了你們而無比精彩。",
-    "#8th"
+    "2023 年，我與另外十五位隊友組成 NTHU-Taiwan，從題目選定、文獻與模型，到硬體、軟體與 wiki，完成一套以機器學習協助大腸癌早期篩檢的系統。我們把診斷模型接上 Arduino 裝置，前往巴黎參加 iGEM Grand Jamboree，最終獲得金牌。",
+    "我擔任 Dry Lab 組長，也是組內最年輕的成員。我的工作不只包括模型與技術決策，也要在不同子團隊之間對齊介面、時程與證據，讓演算法、裝置與簡報最後能說成同一個完整故事。",
+    "一年裡，我第一次帶領跨領域團隊、接觸合成生物學、做 3D 建模，也在一輪輪會議與修正中學會何時堅持、何時改變方向。真正困難的不是任何一個單點技術，而是讓十六個不同背景的人持續朝同一個可交付的目標前進。",
+    "巴黎的金牌是清楚的結果，但更長久的收穫，是我在十九歲時第一次知道：研究可以同時需要模型、工程、溝通與信任，而我願意站在它們交會的位置。"
    ],
    "en": [
-    "57 \"big meows,\" 45 \"small meows,\" countless rounds of research, reports, fundraising, interviews, and exchanges. In November 2023, I visited a country this far away for the first time-10,099 km from home: Paris. Even now, it still feels unreal that one year later, we arrived at the iGEM venue carrying the results we had built day by day, and eventually won a Gold Medal. Looking back, we truly accomplished so much together in that year.",
-    "I still remember when we first met. Back then, I was lost about the future. I didn't have a clear \"special skill\" like others. From the winter break case study, to selecting a topic, to finding the right professor, and then dividing into teams with different roles-searching for simulation tools, building models, reading papers, making the wiki, prototyping, doing hardware, doing software-everything feels like yesterday. I'll never forget the twice-a-week meetings, discussions that lasted until dawn, models revised again and again, filming promotion videos together, traveling to the Linkou meetup, being chased by the wiki deadline, and completing our research on early colorectal cancer screening.",
-    "That year, I tried so many things for the first time: being a team lead, touching synthetic biology, doing campus campaigning, 3D modeling, sleeping less than six hours for four consecutive days, flying Emirates, leaving Asia for the first time... so many firsts. I sacrificed coursework, basketball practice, my summer break, and sleep-yet I felt it was all worth it. Working with 15 incredible people, exchanging with hundreds of teams from around the world on the international synthetic biology stage-within just one year, 16 people from completely different backgrounds earned a Gold Medal. I was truly happy, and unbelievably proud to have such amazing teammates.",
-    "In this 16-person team, I served as the Dry Lab leader (and later found out I was the youngest in the group ). I handled Dry Lab tasks and acted as a bridge between subteams. Everyone came from different departments, and I'm deeply grateful that the Dry Lab members were so supportive of my ideas and gave me advice as an inexperienced leader. There are simply too many people to thank: our captain who carried everything (countless nights together until late night-or even sunrise ), our all-around senior (no need to explain-she's amazing at everything ), Yi-Wen (always overloaded with tasks and my endless questions ), Zi-Wei (not always present, but always there for us-our QA hero ), the unstoppable WL team, and our crucial backbone HP. I'm so glad we worked together toward a shared goal. Even though it has been almost a year since the competition, the memories still feel dreamlike and vivid.",
-    "Life is long. We will meet many things and many people. At 19, because I met you all, my life became incredibly bright.",
-    "#8th"
+    "In 2023, I joined fifteen teammates as NTHU-Taiwan. From topic selection, literature, and modelling to hardware, software, and the wiki, we built a machine-learning system for early colorectal-cancer screening, connected it to an Arduino-based diagnostic device, and presented it at the iGEM Grand Jamboree in Paris. The project earned a Gold Medal.",
+    "I served as Dry Lab lead and was the youngest member of the subteam. My role covered modelling and technical decisions, but also the interfaces between teams: aligning evidence, schedules, and dependencies so the algorithm, device, and presentation told one coherent story.",
+    "That year brought my first experience leading an interdisciplinary team, working in synthetic biology, and building 3D models. Repeated meetings and revisions taught me when to defend an approach and when to change it. The hardest problem was not any single technology; it was keeping sixteen people from different backgrounds moving toward one deliverable.",
+    "The Gold Medal is the visible outcome. The longer-lasting lesson was learning, at nineteen, that research can demand modelling, engineering, communication, and trust at the same time—and that I want to work where those demands meet."
    ]
   }
  },
@@ -459,15 +434,7 @@
   "src": "img/portrait",
   "cap": {
    "en": "Hsinchu, June 2026",
-   "zh": "新竹,2026 年 6 月"
-  }
- },
- "slider": {
-  "src": "img/S__16670722",
-  "slug": "FORMOSA TRAIL · TAIWAN",
-  "cap": {
-   "en": "Trail running, at night — corrupted, then retrieved",
-   "zh": "夜間越野跑 —— 加噪,然後還原"
+   "zh": "新竹，2026 年 6 月"
   }
  }
 }

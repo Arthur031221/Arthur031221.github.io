@@ -7,15 +7,18 @@
 <meta name="description" content="{{description}}">
 <meta name="theme-color" content="#05070d">
 <meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2305070d%27/%3E%3Cpath d=%27M3 22h6l3-13 4 20 3-11h10%27 fill=%27none%27 stroke=%27%232ff0bd%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
 <link rel="canonical" href="{{canonical}}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{title}}">
 <meta property="og:description" content="{{description}}">
 <meta property="og:url" content="{{canonical}}">
 <meta property="og:site_name" content="Chi-Wei Lee — PE//1">
+<meta property="og:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
+<meta property="og:image:alt" content="Indigo sumi ink and woodblock contours on warm paper">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://arthur031221.github.io/img/art/home-ink.webp">
 <link rel="preload" href="assets/fonts/MartianMono-normal-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/InstrumentSans-normal-400-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
@@ -31,14 +34,12 @@
 
 <a class="skip" href="#main"><span class="en">Skip to content</span><span class="zh">跳至內容</span></a>
 
-<div class="rig" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
 <header class="bar">
   <a class="id" href="index.html" aria-label="Chi-Wei Lee — home">
     <span class="seal" aria-hidden="true">李</span>
     <b><span class="en">CHI-WEI LEE</span><span class="zh">李騏維</span></b>
     <span class="sep" aria-hidden="true">/</span>
-    <span class="role"><span class="en">NEUROAI</span><span class="zh">腦神經 × 機器學習</span></span>
+    <span class="role"><span class="en">RESEARCH NOTEBOOK</span><span class="zh">研究手帖</span></span>
   </a>
   <nav aria-label="Sections">{{nav}}</nav>
   <div class="ctl">
@@ -46,41 +47,25 @@
       <span class="lb">⌘K</span>
     </button>
     <button type="button" data-act="lang" aria-label="Switch language"><span class="lb">中</span><span class="k">L</span></button>
-    <button type="button" data-act="mode" aria-label="Switch imaging modality"><span class="lb">IN VIVO</span><span class="k">T</span></button>
+    <button type="button" data-act="mode" aria-label="Switch colour theme"><span class="mode-glyph" aria-hidden="true">◐</span><span class="lb">NIGHT</span><span class="k">T</span></button>
   </div>
-  <button type="button" class="burger" data-act="drawer" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button type="button" class="burger" data-act="drawer" aria-label="Menu" aria-controls="drawer" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
 <div class="shell">
-  <aside class="depth" aria-hidden="true">{{depth}}</aside>
   <main id="main">
 {{main}}
     <footer class="foot">
-      <span><span class="en">Chi-Wei Lee · Hsinchu, Taiwan</span><span class="zh">李騏維 · 台灣新竹</span></span>
+      <span><span class="en">Chi-Wei Lee · Taiwan ↔ UCLA</span><span class="zh">李騏維 · 台灣 ↔ UCLA</span></span>
       <a href="https://github.com/Arthur031221" rel="noopener">GITHUB</a>
       <button type="button" data-act="mail" data-mail="levi74108520963@gmail.com"><span class="en">COPY EMAIL</span><span class="zh">複製信箱</span></button>
       <a href="Chi-Wei_Lee_CV.pdf">CV.PDF</a>
-      <span class="r"><span class="en">Hand-written. No frameworks, no libraries.</span><span class="zh">手寫。無框架、無函式庫。</span></span>
+      <span class="r"><span class="en">Predictive coding · Bayesian inference · NeuroAI</span><span class="zh">預測編碼 · 貝氏推論 · NeuroAI</span></span>
     </footer>
   </main>
-  <aside class="rail" aria-hidden="true">
-    <div class="track"></div>
-    <canvas class="spikes"></canvas>
-    <div class="head" data-pct="0%"></div>
-  </aside>
 </div>
 
-<div class="hud" aria-hidden="true">
-  <span class="grp rec"><span class="dot"></span><span data-t-en="REC" data-t-zh="錄製中">REC</span></span>
-  <span class="grp opt"><span class="en">FRAME-LFP</span><span class="zh">畫格場電位</span></span>
-  <canvas></canvas>
-  <span class="grp opt"><span class="en">FPS</span><span class="zh">FPS</span> <b class="sig" data-v="fps">60</b></span>
-  <span class="grp"><span class="en">DEPTH</span><span class="zh">深度</span> <b data-v="layer">L1</b></span>
-  <span class="grp"><span class="en">POS</span><span class="zh">位置</span> <b data-v="pos">000%</b></span>
-  <span class="grp opt"><span class="en">TPE</span><span class="zh">台北</span> <b data-v="clock">--:--:--</b></span>
-</div>
-
-<div id="drawer">{{drawer}}</div>
+<nav id="drawer" aria-label="Mobile sections" aria-hidden="true" inert>{{drawer}}</nav>
 
 <dialog id="console" aria-label="Command console">
   <div class="box">
@@ -92,11 +77,12 @@
 
 <dialog id="lightbox" aria-label="Photograph">
   <div class="lb">
-    <img alt="" data-lb-img>
+    <div class="lb-media" data-lb-media></div>
     <div class="lbar">
       <span class="n">01 / 01</span>
       <span class="cap"></span>
       <span class="sp">
+        <button type="button" data-lb-close><span class="en">CLOSE ×</span><span class="zh">關閉 ×</span></button>
         <button type="button" data-lb-nav="prev" aria-label="Previous">← PREV</button>
         <button type="button" data-lb-nav="next" aria-label="Next">NEXT →</button>
       </span>
@@ -104,24 +90,11 @@
   </div>
 </dialog>
 
-<div id="boot" aria-hidden="true">
-  <div class="b">
-    <div class="l"><span>ELECTRODE</span><b>LOWERED</b></div>
-    <div class="l"><span>BASELINE</span><b>ACQUIRED</b></div>
-    <div class="l"><span>LAMINAE</span><b>L1–L6</b></div>
-    <div class="l"><span>PREDICTION</span><b>DESCENDING</b></div>
-    <div class="l"><span>EVIDENCE</span><b>ASCENDING</b></div>
-    <div class="l"><span>RESIDUAL</span><b>RECORDING</b></div>
-    <div class="track"><i></i></div>
-  </div>
-</div>
-
 <noscript>
   <style>#substrate,#boot,.rail,.depth{display:none}.err{opacity:1!important;transform:none!important;filter:none!important}</style>
 </noscript>
 
 <script src="assets/runtime.js" defer></script>
 <script src="assets/substrate.js" defer></script>
-<script src="assets/instruments.js" defer></script>
 </body>
 </html>

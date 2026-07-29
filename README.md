@@ -1,86 +1,72 @@
-# Chi-Wei Lee — PE//1
+# Chi-Wei Lee — Aizuri Research Notebook
 
-Bilingual academic portfolio for Chi-Wei Lee (李騏維), NeuroAI, published with
-GitHub Pages at `arthur031221.github.io`.
+Bilingual academic portfolio for Chi-Wei Lee (李騏維), published with GitHub
+Pages at [arthur031221.github.io](https://arthur031221.github.io/).
 
-Nine static routes. No package manager, no framework, no CDN, no runtime
-dependency — the whole site is hand-written CSS, Canvas2D and one WebGL
-fragment shader. Every page is real HTML: with JavaScript switched off you
-still get the entire site, in both languages.
+The site combines warm kozo paper, Prussian-indigo aizuri-e, restrained sumi
+diffusion, and a small amount of vermilion with a contemporary research
+notebook. It is static HTML with hand-written CSS and JavaScript: no framework,
+package manager, CDN, or runtime dependency.
 
-## The idea
+## Design system
 
-The cortex does not transmit the signal. It transmits the residual between
-what it predicted and what arrived. The site is built on that rule, because
-it is also what the research is about.
-
-- The **substrate** is 墨流し — suminagashi, simulated: three dyes floated
-  on slow curl-noise water and folded into marble. Crimson is top-down
-  prediction, Prussian blue is bottom-up evidence, and where they overlap
-  they bleed into sumi grey — the residual's ash. A brush wanders the sheet
-  laying alternating rings; a click or S touches it down where you are.
-- **Figures are still by default** and run only while you engage them. One
-  moving thing at a time.
-- **Images first.** Every page has artwork slots that activate the moment
-  the pieces exist in `img/art/` — `CODEX_ART_BRIEF.md` is the complete
-  generation brief.
-- **Two families of type.** Spectral and 明體 for headings and the essays,
-  Martian Mono for every label, readout and axis. The painting is old and the
-  instrument is not.
-- The two registers are **two sheets, not an inversion**: `in vivo` inverts the
-  paper the way a rubbing (拓本) inverts carved stone — the sheet is night and
-  the ink is luminous, and it moves. `fixed` is ink on dry 宣紙 and it does not,
-  because a dry sheet has stopped. The toggle runs a real temperature schedule
-  on the hero sampler — quenching one way, heating the other.
-- **Chroma is semantic.** 胭脂 carmine is top-down prediction, 花青 indigo is
-  bottom-up evidence, 石青 violet is inhibition. Frames, rules and labels stay
-  achromatic. 朱砂 vermilion is used once, for the seal.
-- Scroll depth is **cortical depth**: the left axis names the lamina you are
-  in, and the right rail is a spike raster that records each section as it
-  fires, not a scrollbar.
-- **Nothing appears more than twice.** Every fact belongs to one page, which
-  writes it out in full; elsewhere it may appear once more only in short. The
-  record plots the papers without naming them; about counts the honours and
-  links to the record that owns them.
+- **Day / fixed** is dry paper: warm, quiet, and motionless.
+- **Night / vivo** is a dark indigo rubbing with a very slow ink substrate.
+- **Reduced motion** always receives a composed static frame.
+- Nine original illustrations in `img/art/` replace the old procedural fluid
+  plots. Their production record and prompt family live in
+  `CODEX_ART_BRIEF.md`.
+- Spectral and a local Ming/Song fallback carry the editorial voice; Martian
+  Mono and Instrument Sans provide the technical register.
+- Vermilion is reserved for the 李 seal and small navigational accents.
+- The Record is semantic HTML: four year chapters and twelve readable event
+  cards, rather than a sparse or hover-dependent canvas.
 
 ## Routes
 
-| file | what is on it |
+| route | purpose |
 |---|---|
-| `index.html` | The name, and nothing drawn in front of it; threads, selected papers, honours, field |
-| `research.html` | The four threads, in prose, on quiet water |
-| `publications.html` | Five entries with status stated as it actually stands, and a filter |
-| `field.html` | Two trips, a contact sheet, a lightbox |
-| `field-nsf.html`, `field-igem.html` | The two long-form essays, in full, in both languages |
-| `record.html` | Every honour with its citation, the field work, and all of it on one axis |
-| `about.html` | Biography, facts, contact |
-| `404.html` | An unresolved residual, and a way back |
+| `index.html` | identity, research focus, selected work, current direction |
+| `research.html` | four research threads and their visual metaphors |
+| `publications.html` | five papers/preprints with status and links |
+| `field.html` | the NSF and iGEM journeys plus a curated contact sheet |
+| `field-nsf.html` | concise NSF HDR field essay |
+| `field-igem.html` | concise iGEM field essay |
+| `record.html` | 2023–2026 chronology, honours, and field work |
+| `about.html` | biography, profile, contact, CV |
+| `404.html` | direct recovery navigation |
 
 ## Build
 
-The HTML is generated. Edit `src/`, never the root `*.html`.
+Root HTML is generated. Edit `src/`, not the root pages.
 
 ```bash
 python3 src/build.py          # preview → _index.html, _research.html, …
 python3 src/build.py --live   # publish → index.html, research.html, …
-python3 -m http.server 8080   # serve, so relative paths behave like Pages
+python3 -m http.server 8080   # local HTTP preview
 ```
 
-`src/content.json` is the single source of truth for every fact and every
-string. `src/shell.html` is the page shell; `src/build.py` composes the routes.
+- `src/content.json` is the factual and bilingual content source.
+- `src/build.py` owns route composition and responsive image markup.
+- `src/shell.html` owns the shared head, navigation, dialogs, and footer.
+- `assets/site.css` owns both themes and all responsive layout.
+- `assets/runtime.js` owns navigation, language/theme state, reveal, filters,
+  lightbox, and the single animation broker.
+- `assets/substrate.js` owns the subtle background wash.
 
-## Runtime contract
+The build adds content hashes to CSS, JavaScript, and fonts so a GitHub Pages
+deployment does not combine stale assets with fresh HTML.
 
-- Every user-visible string exists in English and Traditional Chinese, and both
-  are in the HTML. Parity is checked at build review time.
-- One animation owner site-wide (`PE.loop`); nothing starts a second rAF chain.
-- No custom cursor and no blended full-screen overlay layer.
-- Everything pauses when the tab is hidden or the element is off-screen.
-- `prefers-reduced-motion` gets a designed static state, never a blank hole.
-- Content settles by scroll sweep with a hard 4-second fallback, so no effect
-  can cost a reader the text.
-- Every displayed number is computed live, cited, or taken from the record.
-  The instruments print what they measured, not what the papers reported.
-- Anonymous submissions stay venue-neutral until disclosure is permitted.
+## Content and accessibility contract
 
-See `HANDOFF.md` before changing anything.
+- Every reader-facing sentence is available in English and Traditional Chinese.
+- Page content remains complete without JavaScript.
+- Each page has one `h1`; images carry intrinsic dimensions and alt text.
+- Controls use native buttons/links and visible keyboard focus.
+- No custom cursor, autoplaying content instrument, boot gate, scroll-jacking,
+  or canvas-only information.
+- Anonymous submissions remain venue-neutral until disclosure is permitted.
+- Competition and award wording should be checked against the official source
+  before it is changed.
+
+See `HANDOFF.md` for the maintenance contract and QA checklist.

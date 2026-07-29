@@ -39,7 +39,9 @@
 
   var S = PE.state;
   var time = 0;
-  var mode = 0;                 // 0 vivo, 1 fixed
+  /* runtime restores the persisted/system preference before this file
+     subscribes to modechange, so the substrate must sample it directly. */
+  var mode = PE.mode() === 'fixed' ? 1 : 0;   // 0 vivo, 1 fixed
   var MAXTOUCH = 6;
 
   /* ── shared GLSL ──────────────────────────────────────────── */
@@ -358,13 +360,13 @@
   PE.on('modechange', function (m) {
     mode = m === 'fixed' ? 1 : 0;
     colours();
-    if (PE.reduced) settle();
-    else if (cpu) drawCPU();
+    syncPlayback();
   });
   addEventListener('resize', PE.debounce(function () {
     resize();
-    if (PE.reduced) settle();
+    if (PE.reduced || mode) settle();
     else if (cpu) drawCPU();
+    else startLoop();
   }, 200), { passive: true });
 
   /* ── the brush ────────────────────────────────────────────────
@@ -528,7 +530,10 @@
 
   function settle() {
     if (!G) { if (cpu) drawCPU(); return; }
-    seedMarble(16, 22);
+    if (seeded < 1) {
+      seeded = 1;
+      seedMarble(16, 22);
+    }
     present();
   }
 
@@ -571,8 +576,12 @@
 
   var vitals = 0;
   function startLoop() {
+    if (!G || PE.reduced || mode || PE.loop.has('substrate')) return;
     PE.loop.add('substrate', function (dt) {
-      if (!G) return;
+      if (!G || PE.reduced || mode) {
+        PE.loop.remove('substrate');
+        return;
+      }
       if (++vitals % 48 === 0 && G.gl.isContextLost()) {
         PE.loop.remove('substrate');
         lost++;
@@ -585,11 +594,11 @@
           if (!G) { toCPU(); return; }
           resize(); colours(); seeded = 0;
           nc.classList.add('live');
-          startLoop();
+          syncPlayback();
         }, 400);
         return;
       }
-      time += dt * (mode ? 0.0015 : 0.0026);   /* the day's water is slower */
+      time += dt * 0.0026;
       if (seeded < 1) { seeded = 1; seedMarble(14, 18); }
       ambient(dt);
       step();
@@ -597,12 +606,20 @@
     });
   }
 
-  if (PE.reduced) {
-    settle();
-  } else if (G) {
+  function syncPlayback() {
+    if (!G) {
+      PE.loop.remove('substrate');
+      if (cpu) drawCPU();
+      return;
+    }
+    if (PE.reduced || mode) {
+      PE.loop.remove('substrate');
+      settle();
+      return;
+    }
     startLoop();
-  } else {
-    drawCPU();
   }
-  PE.on('motionchange', function (r) { if (r) { PE.loop.remove('substrate'); settle(); } });
+
+  syncPlayback();
+  PE.on('motionchange', syncPlayback);
 })();
