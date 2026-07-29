@@ -518,6 +518,13 @@ html[lang="zh-Hant"] .masthead h1{letter-spacing:.05em;font-weight:600;line-heig
 .plate.artwork{margin:var(--s6) 0;border-color:var(--line)}
 .plate.artwork img{width:100%;height:auto}
 
+/* thread cards: the four arguments as 字卡, image first */
+.thread-card{padding:0;display:flex;flex-direction:column}
+.thread-card .plate{border:0;border-bottom:1.5px solid var(--line-3)}
+.thread-card .plate img{width:100%;height:auto;display:block}
+.thread-card .tc-body{padding:var(--s5)}
+.thread-card{scroll-margin-top:120px}
+
 /* ─── 14. ledger (publications, record) ────────────────────── */
 .ledger{border-top:1px solid var(--line-2)}
 .row{
