@@ -78,8 +78,8 @@
     /* one large slow octave carries the marble; a faint finer one
        creases it — ≥75% of the energy stays in the largest scale */
     'float psi(vec2 p){',
-    '  return fbm2(p * 0.85 + vec2(0.0, uTime * 0.030))',
-    '       + fbm2(p * 2.60 + vec2(31.7, uTime * 0.052)) * 0.46;',
+    '  return fbm2(p * 0.85 + vec2(0.0, uTime * 0.040))',
+    '       + fbm2(p * 2.60 + vec2(31.7, uTime * 0.070)) * 0.55;',
     '}',
     'vec2 curl(vec2 p){',
     '  vec2 e = vec2(0.030, 0.0);',
@@ -434,8 +434,8 @@
     return {
       x: 0.12 + rnd() * 0.76,
       y: 0.15 + rnd() * 0.70,
-      r: 0.10 + rnd() * 0.14,
-      s: spin * (11.0 + rnd() * 9.0),
+      r: 0.11 + rnd() * 0.17,
+      s: spin * (14.0 + rnd() * 10.0),
       age: 0,
       life: 900 + rnd() * 900,      /* 15–30 s at 60 fps */
       wx: rnd() * 100, wy: rnd() * 100
@@ -589,7 +589,7 @@
         }, 400);
         return;
       }
-      time += dt * (mode ? 0.0011 : 0.0019);   /* the day's water is slower */
+      time += dt * (mode ? 0.0015 : 0.0026);   /* the day's water is slower */
       if (seeded < 1) { seeded = 1; seedMarble(14, 18); }
       ambient(dt);
       step();

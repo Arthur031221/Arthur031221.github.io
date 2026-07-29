@@ -53,7 +53,7 @@
   --t-xl:1.875rem;
   --t-display:clamp(2.75rem,7.2vw,6.5rem);
 
-  --s1:4px;--s2:8px;--s3:12px;--s4:18px;--s5:26px;--s6:38px;--s7:60px;--s8:96px;--s9:104px;
+  --s1:4px;--s2:8px;--s3:12px;--s4:18px;--s5:26px;--s6:38px;--s7:60px;--s8:96px;--s9:84px;
 
   --ease:cubic-bezier(.22,1,.36,1);
   --ease-step:cubic-bezier(.85,0,.15,1);
@@ -461,8 +461,7 @@ html[lang="zh-Hant"] .unit h3{letter-spacing:.03em;font-size:var(--t-md)}
 .acts{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s6)}
 
 /* ─── 13. hero (index) ─────────────────────────────────────── */
-.hero{position:relative;min-height:calc(100svh - var(--bar-h) - var(--hud-h) - var(--s8));
-  display:flex;flex-direction:column;justify-content:center;padding:var(--s6) 0}
+.hero{position:relative;padding:var(--s7) 0 var(--s4)}
 .hero .band{display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;
   font-family:var(--f-mono);font-size:var(--t-2xs);letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);margin-bottom:var(--s5)}
@@ -515,7 +514,7 @@ html[lang="zh-Hant"] .masthead h1{letter-spacing:.05em;font-weight:600;line-heig
 @media (max-width:760px){.cartouche{display:none}}
 
 /* artwork plates are the image-first layer: quiet frame, full width */
-.plate.artwork{margin:var(--s6) 0;border-color:var(--line)}
+.plate.artwork{margin:var(--s5) 0 var(--s2);border-color:var(--line)}
 .plate.artwork img{width:100%;height:auto}
 
 /* thread cards: the four arguments as 字卡, image first */
@@ -785,7 +784,7 @@ html.drawer-open #drawer{display:flex}
   .shell{padding-left:var(--s4);padding-right:var(--s4)}
 }
 @media (max-width:640px){
-  :root{--frame:7px;--s9:72px;--s8:58px}
+  :root{--frame:7px;--s9:60px;--s8:52px}
   .shell{padding-left:var(--s3);padding-right:var(--s3);padding-top:calc(var(--bar-h) + var(--frame) + var(--s5))}
   .bar{gap:var(--s3);padding:0 var(--s3)}
   .bar .ctl button .k{display:none}
