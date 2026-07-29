@@ -14,14 +14,11 @@ The cortex does not transmit the signal. It transmits the residual between
 what it predicted and what arrived. The site is built on that rule, because
 it is also what the research is about.
 
-- The **substrate** is ink dropped into still water, simulated: a dye field
-  advected through a divergence-free curl-noise flow, with one extra force —
-  ink is denser than water, so it sinks. A drop billows, breaks into lobes,
-  stretches into tendrils and dissolves into haze, and all of it is
-  consequence, not effect. Drops are the only source; the still water is
-  留白, the part of the world the model already predicted. The register is
-  aizuri-e — Prussian blue on pale water by day, luminous ink in dark
-  indigo water at night, under a bokashi band.
+- The **substrate** is 墨流し — suminagashi, simulated: three dyes floated
+  on slow curl-noise water and folded into marble. Crimson is top-down
+  prediction, Prussian blue is bottom-up evidence, and where they overlap
+  they bleed into sumi grey — the residual's ash. A brush wanders the sheet
+  laying alternating rings; a click or S touches it down where you are.
 - **Figures are still by default** and run only while you engage them. One
   moving thing at a time.
 - **Images first.** Every page has artwork slots that activate the moment
@@ -51,7 +48,7 @@ it is also what the research is about.
 | file | what is on it |
 |---|---|
 | `index.html` | The name, and nothing drawn in front of it; threads, selected papers, honours, field |
-| `research.html` | Four threads, four live instruments, and a relationship map whose edges are only the real ones |
+| `research.html` | The four threads, in prose, on quiet water |
 | `publications.html` | Five entries with status stated as it actually stands, and a filter |
 | `field.html` | Two trips, a contact sheet, a lightbox |
 | `field-nsf.html`, `field-igem.html` | The two long-form essays, in full, in both languages |
